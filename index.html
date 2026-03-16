@@ -2454,6 +2454,26 @@ async function loadAll(force=false) {
   // No se carga automáticamente
 }
 
-;</script>
+;
+
+// ── NAV ──
+function go(id, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  el.classList.add('active');
+  // CEG lazy
+  if(id==='ceg' && !DD.ceg) {
+    fetchHoja('ceg').then(rows=>rCEG(rows)).catch(e=>console.error('CEG',e));
+  }
+}
+
+// ── ARRANCAR ──
+window.addEventListener('DOMContentLoaded', () => {
+  const btn = document.querySelector('.sbtn');
+  if(btn) btn.onclick = () => loadAll(true);
+  loadAll();
+});
+</script>
 </body>
 </html>

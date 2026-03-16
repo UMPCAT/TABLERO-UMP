@@ -1758,31 +1758,48 @@ function limpiarCUIT(tab) {
 // ════ FICHA UNIFICADA DE CLIENTE ════
 
 function buscarCliente() {
-  const raw = document.getElementById('cuit-cliente-input').value.replace(/\D/g,'').trim();
+  const inputVal = document.getElementById('cuit-cliente-input').value.trim();
   const el = document.getElementById('cliente-resultado');
-  if(!raw && !nameQ) { el.innerHTML='<div class="not-found">Ingresá un CUIT o nombre de comercio (mínimo 3 caracteres)</div>'; return; }
-  if(nameQ && nameQ.length < 3) { el.innerHTML='<div class="not-found">Ingresá al menos 3 letras para buscar por nombre</div>'; return; }
 
-  // Buscar en todas las fuentes
+  if(!inputVal || inputVal.length < 3) {
+    el.innerHTML='<div class="not-found">Ingresá un CUIT o nombre (mínimo 3 caracteres)</div>';
+    return;
+  }
+
+  // Detectar si es CUIT (solo números) o nombre
+  const rawNum = inputVal.replace(/\D/g,'');
+  const esCUIT = rawNum.length >= 8;
+  const raw = esCUIT ? rawNum : '';
+  const nameQ = !esCUIT ? inputVal.toLowerCase() : '';
+
+  // Filtros según tipo de búsqueda
+  const matchCUIT = (v) => raw && (v||'').toString().replace(/\D/g,'') === raw;
+  const matchNombre = (v) => nameQ && (v||'').toString().toLowerCase().includes(nameQ);
+
   const srcCOM = (DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
-  const com  = srcCOM.filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const fac  = (DD.fac||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const marc = (DD.marc||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const sn   = (DD.sn||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const pyme = (DD.pyme||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const agro = (DD.agro||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const corp = (DD.corp||[]).filter(r=>(r['Cuenta']||'').toString().replace(/\D/g,'')===raw || (r['CUIT']||'').toString().replace(/\D/g,'')===raw);
-  const bna  = (DD.bna||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+
+  const com  = srcCOM.filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Razón Social']) || matchNombre(r['Nombre Fantasia']));
+  const fac  = (DD.fac||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Razon Social / Apellido']));
+  const marc = (DD.marc||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['NOMBRE DEL COMERCIO']) || matchNombre(r['RAZON SOCIAL']));
+  const sn   = (DD.sn||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['NOMBRE DEL COMERCIO']));
+  const pyme = (DD.pyme||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Apellido']) || matchNombre(r['Nombre']));
+  const agro = (DD.agro||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Apellido']));
+  const corp = (DD.corp||[]).filter(r=> matchCUIT(r['Cuenta']) || matchNombre(r['Apellido']) || matchNombre(r['Nombre']));
+  const bna  = (DD.bna||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['RAZON SOCIAL']));
 
   const total = com.length+fac.length+marc.length+sn.length+pyme.length+agro.length+corp.length+bna.length;
-  if(total===0) { el.innerHTML='<div class="not-found">"'+(raw||inputVal)+'" no encontrado en ninguna base de datos.</div>'; return; }
 
-  // Datos base del cliente (de COM si existe, sino de otras fuentes)
-  const base = com[0]||{};
-  const nombre = base['Razón Social']||fac[0]?.['Razon Social / Apellido']||marc[0]?.['RAZON SOCIAL']||bna[0]?.['RAZON SOCIAL']||'Cliente';
-  const suc = base['Nombre Sucursal']||fac[0]?.['Sucursal']?.replace(/^\d+-/,'').trim()||'—';
-  const cond = base['Condicion IVA']||'—';
-  const tipo = base['Tipo de Persona']||'—';
+  if(total === 0) {
+    el.innerHTML='<div class="not-found">"'+inputVal+'" no encontrado en ninguna base de datos.</div>';
+    return;
+  }
+
+  // Datos base del cliente
+  const base = com[0] || {};
+  const nombre = base['Razón Social'] || fac[0]?.['Razon Social / Apellido'] || marc[0]?.['RAZON SOCIAL'] || bna[0]?.['RAZON SOCIAL'] || inputVal;
+  const suc = base['Nombre Sucursal'] || (fac[0]?.['Sucursal']||'').replace(/^\d+-/,'').trim() || '—';
+  const cond = base['Condicion IVA'] || '—';
+  const tipo = base['Tipo de Persona'] || '—';
 
   function seccion(icon, titulo, pill, pillClass, contenido, acciones='') {
     return `<div class="ficha-sec">
@@ -1798,100 +1815,95 @@ function buscarCliente() {
   let secciones = '';
 
   // +PAGOS
-  if(com.length>0){
-    const c=com[0];
-    const status=c['Status de Actividad']||'';
-    const pc=status==='Comercio Activo'?'p-vd':status==='Comercio Churn'?'p-rj':'p-gr';
-    const acc=`<div style="display:flex;gap:5px;margin-top:4px">${btnWSP(c['Teléfono'],c['Razón Social'])}${btnMail(c['Mail Representante'])}</div>`;
-    secciones+=seccion('📱','+Pagos Nación',status.replace('Comercio ',''),pc,
+  if(com.length > 0) {
+    const c = com[0];
+    const status = c['Status de Actividad'] || '';
+    const pc = status==='Comercio Activo'?'p-act':status==='Comercio Churn'?'p-chu':'p-pas';
+    const acc = `<div style="display:flex;gap:5px;margin-top:4px">${btnWSP(c['Teléfono'],c['Razón Social'])}${btnMail(c['Mail Representante'])}</div>`;
+    secciones += seccion('📱', '+Pagos Nación', status.replace('Comercio ',''), pc,
       `<div class="fsec-dato">${c['Nombre Fantasia']||c['Razón Social']} · ${c['Descripcion Actividad']||'—'}</div>
        <div class="fsec-extra">Tel: ${c['Teléfono']||'—'} · Mail: ${c['Mail Representante']||'—'}</div>
-       <div class="fsec-extra">Onboarding: ${c['Onboarding de comercio']||'—'} · ${c['Localidad']||'—'}</div>`,acc);
+       <div class="fsec-extra">Onboarding: ${c['Onboarding de comercio']||'—'} · ${c['Localidad']||'—'}</div>`, acc);
   } else {
-    secciones+=seccion('📱','+Pagos Nación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en +Pagos Nación</div>');
+    secciones += seccion('📱', '+Pagos Nación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en +Pagos Nación</div>');
   }
 
   // FACTURACIÓN
-  if(fac.length>0){
-    const f=fac[0];
-    const ene=f['Total  ENERO 26']||'$0', feb=f['Total  FEBRERO 26']||'$0';
-    const p$=v=>parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
-    const var_=p$(ene)>0?((p$(feb)-p$(ene))/p$(ene)*100).toFixed(1):null;
-    const varHtml=var_?`<span style="color:${+var_>=0?'var(--vrd)':'var(--roj)'};font-weight:700">${+var_>=0?'+':''}${var_}%</span>`:'';
-    const det=f['Detalle']||'—';
-    secciones+=seccion('💰','Facturación',+var_>=0?'Normal':var_===null?'Sin var.':'Caída',+var_>=0?'p-vd':var_===null?'p-gr':'p-rj',
+  if(fac.length > 0) {
+    const f = fac[0];
+    const ene = f['Total  ENERO 26']||'$0', feb = f['Total  FEBRERO 26']||'$0';
+    const p$ = v => parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
+    const varPct = p$(ene)>0 ? ((p$(feb)-p$(ene))/p$(ene)*100).toFixed(1) : null;
+    const varHtml = varPct ? `<span style="color:${+varPct>=0?'var(--bna-verde)':'var(--roj)'};font-weight:700">${+varPct>=0?'+':''}${varPct}%</span>` : '—';
+    secciones += seccion('💰', 'Facturación', varPct===null?'Sin var.':+varPct>=0?'Normal':'Caída', varPct===null?'p-gr':+varPct>=0?'p-act':'p-chu',
       `<div class="fsec-dato">Ene: ${ene} · Feb: ${feb}</div>
-       <div class="fsec-extra">Variación: ${varHtml} · ${det}</div>
+       <div class="fsec-extra">Variación: ${varHtml} · ${f['Detalle']||'—'}</div>
        <div class="fsec-extra">CBU: ${f['CBU']||'—'}</div>`);
   } else {
-    secciones+=seccion('💰','Facturación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en facturación</div>');
+    secciones += seccion('💰', 'Facturación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en facturación</div>');
   }
 
   // MARCATÓN
-  if(marc.length>0){
-    const m=marc[0];
-    secciones+=seccion('🏷','Marcatón','Adherido','p-vd',
+  if(marc.length > 0) {
+    const m = marc[0];
+    secciones += seccion('🏷', 'Marcatón', 'Adherido', 'p-act',
       `<div class="fsec-dato">${m['NOMBRE DE LA PROMOCION']||'—'} · ${m['RUBRO']||'—'}</div>
        <div class="fsec-extra">Adquirente: ${m['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—'} · BNA+: ${m['ACEPTA BNA+:']||'—'}</div>
        <div class="fsec-extra">${m['ALTA / BAJA']||'—'} · ${m['LOCALIDAD']||'—'}</div>`);
   } else {
-    secciones+=seccion('🏷','Marcatón','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No adherido a Marcatón</div>');
+    secciones += seccion('🏷', 'Marcatón', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No adherido a Marcatón</div>');
   }
 
   // SN/AE
-  if(sn.length>0){
-    const s=sn[0];
-    const proms=[...new Set(sn.map(x=>x['NOMBRE DE LA PROMOCION']))].join(', ');
-    secciones+=seccion('📋','Semana Nación / AE',sn.length+' promo(s)','p-az',
+  if(sn.length > 0) {
+    const proms = [...new Set(sn.map(x=>x['NOMBRE DE LA PROMOCION']))].join(', ');
+    secciones += seccion('📋', 'SN / AE', sn.length+' promo(s)', 'p-az',
       `<div class="fsec-dato">${proms}</div>
-       <div class="fsec-extra">Última: ${s['FECHA ALTA']||'—'} · Estado: ${s['ALTA / BAJA']||'—'}</div>`);
+       <div class="fsec-extra">Estado: ${sn[0]['ALTA / BAJA']||'—'}</div>`);
   } else {
-    secciones+=seccion('📋','SN / AE','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en Semana Nación ni AE</div>');
+    secciones += seccion('📋', 'SN / AE', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en SN ni AE</div>');
   }
 
   // PYMENACIÓN
-  if(pyme.length>0){
-    const p=pyme[0];
-    secciones+=seccion('🏢','PyMENación',p['Activo']==='SI'?'Activo':'Inactivo',p['Activo']==='SI'?'p-vd':'p-rj',
+  if(pyme.length > 0) {
+    const p = pyme[0];
+    secciones += seccion('🏢', 'PyMENación', p['Activo']==='SI'?'Activo':'Inactivo', p['Activo']==='SI'?'p-act':'p-chu',
       `<div class="fsec-dato">${p['Apellido']} ${p['Nombre']||''}</div>
        <div class="fsec-extra">Límite: ${p['Límite de Compra']||'—'} · Disponible: ${p['Límite Disponible']||'—'}</div>
-       <div class="fsec-extra">Compras 2026: ${p['Compras 2026']||'$0'} · 2025: ${p['Compras 2025']||'$0'}</div>
-       <div class="fsec-extra">Actividad: ${p['Actividad de la Pyme']||'—'}</div>`);
+       <div class="fsec-extra">Compras 2026: ${p['Compras 2026']||'$0'} · 2025: ${p['Compras 2025']||'$0'}</div>`);
   } else {
-    secciones+=seccion('🏢','PyMENación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en PyMENación</div>');
+    secciones += seccion('🏢', 'PyMENación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en PyMENación</div>');
   }
 
   // AGRONACIÓN
-  if(agro.length>0){
-    const a=agro[0];
-    secciones+=seccion('🌿','AgroNación',a['Activo']==='SI'?'Activo':'Inactivo',a['Activo']==='SI'?'p-vd':'p-rj',
+  if(agro.length > 0) {
+    const a = agro[0];
+    secciones += seccion('🌿', 'AgroNación', a['Activo']==='SI'?'Activo':'Inactivo', a['Activo']==='SI'?'p-act':'p-chu',
       `<div class="fsec-dato">${a['Apellido']} ${a['Nombre']||''}</div>
-       <div class="fsec-extra">Límite: ${a['Límite de Compra']||'—'} · Disponible: ${a['Límite Disponible']||'—'}</div>
-       <div class="fsec-extra">Compras 2026: ${a['Compras 2026']||'$0'} · 2025: ${a['Compras 2025']||'$0'}</div>`);
+       <div class="fsec-extra">Límite: ${a['Límite de Compra']||'—'} · Compras 2026: ${a['Compras 2026']||'$0'}</div>`);
   } else {
-    secciones+=seccion('🌿','AgroNación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en AgroNación</div>');
+    secciones += seccion('🌿', 'AgroNación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en AgroNación</div>');
   }
 
   // CORPORATIVA
-  if(corp.length>0){
-    const c=corp[0];
-    secciones+=seccion('💳','TC Corporativa','Registrado','p-az',
+  if(corp.length > 0) {
+    const c = corp[0];
+    secciones += seccion('💳', 'TC Corporativa', 'Registrado', 'p-az',
       `<div class="fsec-dato">${c['Apellido']||''} ${c['Nombre']||''}</div>
        <div class="fsec-extra">Límite: ${c['Lim.Compra']||'—'} · Remanente: ${c['Reman Compra']||'—'}</div>
-       <div class="fsec-extra">% Uso LC: ${c['%Uso LC']!=null?c['%Uso LC']+'%':'—'} · Saldo: ${c['Imp Sal Ant']||'$0'}</div>`);
+       <div class="fsec-extra">% Uso: ${c['%Uso LC']||'—'} · Saldo: ${c['Imp Sal Ant']||'$0'}</div>`);
   } else {
-    secciones+=seccion('💳','TC Corporativa','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en TC Corporativa</div>');
+    secciones += seccion('💳', 'TC Corporativa', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en TC Corporativa</div>');
   }
 
   // BNA CONECTA
-  if(bna.length>0){
-    const b=bna[0];
-    secciones+=seccion('🔗','BNA Conecta',b['TIPO CLIENTE']||'—','p-az',
+  if(bna.length > 0) {
+    const b = bna[0];
+    secciones += seccion('🔗', 'BNA Conecta', b['TIPO CLIENTE']||'—', 'p-az',
       `<div class="fsec-dato">${b['RAZON SOCIAL']||nombre}</div>
-       <div class="fsec-extra">Compras 2026: ${b['COMPRAS 2026']||'—'} · Ventas: ${b['VENTAS 2026']||'—'}</div>
-       <div class="fsec-extra">Estado: ${b['ESTADO']||'Sin novedad'}</div>`);
+       <div class="fsec-extra">Compras 2026: ${b['COMPRAS 2026']||'—'} · Ventas: ${b['VENTAS 2026']||'—'}</div>`);
   } else {
-    secciones+=seccion('🔗','BNA Conecta','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en BNA Conecta</div>');
+    secciones += seccion('🔗', 'BNA Conecta', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en BNA Conecta</div>');
   }
 
   el.innerHTML = `
@@ -1899,7 +1911,7 @@ function buscarCliente() {
       <div class="ficha-head">
         <div>
           <div class="ficha-nombre">${nombre.toUpperCase()}</div>
-          <div class="ficha-sub">CUIT: ${raw} · ${cond} · ${tipo}</div>
+          <div class="ficha-sub">CUIT: ${raw||inputVal} · ${cond} · ${tipo}</div>
         </div>
         <div class="ficha-suc-badge">${suc}</div>
       </div>

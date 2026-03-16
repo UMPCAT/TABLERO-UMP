@@ -301,11 +301,9 @@ th{background:var(--bna-marino)}
 <body>
 
 <div id="loader" class="loader">
-  <div style="text-align:center">
-    <div class="spin" style="margin:0 auto 16px"></div>
-    <p id="loader-txt" style="font-size:12px;opacity:.85;line-height:2">Conectando…</p>
-    <p style="font-size:10px;opacity:.45;margin-top:6px">El tablero se habilita en cuanto carga la primera hoja</p>
-  </div>
+  <div class="spin"></div>
+  <p id="loader-txt" style="margin-bottom:8px">Cargando +Pagos Nación…</p>
+  <p style="font-size:10px;opacity:.5">El resto carga en segundo plano</p>
 </div>
 
 <div class="topbar"></div>
@@ -319,7 +317,6 @@ th{background:var(--bna-marino)}
 </div>
 
 <div class="nav">
-  <div class="ntab" onclick="go('tc',this)">TC Individuos</div>
   <div class="ntab active" onclick="go('com',this)">+Pagos Nación</div>
   <div class="ntab" onclick="go('ceg',this)">Comercios General</div>
   <div class="ntab" onclick="go('fac',this)">Facturación</div>
@@ -386,77 +383,6 @@ th{background:var(--bna-marino)}
     <div class="twrap"><table><thead><tr>
       <th>Razón Social</th><th>Nombre Fantasía</th><th>Sucursal</th><th>Rubro</th><th>Teléfono</th><th>Mail</th><th>WhatsApp</th><th>Email</th>
     </tr></thead><tbody id="t-contactar"></tbody></table></div>
-  </div>
-</div>
-
-<!-- ═══ TC INDIVIDUOS ═══ -->
-<div class="page" id="page-tc">
-  <div class="banner">
-    <div><div class="ban-t">TC Individuos · NOA Oeste</div><div class="ban-s">Consumo · Transacciones · Cuentas · Activación · MC y VISA</div></div>
-    <div><div class="ban-n" id="tc-total">—</div><div class="ban-nl">tarjetas totales</div></div>
-  </div>
-
-  <div class="fbar">
-    <span class="fbar-lbl">Mes:</span>
-    <select id="f-tc-mes" onchange="applyFilterTC()"><option value="">Todos</option></select>
-    <span class="fbar-lbl" style="margin-left:6px">Sucursal:</span>
-    <select id="f-tc-suc" onchange="applyFilterTC()"><option value="">Todas</option></select>
-    <button class="fbar-reset" onclick="document.getElementById('f-tc-suc').value='';document.getElementById('f-tc-mes').value='';applyFilterTC()">✕</button>
-    <span class="fbar-count" id="fc-tc">—</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportTC()">⬇ Exportar</button>
-  </div>
-
-  <!-- KPIs fila 1 -->
-  <div class="metrics">
-    <div class="metric az"><div class="mlbl">Consumo total</div><div class="mval" id="tc-k1">—</div><div class="msub">miles de millones $</div></div>
-    <div class="metric vd"><div class="mlbl">Transacciones</div><div class="mval" id="tc-k2">—</div><div class="msub" id="tc-k2s">—</div></div>
-    <div class="metric rj"><div class="mlbl">Altas nuevas</div><div class="mval" id="tc-k4">—</div><div class="msub" id="tc-k4s">—</div></div>
-    <div class="metric dr"><div class="mlbl">Tarjetas totales</div><div class="mval" id="tc-total2">—</div><div class="msub">en cartera</div></div>
-  </div>
-  <!-- KPIs fila 2 — cuentas -->
-  <div class="metrics" style="margin-top:-6px">
-    <div class="metric az"><div class="mlbl">Cuentas activas</div><div class="mval" id="tc-k3">—</div><div class="msub" id="tc-k3s">—</div></div>
-    <div class="metric vd"><div class="mlbl">Cuentas con resumen</div><div class="mval" id="tc-k5">—</div><div class="msub" id="tc-k5s">—</div></div>
-    <div class="metric dr"><div class="mlbl">Cuentas habilitadas</div><div class="mval" id="tc-k6">—</div><div class="msub" id="tc-k6s">—</div></div>
-    <div class="metric nrj"><div class="mlbl">Activación prom.</div><div class="mval" id="tc-k7">—</div><div class="msub">% activas/habilitadas</div></div>
-  </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Consumo por sucursal (MM$) · clic para detalle</div>
-      <div class="leg"><span class="li"><span class="ld" style="background:#002056"></span>Mastercard</span><span class="li"><span class="ld" style="background:#F6955A"></span>VISA</span></div>
-      <div class="cw" style="height:380px"><canvas id="c-tc-consumo"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Cuentas por estado · todas las sucursales</div>
-      <div class="leg">
-        <span class="li"><span class="ld" style="background:#7CA9DA"></span>Totales</span>
-        <span class="li"><span class="ld" style="background:#9090C2"></span>Con resumen</span>
-        <span class="li"><span class="ld" style="background:#00ADDB"></span>Habilitadas</span>
-        <span class="li"><span class="ld" style="background:#4EBFA4"></span>Activas</span>
-      </div>
-      <div class="cw" style="height:380px"><canvas id="c-tc-cuentas"></canvas></div>
-    </div>
-  </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Composición consumo · MC vs VISA</div>
-      <div class="cw" style="height:200px"><canvas id="c-tc-marca"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Composición cuentas · por estado</div>
-      <div class="cw" style="height:200px"><canvas id="c-tc-cups"></canvas></div>
-    </div>
-  </div>
-
-  <div class="tcard">
-    <div class="thead2"><span class="ttit">Detalle por sucursal · clic para ver desglose completo</span></div>
-    <div class="twrap"><table><thead><tr>
-      <th>#</th><th>Sucursal</th><th>Consumo</th><th>MC</th><th>VISA</th>
-      <th>Transacciones</th><th>Ctas. Resumen</th><th>Ctas. Activas</th>
-      <th>Activación</th><th>Altas</th><th>Tarjetas</th><th>Vol.</th>
-    </tr></thead><tbody id="t-tc"></tbody></table></div>
   </div>
 </div>
 
@@ -882,6 +808,12 @@ th{background:var(--bna-marino)}
         onkeydown="if(event.key==='Enter')buscarCliente()">
       <button onclick="buscarCliente()">🔍 Buscar</button>
     </div>
+  </div>
+
+  <div id="cliente-resultado"></div>
+</div>
+
+<script>
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -929,76 +861,6 @@ function dlCSV(csv,fname){
   a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
   a.download=fname; a.click();
 }
-// ════ HELPERS ENRIQUECIDOS ════
-function sitCuenta(v){
-  const m={'0':'Normal','1':'Seg.especial','2':'Riesgo bajo','3':'Riesgo medio',
-    '4':'Alto riesgo','5':'Irrecuperable','6':'Irr.técnica','7':'Jud.','37':'Irregular','44':'Cerrada'};
-  return m[String(v||'0').trim()]||'Sit.'+v;
-}
-function sitColor(v){
-  const s=String(v||'0').trim();
-  if(s==='0')return 'p-act';
-  if(['37','44','5','6'].includes(s))return 'p-chu';
-  return 'p-pas';
-}
-function fmtFecha(v){
-  if(!v||v==='')return '—';
-  const n=Number(v);
-  if(!isNaN(n)&&n>40000){const d=new Date((n-25569)*86400*1000);return d.toLocaleDateString('es-AR');}
-  const d=new Date(v);
-  if(!isNaN(d))return d.toLocaleDateString('es-AR');
-  return String(v).split('T')[0]||'—';
-}
-function cardComercio(r){
-  const dir=(r['Calle']||'')+(r['Altura']?' '+r['Altura']:'')+' '+((r['Código Postal']||'')?(r['Código Postal']):'' );
-  const cbu=r['CBU Acreditación']||'—';
-  const esBNA=cbu.startsWith('011')?'<span class="pill p-act" style="font-size:9px">Cta BNA ✓</span>':'';
-  return '<div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">'
-    +'<div><span style="color:var(--txt2)">Dirección:</span> '+(dir.trim()||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">Alta:</span> '+fmtFecha(r['Fecha de Alta'])+'</div>'
-    +'<div><span style="color:var(--txt2)">Representante:</span> '+(r['Nombre Representante']||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">Cond.IVA:</span> '+(r['Condicion IVA']||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">CBU:</span> '+cbu.slice(0,12)+'… '+esBNA+'</div>'
-    +'<div><span style="color:var(--txt2)">Onboarding:</span> '+(r['Onboarding de comercio']||'—')+'</div>'
-    +'</div>'
-    +'<div style="display:flex;gap:6px;margin-top:6px">'+btnWSP(r['Teléfono'],r['Razón Social'])+btnMail(r['Mail Representante'])+'</div>';
-}
-function cardTarjeta(r,tipo){
-  const sit=String(r['Sit Cuenta']||'0').trim();
-  return '<div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">'
-    +'<div><span style="color:var(--txt2)">Sit.cuenta:</span> <span class="pill '+sitColor(sit)+'">'+sitCuenta(sit)+'</span></div>'
-    +'<div><span style="color:var(--txt2)">Alta:</span> '+fmtFecha(r['Fecha de Alta'])+'</div>'
-    +'<div><span style="color:var(--txt2)">Compras 2024:</span> '+(r['Compras 2024']||'$0')+'</div>'
-    +'<div><span style="color:var(--txt2)">Seguro vida:</span> '+(r['Seguro de Vida']||'—')+'</div>'
-    +(tipo==='pyme'?'<div><span style="color:var(--txt2)">Actividad:</span> '+(r['Actividad de la Pyme']||'—')+'</div>':'')
-    +'</div>'
-    +(r['Observaciones']&&r['Observaciones']!=='$ -'&&r['Observaciones']!==''?'<div style="margin-top:5px;font-size:11px;background:var(--nrj-cl);padding:4px 8px;border-radius:4px;color:var(--nrj)">⚠ '+r['Observaciones']+'</div>':'');
-}
-function cardCorporativa(r){
-  const sit=String(r['Sit Cuenta']||'0').trim();
-  const pct=Number(r['%Pagos/Saldo']||0).toFixed(1)+'%';
-  const pc=Number(r['%Pagos/Saldo']||0)>=100?'p-act':Number(r['%Pagos/Saldo']||0)>0?'p-pas':'p-chu';
-  return '<div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">'
-    +'<div><span style="color:var(--txt2)">Sit.cuenta:</span> <span class="pill '+sitColor(sit)+'">'+sitCuenta(sit)+'</span></div>'
-    +'<div><span style="color:var(--txt2)">% Pagos/Saldo:</span> <span class="pill '+pc+'">'+pct+'</span></div>'
-    +'<div><span style="color:var(--txt2)">Lím.cuotas:</span> '+(r['Lim Com Cuotas']||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">Pago mín.ant.:</span> '+(r['Imp Pag Min Ant']||'$0')+'</div>'
-    +'</div>';
-}
-function cardPromo(r){
-  const maps=r['POSICIÓN WEB']||'';
-  const mapsBtn=maps.startsWith('http')?'<a class="action-btn" style="background:#4285f4;color:#fff" href="'+maps+'" target="_blank">📍 Maps</a>':'';
-  return '<div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:11px">'
-    +'<div><span style="color:var(--txt2)">Término. Nativa:</span> '+(r['NATIVA MC']||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">Term. Master:</span> '+(r['MASTER']||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">Term. Visa:</span> '+(r['VISA']||'—')+'</div>'
-    +'<div><span style="color:var(--txt2)">Fecha alta:</span> '+fmtFecha(r['FECHA ALTA']||r['Fecha de Alta'])+'</div>'
-    +'<div><span style="color:var(--txt2)">Agente:</span> '+(r['AGENTE']||'—')+(r['LEGAJO']?' ('+r['LEGAJO']+')':'')+'</div>'
-    +'<div><span style="color:var(--txt2)">Dirección:</span> '+(r['DIRECCION']||'—')+'</div>'
-    +'</div>'
-    +'<div style="display:flex;gap:6px;margin-top:6px">'+mapsBtn+btnWSP(r['TELEFONO'],r['NOMBRE DEL COMERCIO'])+btnMail(r['MAIL'])+'</div>';
-}
-
 
 
 const PIE={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'};
@@ -1120,206 +982,6 @@ function fmtTel(t){return t?(t+'').replace(/\D/g,''):''}
 
 
 
-
-
-// ════ TC INDIVIDUOS ════
-
-function rTC(rows) {
-  DD.tc = rows;
-  // Poblar selects
-  const sucs = [...new Set(rows.map(r=>r['Sucursales']).filter(Boolean))].sort();
-  poblarSel('f-tc-suc', sucs);
-  const meses = [...new Set(rows.map(r=>r['MES']).filter(Boolean))].sort().reverse();
-  const selMes = document.getElementById('f-tc-mes');
-  while(selMes.options.length > 1) selMes.remove(1);
-  meses.forEach(m => {
-    const o = document.createElement('option');
-    o.value = m;
-    o.textContent = fmtMes(m);
-    selMes.appendChild(o);
-  });
-  if(meses.length > 0) selMes.value = meses[0];
-  applyFilterTC();
-}
-
-function fmtMes(m) {
-  if(!m) return '—';
-  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const parts = m.split('/'); // dd/MM/yyyy o yyyy-MM-dd
-  if(parts.length === 3) {
-    if(parts[0].length === 4) return meses[parseInt(parts[1])-1]+' '+parts[0];
-    return meses[parseInt(parts[1])-1]+' '+parts[2];
-  }
-  return m;
-}
-
-function parseMonto(v) {
-  if(!v) return 0;
-  return parseFloat(v.toString().replace(/[^0-9.-]/g,'')) || 0;
-}
-
-function getTC() {
-  const mes = document.getElementById('f-tc-mes').value;
-  const suc = document.getElementById('f-tc-suc').value;
-  let rows = DD.tc || [];
-  if(mes && mes !== 'todos') rows = rows.filter(r => r['MES'] === mes);
-  if(suc) rows = rows.filter(r => r['Sucursales'] === suc);
-  return rows;
-}
-
-function applyFilterTC() {
-  const rows = getTC();
-  if(!rows.length) return;
-
-  // Sumar métricas
-  const sum = (col) => rows.reduce((a,r) => a + parseMonto(r[col]), 0);
-  const max = (col) => Math.max(...rows.map(r => parseMonto(r[col])));
-
-  const consumo     = sum('Monto Consumo');
-  const consumoMC   = sum('Monto Consumo MC');
-  const consumoVISA = sum('Monto Consumo VISA');
-  const tx          = sum('Tx Consumo');
-  const txMC        = sum('Tx Consumo MC');
-  const txVISA      = sum('Tx Consumo VISA');
-  const altas       = sum('Alta de Cuentas');
-  const altasMC     = sum('Alta de Cuentas MC');
-  const altasVISA   = sum('Alta de Cuentas VISA');
-  const cTotal      = sum('Cuentas Totales');
-  const cResumen    = sum('Cuentas con resumen');
-  const cResumenMC  = sum('Cuentas con resumen MC');
-  const cResumenVISA= sum('Cuentas con resumen Visa');
-  const cHab        = sum('Cuentas habilitadas');
-  const cHabMC      = sum('Cuentas habilitadas MC');
-  const cHabVISA    = sum('Cuentas habilitadas Visa');
-  const cActivas    = sum('Cuentas activas');
-  const cActivasMC  = sum('Cuentas activas MC');
-  const cActivasVISA= sum('Cuentas activas Visa');
-  const tarjetas    = sum('Tarjetas Totales');
-  const tarjetasMC  = sum('Tarjetas MC');
-  const tarjetasVISA= sum('Tarjetas Visa');
-  const adicMC      = sum('Tarjetas Adicionales MC');
-  const adicVISA    = sum('Tarjetas Adicionales Visa');
-  const activProm   = rows.length > 0
-    ? (rows.reduce((a,r)=>a+parseMonto(r['Activación']),0)/rows.length*100).toFixed(1)
-    : '—';
-
-  // KPIs
-  document.getElementById('tc-total').textContent = n(tarjetas);
-  if(document.getElementById('tc-total2')) document.getElementById('tc-total2').textContent = n(tarjetas);
-  document.getElementById('tc-k1').textContent = '$'+(consumo/1e9).toFixed(2)+'B';
-  document.getElementById('tc-k2').textContent = n(tx);
-  document.getElementById('tc-k2s').textContent = 'MC: '+n(txMC)+' · VISA: '+n(txVISA);
-  document.getElementById('tc-k3').textContent = n(cActivas);
-  document.getElementById('tc-k3s').textContent = pct(cActivas,cTotal)+' activación';
-  document.getElementById('tc-k4').textContent = n(altas);
-  document.getElementById('tc-k4s').textContent = 'MC: '+n(altasMC)+' · VISA: '+n(altasVISA);
-  document.getElementById('tc-k5').textContent = n(cResumen);
-  document.getElementById('tc-k5s').textContent = 'MC: '+n(cResumenMC)+' · VISA: '+n(cResumenVISA);
-  document.getElementById('tc-k6').textContent = n(cHab);
-  document.getElementById('tc-k6s').textContent = pct(cHab,cTotal)+' del total';
-  if(document.getElementById('tc-k7')) document.getElementById('tc-k7').textContent = activProm+'%';
-  document.getElementById('fc-tc').textContent = rows.length+' sucursales';
-
-  // Gráfico consumo apilado MC+VISA por sucursal
-  const sorted = [...rows].sort((a,b)=>parseMonto(b['Monto Consumo'])-parseMonto(a['Monto Consumo']));
-  mk('c-tc-consumo',{type:'bar',
-    data:{labels:sorted.map(r=>r['Sucursales']),
-    datasets:[
-      {label:'MC',data:sorted.map(r=>(parseMonto(r['Monto Consumo MC'])/1e6).toFixed(1)),backgroundColor:'#002056',borderRadius:3},
-      {label:'VISA',data:sorted.map(r=>(parseMonto(r['Monto Consumo VISA'])/1e6).toFixed(1)),backgroundColor:'#F6955A',borderRadius:3}
-    ]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},
-    scales:{x:{stacked:true,ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y:{stacked:true,ticks:{font:{size:9},color:'#002056'}}},
-    onClick:(e,el)=>{if(el.length)ddTCSuc(sorted[el[0].index]['Sucursales']);}
-  }});
-
-  // Gráfico cuentas totales / resumen / habilitadas / activas
-  mk('c-tc-cuentas',{type:'bar',
-    data:{labels:sorted.map(r=>r['Sucursales']),
-    datasets:[
-      {label:'Totales',data:sorted.map(r=>parseMonto(r['Cuentas Totales'])),backgroundColor:'#7CA9DA',borderRadius:2},
-      {label:'Con resumen',data:sorted.map(r=>parseMonto(r['Cuentas con resumen'])),backgroundColor:'#9090C2',borderRadius:2},
-      {label:'Habilitadas',data:sorted.map(r=>parseMonto(r['Cuentas habilitadas'])),backgroundColor:'#00ADDB',borderRadius:2},
-      {label:'Activas',data:sorted.map(r=>parseMonto(r['Cuentas activas'])),backgroundColor:'#4EBFA4',borderRadius:2},
-    ]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},
-    scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}}
-  }});
-
-  // Torta MC vs VISA consumo
-  mk('c-tc-marca',{type:'doughnut',
-    data:{labels:['MC '+pct(consumoMC,consumo),'VISA '+pct(consumoVISA,consumo)],
-    datasets:[{data:[consumoMC,consumoVISA],backgroundColor:['#002056','#F6955A'],borderWidth:0}]},
-    options:{...PIE,cutout:'52%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}
-  });
-
-  // Torta cuentas
-  mk('c-tc-cups',{type:'doughnut',
-    data:{labels:['Activas','Con resumen','Habilitadas','Resto'],
-    datasets:[{data:[cActivas,cResumen-cActivas,cHab-cResumen,cTotal-cHab],
-    backgroundColor:['#4EBFA4','#9090C2','#00ADDB','#D4AC87'],borderWidth:0}]},
-    options:{...PIE,cutout:'52%',plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}
-  });
-
-  // Tabla completa
-  const mx = sorted[0] ? parseMonto(sorted[0]['Monto Consumo']) : 1;
-  document.getElementById('t-tc').innerHTML = sorted.map((r,i)=>{
-    const cons = parseMonto(r['Monto Consumo']);
-    const act  = parseMonto(r['Cuentas activas']);
-    const tot  = parseMonto(r['Cuentas Totales']);
-    const res  = parseMonto(r['Cuentas con resumen']);
-    const hab  = parseMonto(r['Cuentas habilitadas']);
-    const activ= (parseMonto(r['Activación'])*100).toFixed(1);
-    const activColor = +activ>=75?'var(--bna-verde)':+activ>=50?'var(--bna-naranja)':'var(--roj)';
-    return `<tr class="crow" data-suc="${r['Sucursales']}" onclick="ddTCSuc(this.dataset.suc)">
-      <td class="rk">${i+1}</td>
-      <td style="font-weight:700">${r['Sucursales']}</td>
-      <td style="font-weight:700">$${(cons/1e6).toFixed(1)}M</td>
-      <td style="font-size:11px;color:#002056">$${(parseMonto(r['Monto Consumo MC'])/1e6).toFixed(1)}M</td>
-      <td style="font-size:11px;color:#F6955A">$${(parseMonto(r['Monto Consumo VISA'])/1e6).toFixed(1)}M</td>
-      <td>${n(parseMonto(r['Tx Consumo']))}</td>
-      <td>${n(res)}</td>
-      <td><span class="pill p-act">${n(act)}</span></td>
-      <td style="font-weight:700;color:${activColor}">${activ}%</td>
-      <td><span class="pill p-az">${n(parseMonto(r['Alta de Cuentas']))}</span></td>
-      <td style="font-size:11px">${n(parseMonto(r['Tarjetas Totales']))}</td>
-      <td><span class="bm" style="width:${Math.round(cons/mx*60)}px"></span></td>
-    </tr>`;
-  }).join('');
-}
-
-function ddTCSuc(suc) {
-  const rows = (DD.tc||[]).filter(r=>r['Sucursales']===suc);
-  if(!rows.length) return;
-  const r = rows[0]; // tomar el primer registro (mes filtrado)
-  const pm = v => parseMonto(v);
-  const hdrs = ['Indicador','Total','Mastercard','VISA'];
-  const data = [
-    ['Consumo ($)', '$'+(pm(r['Monto Consumo'])/1e6).toFixed(1)+'M', '$'+(pm(r['Monto Consumo MC'])/1e6).toFixed(1)+'M', '$'+(pm(r['Monto Consumo VISA'])/1e6).toFixed(1)+'M'],
-    ['Transacciones', n(pm(r['Tx Consumo'])), n(pm(r['Tx Consumo MC'])), n(pm(r['Tx Consumo VISA']))],
-    ['Cuentas Totales', n(pm(r['Cuentas Totales'])), n(pm(r['Cuentas Totales MC'])), n(pm(r['Cuentas Totales Visa']))],
-    ['Cuentas con resumen', n(pm(r['Cuentas con resumen'])), n(pm(r['Cuentas con resumen MC'])), n(pm(r['Cuentas con resumen Visa']))],
-    ['Cuentas habilitadas', n(pm(r['Cuentas habilitadas'])), n(pm(r['Cuentas habilitadas MC'])), n(pm(r['Cuentas habilitadas Visa']))],
-    ['Cuentas activas', n(pm(r['Cuentas activas'])), n(pm(r['Cuentas activas MC'])), n(pm(r['Cuentas activas Visa']))],
-    ['Tarjetas Totales', n(pm(r['Tarjetas Totales'])), n(pm(r['Tarjetas MC'])), n(pm(r['Tarjetas Visa']))],
-    ['Tarjetas adicionales', n(pm(r['Tarjetas Adicionales MC'])+pm(r['Tarjetas Adicionales Visa'])), n(pm(r['Tarjetas Adicionales MC'])), n(pm(r['Tarjetas Adicionales Visa']))],
-    ['Altas nuevas', n(pm(r['Alta de Cuentas'])), n(pm(r['Alta de Cuentas MC'])), n(pm(r['Alta de Cuentas VISA']))],
-    ['Activación %', (pm(r['Activación'])*100).toFixed(1)+'%', (pm(r['Activación MC'])*100).toFixed(1)+'%', (pm(r['Activación Visa'])*100).toFixed(1)+'%'],
-  ];
-  openDD('TC Individuos: '+suc, fmtMes(r['MES'])+' · detalle completo por producto', hdrs, data, rows);
-}
-
-function exportTC() {
-  const rows = getTC();
-  if(!rows.length) return;
-  const keys = Object.keys(rows[0]);
-  const csv = [keys.join(','),...rows.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
-  dlCSV(csv, 'tc_individuos.csv');
-}
-
-
 // ── RENDER COM ──
 function rCOM(rows){
   DD.com=rows;
@@ -1360,12 +1022,19 @@ function renderCOM(r){
 
 // ── COM DRILL ──
 function ddComSuc(suc){
-  const rows=(DD.com||[]).filter(r=>r['Nombre Sucursal']===suc&&['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
-  const hdrs=['Razón Social','CUIT','Status','Rubro','Ficha completa'];
-  const data=rows.map(r=>[r['Razón Social'],r['CUIT'],
-    '<span class="pill '+(r['Status de Actividad']==='Comercio Activo'?'p-act':r['Status de Actividad']==='Comercio Churn'?'p-chu':'p-pas')+'">'+(r['Status de Actividad']||'').replace('Comercio ','')+' </span>',
-    r['Descripcion Actividad']||'—', cardComercio(r)]);
-  openDD('Sucursal: '+suc,rows.length+' comercios',hdrs,data,rows);
+  const src=DD.com||[];
+  const rows=src.filter(r=>r['Nombre Sucursal']===suc&&['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
+  const hdrs=['Razón Social','Nombre Fantasía','CUIT','Localidad','Tel.','Mail','Status','Rubro','Onboarding','WhatsApp','Email'];
+  const data=rows.map(r=>[
+    r['Razón Social'],r['Nombre Fantasia']||'—',r['CUIT'],r['Localidad'],
+    r['Teléfono']||'—',r['Mail Representante']||'—',
+    `<span class="pill ${r['Status de Actividad']==='Comercio Activo'?'p-act':r['Status de Actividad']==='Comercio Churn'?'p-chu':'p-pas'}">${(r['Status de Actividad']||'').replace('Comercio ','')}</span>`,
+    r['Descripcion Actividad']||'—',
+    `<span class="pill p-az">${r['Onboarding de comercio']||'—'}</span>`,
+    btnWSP(r['Teléfono'],r['Razón Social']),
+    btnMail(r['Mail Representante'])
+  ]);
+  openDD('Sucursal: '+suc,rows.length+' comercios · datos de contacto',hdrs,data,rows);
 }
 function ddComStatus(status){
   const src=(DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
@@ -1726,28 +1395,44 @@ function resetFilters_SN(){ ['f-sn-suc','f-sn-cat','f-sn-rub'].forEach(id=>docum
 // ── DRILL-DOWN PROMOCIONES ──
 function ddPromoSuc(pid, suc){
   const rows=(DD[pid+'_noa']||DD[pid]||[]).filter(r=>nSuc(r['SUCURSAL'])===suc);
-  const hdrs=['Comercio','CUIT','Categoría','Rubro','Estado','Ficha completa'];
-  const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['CUIT'],r['NOMBRE DE LA PROMOCION']||'—',r['RUBRO']||'—',
-    '<span class="pill '+((r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu')+'">'+(r['ALTA / BAJA']||'—')+'</span>',
-    cardPromo(r)]);
-  openDD((pid==='marc'?'Marcatón':'SN/AE')+': '+suc,rows.length+' comercios',hdrs,data,rows);
+  const hdrs=['Comercio','CUIT','Localidad','Categoría','Rubro','Adquirente','BNA+','Alta/Baja','Tel.','Mail','WhatsApp','Email'];
+  const data=rows.map(r=>[
+    r['NOMBRE DEL COMERCIO'],r['CUIT'],r['LOCALIDAD']||'—',
+    r['NOMBRE DE LA PROMOCION']||'—',r['RUBRO']||'—',
+    r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',
+    r['ACEPTA BNA+:']||'—',r['ALTA / BAJA']||'—',
+    r['TELEFONO']||'—',r['MAIL']||'—',
+    btnWSP(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),
+    btnMail(r['MAIL'])
+  ]);
+  openDD((pid==='marc'?'Marcatón':'SN/AE')+': '+suc, rows.length+' comercios adheridos', hdrs, data, rows);
 }
+
 function ddPromoCategoria(pid, cat){
   const rows=(DD[pid+'_noa']||DD[pid]||[]).filter(r=>r['NOMBRE DE LA PROMOCION']===cat);
-  const hdrs=['Comercio','CUIT','Sucursal','Rubro','Estado','Ficha completa'];
-  const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['CUIT'],nSuc(r['SUCURSAL']),r['RUBRO']||'—',
-    '<span class="pill '+((r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu')+'">'+(r['ALTA / BAJA']||'—')+'</span>',
-    cardPromo(r)]);
-  openDD('Categoría: '+cat,rows.length+' comercios',hdrs,data,rows);
+  const hdrs=['Comercio','CUIT','Sucursal','Localidad','Rubro','Adquirente','BNA+','Tel.','Mail','WhatsApp','Email'];
+  const data=rows.map(r=>[
+    r['NOMBRE DEL COMERCIO'],r['CUIT'],nSuc(r['SUCURSAL']),r['LOCALIDAD']||'—',
+    r['RUBRO']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',
+    r['ACEPTA BNA+:']||'—',r['TELEFONO']||'—',r['MAIL']||'—',
+    btnWSP(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnMail(r['MAIL'])
+  ]);
+  openDD('Categoría: '+cat, rows.length+' comercios', hdrs, data, rows);
 }
+
 function ddPromoRubro(pid, rub){
   const rows=(DD[pid+'_noa']||DD[pid]||[]).filter(r=>normRubro(r['RUBRO'])===rub);
-  const hdrs=['Comercio','CUIT','Sucursal','Categoría','Estado','Ficha completa'];
-  const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['CUIT'],nSuc(r['SUCURSAL']),r['NOMBRE DE LA PROMOCION']||'—',
-    '<span class="pill '+((r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu')+'">'+(r['ALTA / BAJA']||'—')+'</span>',
-    cardPromo(r)]);
-  openDD('Rubro: '+rub,rows.length+' comercios',hdrs,data,rows);
+  const hdrs=['Comercio','CUIT','Sucursal','Localidad','Categoría','Adquirente','BNA+','Tel.','Mail','WhatsApp','Email'];
+  const data=rows.map(r=>[
+    r['NOMBRE DEL COMERCIO'],r['CUIT'],nSuc(r['SUCURSAL']),r['LOCALIDAD']||'—',
+    r['NOMBRE DE LA PROMOCION']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',
+    r['ACEPTA BNA+:']||'—',r['TELEFONO']||'—',r['MAIL']||'—',
+    btnWSP(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnMail(r['MAIL'])
+  ]);
+  openDD('Rubro: '+rub, rows.length+' comercios', hdrs, data, rows);
 }
+
+// ── BUSCADOR EN PANEL ──
 function buscarPromo(pid, val, esCUIT=false){
   const q=(val||'').trim().toLowerCase();
   const res=document.getElementById('rs-result-'+pid);
@@ -1819,11 +1504,12 @@ function applyFilterPYME(){
 }
 function ddPymeSuc(suc){
   const rows=(DD.pyme||[]).filter(r=>r['Sucursal']===suc);
-  const hdrs=['Apellido','Nombre','CUIT','Limite','Compras 2026','Estado','Ficha completa'];
-  const data=rows.map(r=>[r['Apellido'],r['Nombre']||'-',r['CUIT'],r['Límite de Compra']||'-',r['Compras 2026']||'$0',
-    '<span class="pill '+(r['Activo']==='SI'?'p-act':'p-chu')+'">'+r['Activo']+'</span>',cardTarjeta(r,'pyme')]);
-  openDD('PyMENacion: '+suc,rows.length+' cuentas',hdrs,data,rows);
+  const hdrs=['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Actividad','Observaciones'];
+  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',`<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,r['Actividad de la Pyme']||'—',r['Observaciones']||'—']);
+  openDD('PyMENación: '+suc,rows.length+' cuentas',hdrs,data,rows);
 }
+
+// ── RENDER AGRO ──
 function rAGRO(rows){
   DD.agro=rows;
   const sucs=[...new Set(rows.map(r=>r['Sucursal']).filter(Boolean))].sort();
@@ -1852,11 +1538,12 @@ function applyFilterAGRO(){
 }
 function ddAgroSuc(suc){
   const rows=(DD.agro||[]).filter(r=>r['Sucursal']===suc);
-  const hdrs=['Apellido','Nombre','CUIT','Limite','Compras 2026','Estado','Ficha completa'];
-  const data=rows.map(r=>[r['Apellido'],r['Nombre']||'-',r['CUIT'],r['Límite de Compra']||'-',r['Compras 2026']||'$0',
-    '<span class="pill '+(r['Activo']==='SI'?'p-act':'p-chu')+'">'+r['Activo']+'</span>',cardTarjeta(r,'agro')]);
-  openDD('AgroNacion: '+suc,rows.length+' cuentas',hdrs,data,rows);
+  const hdrs=['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Observaciones'];
+  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',`<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,r['Observaciones']||'—']);
+  openDD('AgroNación: '+suc,rows.length+' cuentas',hdrs,data,rows);
 }
+
+// ── RENDER CORP ──
 function rCORP(rows){
   DD.corp=rows;
   const sucs=[...new Set(rows.map(r=>r['Columna1']).filter(Boolean))].sort();
@@ -1886,13 +1573,12 @@ function applyFilterCORP(){
 }
 function ddCorpSuc(suc){
   const rows=(DD.corp||[]).filter(r=>r['Columna1']===suc);
-  const hdrs=['Apellido','Nombre','Lím.Compra','% Uso LC','Sit.Cuenta','Ficha completa'];
-  const data=rows.map(r=>[r['Apellido'],r['Nombre']||'—',r['Lim.Compra']||'—',
-    r['%Uso LC']!=null?r['%Uso LC']+'%':'—',
-    '<span class="pill '+sitColor(String(r['Sit Cuenta']||'0'))+'">'+sitCuenta(String(r['Sit Cuenta']||'0'))+'</span>',
-    cardCorporativa(r)]);
+  const hdrs=['Apellido','Nombre','Cuenta','Lím. Compra','Rem. Compra','% Uso LC','Saldo Ant.','Pagos'];
+  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['Cuenta'],r['Lim.Compra']||'—',r['Reman Compra']||'—',(r['%Uso LC']!=null?r['%Uso LC']+'%':'—'),r['Imp Sal Ant']||'$0',r['PAGOS']||'$0']);
   openDD('Corporativa: '+suc,rows.length+' cuentas',hdrs,data,rows);
 }
+
+// ── RENDER BNA ──
 function rBNA(rows){
   DD.bna=rows;
   const sucs=[...new Set(rows.map(r=>r['SUCURSAL']).filter(Boolean))].sort();
@@ -2072,48 +1758,31 @@ function limpiarCUIT(tab) {
 // ════ FICHA UNIFICADA DE CLIENTE ════
 
 function buscarCliente() {
-  const inputVal = document.getElementById('cuit-cliente-input').value.trim();
+  const raw = document.getElementById('cuit-cliente-input').value.replace(/\D/g,'').trim();
   const el = document.getElementById('cliente-resultado');
+  if(!raw && !nameQ) { el.innerHTML='<div class="not-found">Ingresá un CUIT o nombre de comercio (mínimo 3 caracteres)</div>'; return; }
+  if(nameQ && nameQ.length < 3) { el.innerHTML='<div class="not-found">Ingresá al menos 3 letras para buscar por nombre</div>'; return; }
 
-  if(!inputVal || inputVal.length < 3) {
-    el.innerHTML='<div class="not-found">Ingresá un CUIT o nombre (mínimo 3 caracteres)</div>';
-    return;
-  }
-
-  // Detectar si es CUIT (solo números) o nombre
-  const rawNum = inputVal.replace(/\D/g,'');
-  const esCUIT = rawNum.length >= 8;
-  const raw = esCUIT ? rawNum : '';
-  const nameQ = !esCUIT ? inputVal.toLowerCase() : '';
-
-  // Filtros según tipo de búsqueda
-  const matchCUIT = (v) => raw && (v||'').toString().replace(/\D/g,'') === raw;
-  const matchNombre = (v) => nameQ && (v||'').toString().toLowerCase().includes(nameQ);
-
+  // Buscar en todas las fuentes
   const srcCOM = (DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
-
-  const com  = srcCOM.filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Razón Social']) || matchNombre(r['Nombre Fantasia']));
-  const fac  = (DD.fac||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Razon Social / Apellido']));
-  const marc = (DD.marc||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['NOMBRE DEL COMERCIO']) || matchNombre(r['RAZON SOCIAL']));
-  const sn   = (DD.sn||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['NOMBRE DEL COMERCIO']));
-  const pyme = (DD.pyme||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Apellido']) || matchNombre(r['Nombre']));
-  const agro = (DD.agro||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['Apellido']));
-  const corp = (DD.corp||[]).filter(r=> matchCUIT(r['Cuenta']) || matchNombre(r['Apellido']) || matchNombre(r['Nombre']));
-  const bna  = (DD.bna||[]).filter(r=> matchCUIT(r['CUIT']) || matchNombre(r['RAZON SOCIAL']));
+  const com  = srcCOM.filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const fac  = (DD.fac||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const marc = (DD.marc||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const sn   = (DD.sn||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const pyme = (DD.pyme||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const agro = (DD.agro||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const corp = (DD.corp||[]).filter(r=>(r['Cuenta']||'').toString().replace(/\D/g,'')===raw || (r['CUIT']||'').toString().replace(/\D/g,'')===raw);
+  const bna  = (DD.bna||[]).filter(r=>(r['CUIT']||'').toString().replace(/\D/g,'')===raw);
 
   const total = com.length+fac.length+marc.length+sn.length+pyme.length+agro.length+corp.length+bna.length;
+  if(total===0) { el.innerHTML='<div class="not-found">"'+(raw||inputVal)+'" no encontrado en ninguna base de datos.</div>'; return; }
 
-  if(total === 0) {
-    el.innerHTML='<div class="not-found">"'+inputVal+'" no encontrado en ninguna base de datos.</div>';
-    return;
-  }
-
-  // Datos base del cliente
-  const base = com[0] || {};
-  const nombre = base['Razón Social'] || fac[0]?.['Razon Social / Apellido'] || marc[0]?.['RAZON SOCIAL'] || bna[0]?.['RAZON SOCIAL'] || inputVal;
-  const suc = base['Nombre Sucursal'] || (fac[0]?.['Sucursal']||'').replace(/^\d+-/,'').trim() || '—';
-  const cond = base['Condicion IVA'] || '—';
-  const tipo = base['Tipo de Persona'] || '—';
+  // Datos base del cliente (de COM si existe, sino de otras fuentes)
+  const base = com[0]||{};
+  const nombre = base['Razón Social']||fac[0]?.['Razon Social / Apellido']||marc[0]?.['RAZON SOCIAL']||bna[0]?.['RAZON SOCIAL']||'Cliente';
+  const suc = base['Nombre Sucursal']||fac[0]?.['Sucursal']?.replace(/^\d+-/,'').trim()||'—';
+  const cond = base['Condicion IVA']||'—';
+  const tipo = base['Tipo de Persona']||'—';
 
   function seccion(icon, titulo, pill, pillClass, contenido, acciones='') {
     return `<div class="ficha-sec">
@@ -2129,95 +1798,100 @@ function buscarCliente() {
   let secciones = '';
 
   // +PAGOS
-  if(com.length > 0) {
-    const c = com[0];
-    const status = c['Status de Actividad'] || '';
-    const pc = status==='Comercio Activo'?'p-act':status==='Comercio Churn'?'p-chu':'p-pas';
-    const acc = `<div style="display:flex;gap:5px;margin-top:4px">${btnWSP(c['Teléfono'],c['Razón Social'])}${btnMail(c['Mail Representante'])}</div>`;
-    secciones += seccion('📱', '+Pagos Nación', status.replace('Comercio ',''), pc,
+  if(com.length>0){
+    const c=com[0];
+    const status=c['Status de Actividad']||'';
+    const pc=status==='Comercio Activo'?'p-vd':status==='Comercio Churn'?'p-rj':'p-gr';
+    const acc=`<div style="display:flex;gap:5px;margin-top:4px">${btnWSP(c['Teléfono'],c['Razón Social'])}${btnMail(c['Mail Representante'])}</div>`;
+    secciones+=seccion('📱','+Pagos Nación',status.replace('Comercio ',''),pc,
       `<div class="fsec-dato">${c['Nombre Fantasia']||c['Razón Social']} · ${c['Descripcion Actividad']||'—'}</div>
        <div class="fsec-extra">Tel: ${c['Teléfono']||'—'} · Mail: ${c['Mail Representante']||'—'}</div>
-       <div class="fsec-extra">Onboarding: ${c['Onboarding de comercio']||'—'} · ${c['Localidad']||'—'}</div>`, acc);
+       <div class="fsec-extra">Onboarding: ${c['Onboarding de comercio']||'—'} · ${c['Localidad']||'—'}</div>`,acc);
   } else {
-    secciones += seccion('📱', '+Pagos Nación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en +Pagos Nación</div>');
+    secciones+=seccion('📱','+Pagos Nación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en +Pagos Nación</div>');
   }
 
   // FACTURACIÓN
-  if(fac.length > 0) {
-    const f = fac[0];
-    const ene = f['Total  ENERO 26']||'$0', feb = f['Total  FEBRERO 26']||'$0';
-    const p$ = v => parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
-    const varPct = p$(ene)>0 ? ((p$(feb)-p$(ene))/p$(ene)*100).toFixed(1) : null;
-    const varHtml = varPct ? `<span style="color:${+varPct>=0?'var(--bna-verde)':'var(--roj)'};font-weight:700">${+varPct>=0?'+':''}${varPct}%</span>` : '—';
-    secciones += seccion('💰', 'Facturación', varPct===null?'Sin var.':+varPct>=0?'Normal':'Caída', varPct===null?'p-gr':+varPct>=0?'p-act':'p-chu',
+  if(fac.length>0){
+    const f=fac[0];
+    const ene=f['Total  ENERO 26']||'$0', feb=f['Total  FEBRERO 26']||'$0';
+    const p$=v=>parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
+    const var_=p$(ene)>0?((p$(feb)-p$(ene))/p$(ene)*100).toFixed(1):null;
+    const varHtml=var_?`<span style="color:${+var_>=0?'var(--vrd)':'var(--roj)'};font-weight:700">${+var_>=0?'+':''}${var_}%</span>`:'';
+    const det=f['Detalle']||'—';
+    secciones+=seccion('💰','Facturación',+var_>=0?'Normal':var_===null?'Sin var.':'Caída',+var_>=0?'p-vd':var_===null?'p-gr':'p-rj',
       `<div class="fsec-dato">Ene: ${ene} · Feb: ${feb}</div>
-       <div class="fsec-extra">Variación: ${varHtml} · ${f['Detalle']||'—'}</div>
+       <div class="fsec-extra">Variación: ${varHtml} · ${det}</div>
        <div class="fsec-extra">CBU: ${f['CBU']||'—'}</div>`);
   } else {
-    secciones += seccion('💰', 'Facturación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en facturación</div>');
+    secciones+=seccion('💰','Facturación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en facturación</div>');
   }
 
   // MARCATÓN
-  if(marc.length > 0) {
-    const m = marc[0];
-    secciones += seccion('🏷', 'Marcatón', 'Adherido', 'p-act',
+  if(marc.length>0){
+    const m=marc[0];
+    secciones+=seccion('🏷','Marcatón','Adherido','p-vd',
       `<div class="fsec-dato">${m['NOMBRE DE LA PROMOCION']||'—'} · ${m['RUBRO']||'—'}</div>
        <div class="fsec-extra">Adquirente: ${m['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—'} · BNA+: ${m['ACEPTA BNA+:']||'—'}</div>
        <div class="fsec-extra">${m['ALTA / BAJA']||'—'} · ${m['LOCALIDAD']||'—'}</div>`);
   } else {
-    secciones += seccion('🏷', 'Marcatón', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No adherido a Marcatón</div>');
+    secciones+=seccion('🏷','Marcatón','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No adherido a Marcatón</div>');
   }
 
   // SN/AE
-  if(sn.length > 0) {
-    const proms = [...new Set(sn.map(x=>x['NOMBRE DE LA PROMOCION']))].join(', ');
-    secciones += seccion('📋', 'SN / AE', sn.length+' promo(s)', 'p-az',
+  if(sn.length>0){
+    const s=sn[0];
+    const proms=[...new Set(sn.map(x=>x['NOMBRE DE LA PROMOCION']))].join(', ');
+    secciones+=seccion('📋','Semana Nación / AE',sn.length+' promo(s)','p-az',
       `<div class="fsec-dato">${proms}</div>
-       <div class="fsec-extra">Estado: ${sn[0]['ALTA / BAJA']||'—'}</div>`);
+       <div class="fsec-extra">Última: ${s['FECHA ALTA']||'—'} · Estado: ${s['ALTA / BAJA']||'—'}</div>`);
   } else {
-    secciones += seccion('📋', 'SN / AE', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en SN ni AE</div>');
+    secciones+=seccion('📋','SN / AE','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en Semana Nación ni AE</div>');
   }
 
   // PYMENACIÓN
-  if(pyme.length > 0) {
-    const p = pyme[0];
-    secciones += seccion('🏢', 'PyMENación', p['Activo']==='SI'?'Activo':'Inactivo', p['Activo']==='SI'?'p-act':'p-chu',
+  if(pyme.length>0){
+    const p=pyme[0];
+    secciones+=seccion('🏢','PyMENación',p['Activo']==='SI'?'Activo':'Inactivo',p['Activo']==='SI'?'p-vd':'p-rj',
       `<div class="fsec-dato">${p['Apellido']} ${p['Nombre']||''}</div>
        <div class="fsec-extra">Límite: ${p['Límite de Compra']||'—'} · Disponible: ${p['Límite Disponible']||'—'}</div>
-       <div class="fsec-extra">Compras 2026: ${p['Compras 2026']||'$0'} · 2025: ${p['Compras 2025']||'$0'}</div>`);
+       <div class="fsec-extra">Compras 2026: ${p['Compras 2026']||'$0'} · 2025: ${p['Compras 2025']||'$0'}</div>
+       <div class="fsec-extra">Actividad: ${p['Actividad de la Pyme']||'—'}</div>`);
   } else {
-    secciones += seccion('🏢', 'PyMENación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en PyMENación</div>');
+    secciones+=seccion('🏢','PyMENación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en PyMENación</div>');
   }
 
   // AGRONACIÓN
-  if(agro.length > 0) {
-    const a = agro[0];
-    secciones += seccion('🌿', 'AgroNación', a['Activo']==='SI'?'Activo':'Inactivo', a['Activo']==='SI'?'p-act':'p-chu',
+  if(agro.length>0){
+    const a=agro[0];
+    secciones+=seccion('🌿','AgroNación',a['Activo']==='SI'?'Activo':'Inactivo',a['Activo']==='SI'?'p-vd':'p-rj',
       `<div class="fsec-dato">${a['Apellido']} ${a['Nombre']||''}</div>
-       <div class="fsec-extra">Límite: ${a['Límite de Compra']||'—'} · Compras 2026: ${a['Compras 2026']||'$0'}</div>`);
+       <div class="fsec-extra">Límite: ${a['Límite de Compra']||'—'} · Disponible: ${a['Límite Disponible']||'—'}</div>
+       <div class="fsec-extra">Compras 2026: ${a['Compras 2026']||'$0'} · 2025: ${a['Compras 2025']||'$0'}</div>`);
   } else {
-    secciones += seccion('🌿', 'AgroNación', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en AgroNación</div>');
+    secciones+=seccion('🌿','AgroNación','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en AgroNación</div>');
   }
 
   // CORPORATIVA
-  if(corp.length > 0) {
-    const c = corp[0];
-    secciones += seccion('💳', 'TC Corporativa', 'Registrado', 'p-az',
+  if(corp.length>0){
+    const c=corp[0];
+    secciones+=seccion('💳','TC Corporativa','Registrado','p-az',
       `<div class="fsec-dato">${c['Apellido']||''} ${c['Nombre']||''}</div>
        <div class="fsec-extra">Límite: ${c['Lim.Compra']||'—'} · Remanente: ${c['Reman Compra']||'—'}</div>
-       <div class="fsec-extra">% Uso: ${c['%Uso LC']||'—'} · Saldo: ${c['Imp Sal Ant']||'$0'}</div>`);
+       <div class="fsec-extra">% Uso LC: ${c['%Uso LC']!=null?c['%Uso LC']+'%':'—'} · Saldo: ${c['Imp Sal Ant']||'$0'}</div>`);
   } else {
-    secciones += seccion('💳', 'TC Corporativa', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en TC Corporativa</div>');
+    secciones+=seccion('💳','TC Corporativa','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en TC Corporativa</div>');
   }
 
   // BNA CONECTA
-  if(bna.length > 0) {
-    const b = bna[0];
-    secciones += seccion('🔗', 'BNA Conecta', b['TIPO CLIENTE']||'—', 'p-az',
+  if(bna.length>0){
+    const b=bna[0];
+    secciones+=seccion('🔗','BNA Conecta',b['TIPO CLIENTE']||'—','p-az',
       `<div class="fsec-dato">${b['RAZON SOCIAL']||nombre}</div>
-       <div class="fsec-extra">Compras 2026: ${b['COMPRAS 2026']||'—'} · Ventas: ${b['VENTAS 2026']||'—'}</div>`);
+       <div class="fsec-extra">Compras 2026: ${b['COMPRAS 2026']||'—'} · Ventas: ${b['VENTAS 2026']||'—'}</div>
+       <div class="fsec-extra">Estado: ${b['ESTADO']||'Sin novedad'}</div>`);
   } else {
-    secciones += seccion('🔗', 'BNA Conecta', 'Sin datos', 'p-gr', '<div class="fsec-extra" style="font-style:italic">No figura en BNA Conecta</div>');
+    secciones+=seccion('🔗','BNA Conecta','Sin datos','p-no','<div class="fsec-extra" style="font-style:italic">No figura en BNA Conecta</div>');
   }
 
   el.innerHTML = `
@@ -2225,7 +1899,7 @@ function buscarCliente() {
       <div class="ficha-head">
         <div>
           <div class="ficha-nombre">${nombre.toUpperCase()}</div>
-          <div class="ficha-sub">CUIT: ${raw||inputVal} · ${cond} · ${tipo}</div>
+          <div class="ficha-sub">CUIT: ${raw} · ${cond} · ${tipo}</div>
         </div>
         <div class="ficha-suc-badge">${suc}</div>
       </div>
@@ -2325,7 +1999,7 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbyAuCzmQlYkOzX28wB04QTVED-EpzhRUmIECoxEH99pBB1BLfUc2RC5rIZqhTfdFkJc3g/exec';
-const HOJAS = {"tc":"TC INDIVIDUOS","com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
+const HOJAS = {"com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
 const CACHE = {};
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutos
 
@@ -2364,40 +2038,16 @@ async function fetchHoja(key) {
 }
 
 // ── Load All ──
-// Carga secuencial con feedback visual — una hoja a la vez
-const TASK_ORDER = [
-  ['tc',   'TC INDIVIDUOS',         rTC],
-  ['com',  'COMERCIOS MAS PAGOS',   rCOM],
-  ['fac',  'FACTURACION',           rFAC],
-  ['marc', 'MARCATON',              rMARC],
-  ['sn',   'SN AE',                 rSN],
-  ['pyme', 'PYMENACION',            rPYME],
-  ['agro', 'AGRONACION',            rAGRO],
-  ['corp', 'CORPORATIVA CREDITO',   rCORP],
-  ['bna',  'BNA CONECTA',           rBNA],
-  ['ceg',  'COMERCIOS EN GENERAL',  rCEG],
-];
-
-// Barra de progreso
-function setProgress(done, total, msg) {
-  const pct = Math.round(done/total*100);
-  document.getElementById('loader-txt').innerHTML =
-    msg + '<br><div style="margin-top:8px;background:rgba(255,255,255,.2);border-radius:20px;height:6px;width:200px">' +
-    '<div style="background:#00ADDB;border-radius:20px;height:6px;width:'+pct+'%;transition:width .3s"></div></div>' +
-    '<div style="font-size:10px;opacity:.6;margin-top:4px">'+done+' de '+total+' hojas</div>';
-}
-
 async function loadAll(force=false) {
   if(force) Object.keys(CACHE).forEach(k => delete CACHE[k]);
 
-  const now = new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const now = new Date().toLocaleString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   document.getElementById('hfecha').textContent = 'Actualizado: ' + now;
   document.getElementById('loader').classList.remove('hidden');
   document.getElementById('loader-txt').textContent = 'Conectando con Google Sheets…';
 
-  // Hojas livianas — cargan rápido (excluye CEG que es 7MB)
-  const LIVIANAS = [
-    ['tc',   rTC],
+  // Tareas en orden de prioridad
+  const TASKS = [
     ['com',  rCOM],
     ['fac',  rFAC],
     ['marc', rMARC],
@@ -2408,72 +2058,73 @@ async function loadAll(force=false) {
     ['bna',  rBNA],
   ];
 
-  // Lanzar todas en paralelo — sin esperar una por una
-  let firstDone = false;
-  let okCount = 0;
+  // Cargar primera pestaña visible primero
+  const activeId = (document.querySelector('.page.active')?.id || 'page-com').replace('page-','');
+  const prioridad = TASKS.find(t=>t[0]===activeId) || TASKS[0];
+  const resto = TASKS.filter(t=>t[0]!==activeId);
 
-  const promises = LIVIANAS.map(([key, fn]) =>
-    fetchHoja(key)
-      .then(rows => {
-        fn(rows);
-        okCount++;
-        // Ocultar loader en cuanto llega la primera respuesta
-        if(!firstDone) {
-          firstDone = true;
-          document.getElementById('loader').classList.add('hidden');
-          setOK('Cargando ' + okCount + '/' + LIVIANAS.length + ' hojas…');
-        } else {
-          setOK('Cargando ' + okCount + '/' + LIVIANAS.length + ' hojas…');
-        }
-      })
-      .catch(e => {
-        console.error('[ERROR]', key, e.message);
-        if(!firstDone && okCount === 0) {
-          // Si la primera falla también, mostrar error
-          setErr('Error: ' + e.message + ' · F12 → Console para detalle');
-        }
-      })
+  // 1 — Cargar pestaña activa
+  try {
+    document.getElementById('loader-txt').textContent = 'Cargando ' + HOJAS[prioridad[0]] + '…';
+    const rows = await fetchHoja(prioridad[0]);
+    prioridad[1](rows);
+  } catch(e) {
+    console.error('Error cargando ' + prioridad[0], e);
+    const msg = e.message || String(e);
+    setErr('⚠️ Error: ' + msg + ' — Abrí F12 → Console para más detalle');
+    document.getElementById('loader-txt').textContent = 'Error al cargar datos';
+    document.getElementById('loader').classList.add('hidden');
+    return;
+  }
+
+  // Ocultar loader — usuario ya puede ver datos
+  document.getElementById('loader').classList.add('hidden');
+  setOK('Cargando datos en segundo plano…');
+
+  // 2 — Resto en paralelo sin bloquear
+  const resultados = await Promise.allSettled(
+    resto.map(([key, fn]) =>
+      fetchHoja(key).then(rows => fn(rows)).catch(e => { throw {key, e}; })
+    )
   );
 
-  // Timeout de seguridad — si en 8 segundos no llegó nada, ocultar loader
-  setTimeout(() => {
-    if(!firstDone) {
-      firstDone = true;
-      document.getElementById('loader').classList.add('hidden');
-      setErr('Conexión lenta · algunos datos pueden no estar disponibles');
-    }
-  }, 8000);
+  const errores = resultados
+    .map((r,i) => r.status==='rejected' ? resto[i][0] : null)
+    .filter(Boolean);
 
-  // Esperar todas
-  await Promise.allSettled(promises);
+  if(errores.length === 0) {
+    setOK('Conectado · todos los datos actualizados · caché 15 min');
+  } else {
+    setErr('Parcial. Hojas con error: ' + errores.map(k=>HOJAS[k]).join(', '));
+  }
 
-  setOK('Conectado · ' + okCount + '/' + LIVIANAS.length + ' hojas · caché 15 min');
   renderOportunidades();
 
-  // CEG al final — solo si el usuario va a esa pestaña
-  // No se carga automáticamente
+  // 3 — CEG al final (más pesado)
+  try {
+    const ceg_rows = await fetchHoja('ceg');
+    rCEG(ceg_rows);
+  } catch(e) {
+    console.warn('CEG no cargó:', e);
+  }
 }
 
-;
-
+// Botón actualizar → fuerza recarga
 // ── NAV ──
 function go(id, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   el.classList.add('active');
-  // CEG lazy
-  if(id==='ceg' && !DD.ceg) {
-    fetchHoja('ceg').then(rows=>rCEG(rows)).catch(e=>console.error('CEG',e));
-  }
 }
 
-// ── ARRANCAR ──
+// ── INICIO ──
 window.addEventListener('DOMContentLoaded', () => {
+  // Botón actualizar
   const btn = document.querySelector('.sbtn');
   if(btn) btn.onclick = () => loadAll(true);
+  // Arrancar
   loadAll();
-});
-</script>
+});</script>
 </body>
 </html>

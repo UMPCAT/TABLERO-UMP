@@ -2393,46 +2393,65 @@ async function loadAll(force=false) {
   const now = new Date().toLocaleString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   document.getElementById('hfecha').textContent = 'Actualizado: ' + now;
   document.getElementById('loader').classList.remove('hidden');
-  setProgress(0, TASK_ORDER.length, 'Iniciando conexión…');
+  document.getElementById('loader-txt').textContent = 'Conectando con Google Sheets…';
 
-  // Detectar pestaña activa para cargarla primero
-  const activeId = (document.querySelector('.page.active')?.id || 'page-com').replace('page-','');
-  const sorted = [
-    ...TASK_ORDER.filter(t=>t[0]===activeId),
-    ...TASK_ORDER.filter(t=>t[0]!==activeId)
+  // Hojas livianas — cargan rápido (excluye CEG que es 7MB)
+  const LIVIANAS = [
+    ['tc',   rTC],
+    ['com',  rCOM],
+    ['fac',  rFAC],
+    ['marc', rMARC],
+    ['sn',   rSN],
+    ['pyme', rPYME],
+    ['agro', rAGRO],
+    ['corp', rCORP],
+    ['bna',  rBNA],
   ];
 
-  let done = 0;
-  let firstLoaded = false;
+  // Lanzar todas en paralelo — sin esperar una por una
+  let firstDone = false;
+  let okCount = 0;
 
-  for(const [key, nombre, fn] of sorted) {
-    setProgress(done, sorted.length, 'Cargando ' + nombre + '…');
-    try {
-      const rows = await fetchHoja(key);
-      fn(rows);
-      done++;
-      setProgress(done, sorted.length, 'Cargando datos…');
+  const promises = LIVIANAS.map(([key, fn]) =>
+    fetchHoja(key)
+      .then(rows => {
+        fn(rows);
+        okCount++;
+        // Ocultar loader en cuanto llega la primera respuesta
+        if(!firstDone) {
+          firstDone = true;
+          document.getElementById('loader').classList.add('hidden');
+          setOK('Cargando ' + okCount + '/' + LIVIANAS.length + ' hojas…');
+        } else {
+          setOK('Cargando ' + okCount + '/' + LIVIANAS.length + ' hojas…');
+        }
+      })
+      .catch(e => {
+        console.error('[ERROR]', key, e.message);
+        if(!firstDone && okCount === 0) {
+          // Si la primera falla también, mostrar error
+          setErr('Error: ' + e.message + ' · F12 → Console para detalle');
+        }
+      })
+  );
 
-      // Ocultar loader después de la primera hoja — usuario ya puede usar el tablero
-      if(!firstLoaded) {
-        firstLoaded = true;
-        document.getElementById('loader').classList.add('hidden');
-        setOK('Cargando en segundo plano…');
-      }
-    } catch(e) {
-      console.error('[ERROR]', nombre, e.message);
-      done++;
-      // Si falla una hoja, seguir con las demás
-      if(!firstLoaded && done >= 2) {
-        firstLoaded = true;
-        document.getElementById('loader').classList.add('hidden');
-      }
+  // Timeout de seguridad — si en 8 segundos no llegó nada, ocultar loader
+  setTimeout(() => {
+    if(!firstDone) {
+      firstDone = true;
+      document.getElementById('loader').classList.add('hidden');
+      setErr('Conexión lenta · algunos datos pueden no estar disponibles');
     }
-  }
+  }, 8000);
 
-  document.getElementById('loader').classList.add('hidden');
-  setOK('Conectado · ' + done + '/' + sorted.length + ' hojas · caché 15 min');
+  // Esperar todas
+  await Promise.allSettled(promises);
+
+  setOK('Conectado · ' + okCount + '/' + LIVIANAS.length + ' hojas · caché 15 min');
   renderOportunidades();
+
+  // CEG al final — solo si el usuario va a esa pestaña
+  // No se carga automáticamente
 }
 
 ;</script>

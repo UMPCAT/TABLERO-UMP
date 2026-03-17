@@ -608,9 +608,6 @@ async function loadAll(force=false){
   document.getElementById('loader').classList.remove('hidden');
   document.getElementById('ltxt').innerHTML='Conectando con Google Sheets…<br><span style="font-size:10px;opacity:.5">El tablero se habilita en cuanto llega la primera hoja</span>';
 
-  // TC se carga desde datos embebidos — instantáneo
-  initTC();
-
   const TASKS=[['tc',rTC],['com',rCOM],['fac',rFAC],['marc',rMARC],['sn',rSN],['pyme',rPYME],['agro',rAGRO],['corp',rCORP],['bna',rBNA]];
   const activeId=(document.querySelector('.page.active')?.id||'page-com').replace('page-','');
   const sorted=[...TASKS.filter(t=>t[0]===activeId),...TASKS.filter(t=>t[0]!==activeId)];

@@ -2,6 +2,9 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Tablero UMP · NOA Oeste · BNA</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -159,6 +162,7 @@ tr.hl td{background:#fdf8f0 !important;border-left:3px solid var(--dor)}
   .page{padding:12px 10px 40px}
 }
 </style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏦</text></svg>">
 </head>
 <body>
 <div id="loader" class="loader">
@@ -595,23 +599,35 @@ function exportDD(){
 }
 
 // ══ FETCH CON CACHE ══
-async function fetchH(key){
+async function fetchH(key, retry=0){
   const nombre=HOJAS[key],ahora=Date.now();
   if(CACHE[key]&&(ahora-CACHE[key].ts)<CACHE_TTL){console.log('[CACHE]',nombre);return CACHE[key].data;}
-  const url=API+'?sheet='+encodeURIComponent(nombre);
-  console.log('[FETCH]',nombre);
-  const resp=await fetch(url,{redirect:'follow'});
-  if(!resp.ok)throw new Error('HTTP '+resp.status);
-  const txt=await resp.text();
-  let json;
-  try{json=JSON.parse(txt);}catch(e){throw new Error('No JSON: '+txt.slice(0,80));}
-  if(json.error)throw new Error(json.error);
-  const {headers,rows}=json;
-  if(!headers||!rows)throw new Error('Sin headers/rows');
-  const data=rows.map(row=>{const o={};headers.forEach((h,i)=>o[h]=row[i]||'');return o;});
-  CACHE[key]={data,ts:ahora};
-  console.log('[OK]',nombre,data.length,'filas');
-  return data;
+  const url=API+'?sheet='+encodeURIComponent(nombre)+'&t='+ahora;
+  console.log('[FETCH]',nombre, retry>0?'retry #'+retry:'');
+  try{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),30000);
+    const resp=await fetch(url,{redirect:'follow',signal:ctrl.signal});
+    clearTimeout(tid);
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const txt=await resp.text();
+    let json;
+    try{json=JSON.parse(txt);}catch(e){throw new Error('No JSON: '+txt.slice(0,80));}
+    if(json.error)throw new Error(json.error);
+    const {headers,rows}=json;
+    if(!headers||!rows)throw new Error('Sin headers/rows');
+    const data=rows.map(row=>{const o={};headers.forEach((h,i)=>o[h]=row[i]||'');return o;});
+    CACHE[key]={data,ts:ahora};
+    console.log('[OK]',nombre,data.length,'filas');
+    return data;
+  }catch(e){
+    if(retry<1&&e.name!=='AbortError'){
+      console.warn('[RETRY]',nombre,e.message);
+      await new Promise(r=>setTimeout(r,2000));
+      return fetchH(key,retry+1);
+    }
+    throw e;
+  }
 }
 
 // ══ LOAD ALL ══

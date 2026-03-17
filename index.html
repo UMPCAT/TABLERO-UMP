@@ -630,11 +630,15 @@ async function loadAll(force=false){
   const promises=sorted.map(([key,fn])=>
     fetchH(key).then(rows=>{
       fn(rows);okCnt++;
-      if(!firstDone){firstDone=true;document.getElementById('loader').classList.add('hidden');setOK('Cargando en segundo plano…');}
+      if(!firstDone){firstDone=true;document.getElementById('loader').classList.add('hidden');setOK('Cargando '+okCnt+'/'+sorted.length+' hojas…');}
       else setOK('Cargando '+okCnt+'/'+sorted.length+' hojas…');
-    }).catch(e=>console.error('[ERROR]',key,e.message))
+    }).catch(e=>{
+      console.error('[ERROR]',key,e.message);
+      // Si la primera hoja falla, ocultar loader igual para no quedar colgado
+      if(!firstDone){firstDone=true;document.getElementById('loader').classList.add('hidden');setErr('Error: '+e.message);}
+    })
   );
-  setTimeout(()=>{if(!firstDone){firstDone=true;document.getElementById('loader').classList.add('hidden');setErr('Conexión lenta · algunos datos no disponibles');}  },10000);
+  setTimeout(()=>{if(!firstDone){firstDone=true;document.getElementById('loader').classList.add('hidden');setErr('Tiempo de espera agotado · reintentá con ↺ Actualizar');}},20000);
   await Promise.allSettled(promises);
   setOK('Conectado · '+okCnt+'/'+sorted.length+' hojas · caché 15 min');
   renderOport();

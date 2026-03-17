@@ -346,6 +346,14 @@ tr.hl td{background:#fdf8f0 !important;border-left:3px solid var(--dor)}
     <div class="metric dr"><div class="mlbl">+Pagos</div><div class="mval" id="marc-k3">—</div></div>
     <div class="metric rj"><div class="mlbl">FISERV/PRISMA</div><div class="mval" id="marc-k4">—</div></div>
   </div>
+  <!-- Métricas de redes de tarjeta -->
+  <div class="metrics" style="margin-top:-6px">
+    <div class="metric vd"><div class="mlbl">VISA</div><div class="mval" id="marc-kv">—</div><div class="msub" id="marc-kvs">—</div></div>
+    <div class="metric az"><div class="mlbl">MASTERCARD</div><div class="mval" id="marc-km">—</div><div class="msub" id="marc-kms">—</div></div>
+    <div class="metric cy"><div class="mlbl">NATIVA MC</div><div class="mval" id="marc-kn">—</div><div class="msub" id="marc-kns">—</div></div>
+    <div class="metric dr"><div class="mlbl">BANCAT / BANCAT MC</div><div class="mval" id="marc-kb">—</div><div class="msub">con cuenta activa</div></div>
+  </div>
+
   <div class="g2">
     <div class="card"><div class="ctit">Por categoría · clic para ver comercios</div><div class="cw" style="height:240px"><canvas id="c-marc-cat"></canvas></div></div>
     <div class="card"><div class="ctit">Top rubros · clic para ver comercios</div><div class="cw" style="height:240px"><canvas id="c-marc-rub"></canvas></div></div>
@@ -368,6 +376,14 @@ tr.hl td{background:#fdf8f0 !important;border-left:3px solid var(--dor)}
     <div class="metric dr"><div class="mlbl">+Pagos</div><div class="mval" id="sn-k3">—</div></div>
     <div class="metric rj"><div class="mlbl">FISERV/PRISMA</div><div class="mval" id="sn-k4">—</div></div>
   </div>
+  <!-- Métricas de redes de tarjeta -->
+  <div class="metrics" style="margin-top:-6px">
+    <div class="metric vd"><div class="mlbl">VISA</div><div class="mval" id="sn-kv">—</div><div class="msub" id="sn-kvs">—</div></div>
+    <div class="metric az"><div class="mlbl">MASTERCARD</div><div class="mval" id="sn-km">—</div><div class="msub" id="sn-kms">—</div></div>
+    <div class="metric cy"><div class="mlbl">NATIVA MC</div><div class="mval" id="sn-kn">—</div><div class="msub" id="sn-kns">—</div></div>
+    <div class="metric dr"><div class="mlbl">BANCAT / BANCAT MC</div><div class="mval" id="sn-kb">—</div><div class="msub">con cuenta activa</div></div>
+  </div>
+
   <div class="g2">
     <div class="card"><div class="ctit">Por categoría · clic para ver comercios</div><div class="cw" style="height:240px"><canvas id="c-sn-cat"></canvas></div></div>
     <div class="card"><div class="ctit">Top rubros · clic para ver comercios</div><div class="cw" style="height:240px"><canvas id="c-sn-rub"></canvas></div></div>
@@ -608,7 +624,7 @@ async function loadAll(force=false){
   document.getElementById('loader').classList.remove('hidden');
   document.getElementById('ltxt').innerHTML='Conectando con Google Sheets…<br><span style="font-size:10px;opacity:.5">El tablero se habilita en cuanto llega la primera hoja</span>';
 
-  const TASKS=[['tc',rTC],['com',rCOM],['fac',rFAC],['marc',rMARC],['sn',rSN],['pyme',rPYME],['agro',rAGRO],['corp',rCORP],['bna',rBNA]];
+  const TASKS=[['com',rCOM],['fac',rFAC],['marc',rMARC],['sn',rSN],['pyme',rPYME],['agro',rAGRO],['corp',rCORP],['bna',rBNA]];
   const activeId=(document.querySelector('.page.active')?.id||'page-com').replace('page-','');
   const sorted=[...TASKS.filter(t=>t[0]===activeId),...TASKS.filter(t=>t[0]!==activeId)];
 
@@ -624,8 +640,9 @@ async function loadAll(force=false){
   await Promise.allSettled(promises);
   setOK('Conectado · '+okCnt+'/'+sorted.length+' hojas · caché 15 min');
   renderOport();
-  // CEG al final (más pesado)
-  try{const r=await fetchH('ceg');rCEG(r);}catch(e){console.warn('CEG:',e.message);}
+  // TC e CEG al final — no bloquean el arranque
+  try{const r=await fetchH('tc');rTC(r);}catch(e){console.warn('[TC] Hoja no encontrada o error:',e.message);}
+  try{const r=await fetchH('ceg');rCEG(r);}catch(e){console.warn('[CEG]',e.message);}
 }
 
 // ══ NAV ══
@@ -720,59 +737,40 @@ function ddComRubro(rub,src){
 }
 
 // ══════════════════════════════════════
-// RENDER TC INDIVIDUOS — lee del Sheet via Apps Script
-// Agregar nuevos meses al Sheet → tablero los muestra automáticamente
+// RENDER TC INDIVIDUOS — comparación mensual
+// Datos snapshot: cada fila = estado del mes (no acumulado)
 // ══════════════════════════════════════
 
 function parseFechaMes(v){
-  // Acepta dd/MM/yyyy o yyyy-MM-dd o texto
   if(!v) return '';
-  v = v.toString().trim();
-  if(v.includes('/')) {
-    const parts = v.split('/');
-    if(parts.length===3) {
-      if(parts[2].length===4) return parts[2]+'-'+parts[1].padStart(2,'0'); // dd/MM/yyyy
-      return parts[0]+'-'+parts[1].padStart(2,'0'); // yyyy/MM/dd
-    }
-  }
-  if(v.includes('-')) {
-    const parts = v.split('-');
-    if(parts.length>=2) return parts[0]+'-'+parts[1].padStart(2,'0');
-  }
-  return v.slice(0,7); // intentar yyyy-MM
+  v=v.toString().trim();
+  if(v.includes('/'))
+    {const p=v.split('/');return p[2]&&p[2].length===4?p[2]+'-'+p[1].padStart(2,'0'):p[0]+'-'+p[1].padStart(2,'0');}
+  if(v.includes('-')){const p=v.split('-');return p[0]+'-'+p[1].padStart(2,'0');}
+  return v.slice(0,7);
 }
-
 function fmtMesLabel(m){
-  const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  if(!m) return '—';
-  const parts = m.split('-');
-  if(parts.length>=2){
-    const idx=parseInt(parts[1])-1;
-    return meses[idx]+' '+parts[0];
-  }
-  return m;
+  const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const p=m.split('-');return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:m;
 }
 
 function rTC(rawRows){
-  // Convertir filas del Sheet al formato interno
-  DD.tc_raw = rawRows;
-
-  // Construir registros normalizados
-  const records = rawRows.map(r => ({
-    mes:          parseFechaMes(r['MES']),
-    suc:          (r['Sucursales']||'').trim(),
+  DD.tc_raw=rawRows;
+  const records=rawRows.map(r=>({
+    mes:parseFechaMes(r['MES']),
+    suc:(r['Sucursales']||'').trim(),
     consumo:      Math.round(parseFloat(r['Monto Consumo']||0)/1e4)/100,
     consumo_mc:   Math.round(parseFloat(r['Monto Consumo MC']||0)/1e4)/100,
     consumo_visa: Math.round(parseFloat(r['Monto Consumo VISA']||0)/1e4)/100,
-    tx:           parseInt(r['Tx Consumo']||0),
-    tx_mc:        parseInt(r['Tx Consumo MC']||0),
-    tx_visa:      parseInt(r['Tx Consumo VISA']||0),
-    altas:        parseInt(r['Alta de Cuentas']||0),
-    altas_mc:     parseInt(r['Alta de Cuentas MC']||0),
-    altas_visa:   parseInt(r['Alta de Cuentas VISA']||0),
+    tx:    parseInt(r['Tx Consumo']||0),
+    tx_mc: parseInt(r['Tx Consumo MC']||0),
+    tx_visa:parseInt(r['Tx Consumo VISA']||0),
+    altas: parseInt(r['Alta de Cuentas']||0),
+    altas_mc:  parseInt(r['Alta de Cuentas MC']||0),
+    altas_visa:parseInt(r['Alta de Cuentas VISA']||0),
     ctas_total:   parseInt(r['Cuentas Totales']||0),
-    ctas_total_mc:   parseInt(r['Cuentas Totales MC']||0),
-    ctas_total_visa: parseInt(r['Cuentas Totales Visa']||0),
+    ctas_total_mc:parseInt(r['Cuentas Totales MC']||0),
+    ctas_total_visa:parseInt(r['Cuentas Totales Visa']||0),
     ctas_resumen:    parseInt(r['Cuentas con resumen']||0),
     ctas_resumen_mc: parseInt(r['Cuentas con resumen MC']||0),
     ctas_resumen_visa:parseInt(r['Cuentas con resumen Visa']||0),
@@ -788,30 +786,29 @@ function rTC(rawRows){
     activacion:   Math.round(parseFloat(r['Activación']||0)*1000)/10,
     activacion_mc:Math.round(parseFloat(r['Activación MC']||0)*1000)/10,
     activacion_visa:Math.round(parseFloat(r['Activación Visa']||0)*1000)/10,
-    adic_mc:      parseInt(r['Tarjetas Adicionales MC']||0),
-    adic_visa:    parseInt(r['Tarjetas Adicionales Visa']||0),
-  })).filter(r => r.suc && r.mes);
+    adic_mc:  parseInt(r['Tarjetas Adicionales MC']||0),
+    adic_visa:parseInt(r['Tarjetas Adicionales Visa']||0),
+  })).filter(r=>r.suc&&r.mes);
 
-  DD.tc_records = records;
+  DD.tc_records=records;
 
   // Meses únicos ordenados desc (más reciente primero)
-  const meses = [...new Set(records.map(r=>r.mes))].sort().reverse();
-  const sucs  = [...new Set(records.map(r=>r.suc))].sort();
+  const meses=[...new Set(records.map(r=>r.mes))].sort().reverse();
+  const sucs=[...new Set(records.map(r=>r.suc))].sort();
 
-  // Poblar select de mes
-  const selMes = document.getElementById('f-tc-mes');
-  while(selMes.options.length>1) selMes.remove(1);
+  // Poblar select mes — siempre muestra todos los meses disponibles
+  const selMes=document.getElementById('f-tc-mes');
+  while(selMes.options.length>1)selMes.remove(1);
   meses.forEach(m=>{
-    const o=document.createElement('option');
-    o.value=m;
+    const o=document.createElement('option');o.value=m;
     o.textContent=fmtMesLabel(m);
     selMes.appendChild(o);
   });
-  if(meses.length) selMes.value=meses[0];
+  if(meses.length) selMes.value=meses[0]; // mes más reciente por defecto
 
-  poblar('f-tc-suc', sucs);
+  poblar('f-tc-suc',sucs);
   applyFilterTC();
-  console.log('[TC] '+records.length+' registros · '+meses.length+' meses · '+sucs.length+' sucursales');
+  console.log('[TC]',records.length,'registros ·',meses.length,'meses ·',sucs.length,'sucursales');
 }
 
 function getTCRows(){
@@ -822,56 +819,128 @@ function getTCRows(){
   if(suc) r=r.filter(x=>x.suc===suc);
   return r;
 }
+
+// Obtener datos del mes anterior para calcular variaciones
+function getTCMesAnterior(mesActual){
+  const all=DD.tc_records||[];
+  const meses=[...new Set(all.map(r=>r.mes))].sort();
+  const idx=meses.indexOf(mesActual);
+  if(idx<=0) return null;
+  const mesAnt=meses[idx-1];
+  return all.filter(r=>r.mes===mesAnt);
+}
+
+function varPct(actual,anterior){
+  if(!anterior||anterior===0) return null;
+  return ((actual-anterior)/anterior*100).toFixed(1);
+}
+function varHtml(v){
+  if(v===null||v===undefined) return '<span style="color:#aaa">—</span>';
+  const num=parseFloat(v);
+  const color=num>0?'var(--vd)':num<0?'var(--roj)':'var(--txt2)';
+  const arrow=num>0?'↑':num<0?'↓':'→';
+  return `<span style="color:${color};font-weight:700;font-size:11px">${arrow} ${num>0?'+':''}${v}%</span>`;
+}
+
 function applyFilterTC(){
   const rows=getTCRows();
+  if(!rows.length){
+    document.getElementById('tc-total').textContent='—';
+    return;
+  }
+
+  const mesActual=document.getElementById('f-tc-mes').value;
+  const rowsAnt=getTCMesAnterior(mesActual);
+  const sumAnt=rowsAnt?rowsAnt.reduce((a,r)=>({
+    consumo:a.consumo+r.consumo, tx:a.tx+r.tx, altas:a.altas+r.altas,
+    ctas_total:a.ctas_total+r.ctas_total, ctas_resumen:a.ctas_resumen+r.ctas_resumen,
+    ctas_hab:a.ctas_hab+r.ctas_hab, ctas_act:a.ctas_act+r.ctas_act,
+    tarjetas:a.tarjetas+r.tarjetas
+  }),{consumo:0,tx:0,altas:0,ctas_total:0,ctas_resumen:0,ctas_hab:0,ctas_act:0,tarjetas:0}):null;
+
   const sum=k=>rows.reduce((a,r)=>a+(r[k]||0),0);
+  const consumo=sum('consumo'), consumoMC=sum('consumo_mc'), consumoVISA=sum('consumo_visa');
+  const tx=sum('tx'), txMC=sum('tx_mc'), txVISA=sum('tx_visa');
+  const altas=sum('altas'), altasMC=sum('altas_mc'), altasVISA=sum('altas_visa');
+  const ctasTotal=sum('ctas_total'), ctasRes=sum('ctas_resumen');
+  const ctasHab=sum('ctas_hab'), ctasAct=sum('ctas_act');
+  const adicMC=sum('adic_mc'), adicVISA=sum('adic_visa');
+  const tarjetas=sum('tarjetas');
   const avgAct=rows.length>0?(rows.reduce((a,r)=>a+(r.activacion||0),0)/rows.length).toFixed(1):0;
 
-  const consumo=sum('consumo'),consumoMC=sum('consumo_mc'),consumoVISA=sum('consumo_visa');
-  const tx=sum('tx'),txMC=sum('tx_mc'),txVISA=sum('tx_visa');
-  const altas=sum('altas'),altasMC=sum('altas_mc'),altasVISA=sum('altas_visa');
-  const ctasTotal=sum('ctas_total'),ctasRes=sum('ctas_resumen'),ctasHab=sum('ctas_hab'),ctasAct=sum('ctas_act');
-  const adicMC=sum('adic_mc'),adicVISA=sum('adic_visa');
-  const tarjetas=sum('tarjetas');
-
   document.getElementById('tc-total').textContent=n(tarjetas);
+
+  // KPI 1 — Consumo con variación vs mes anterior
   document.getElementById('tc-k1').textContent='$'+(consumo/1000).toFixed(1)+'B';
+  const vCons=sumAnt?varPct(consumo,sumAnt.consumo):null;
   document.getElementById('tc-k2').textContent=n(tx);
-  document.getElementById('tc-k2s').textContent='MC: '+n(txMC)+' · VISA: '+n(txVISA);
+  document.getElementById('tc-k2s').textContent='MC: '+n(txMC)+' · VISA: '+n(txVISA)+(sumAnt?' · '+varHtml(varPct(tx,sumAnt.tx)):'');
+
+  // KPI cuentas activas con variación
   document.getElementById('tc-k3').textContent=n(ctasAct);
-  document.getElementById('tc-k3s').textContent=pct(ctasAct,ctasTotal)+' del total';
+  const vAct=sumAnt?varPct(ctasAct,sumAnt.ctas_act):null;
+  document.getElementById('tc-k3s').textContent=pct(ctasAct,ctasTotal)+(vAct?' · '+varHtml(vAct):'');
+
+  // KPI altas
   document.getElementById('tc-k4').textContent=n(altas);
-  document.getElementById('tc-k4s').textContent='MC: '+n(altasMC)+' · VISA: '+n(altasVISA);
+  const vAltas=sumAnt?varPct(altas,sumAnt.altas):null;
+  document.getElementById('tc-k4s').textContent='MC: '+n(altasMC)+' · VISA: '+n(altasVISA)+(vAltas?' · '+varHtml(vAltas):'');
+
+  // KPI cuentas con resumen
   document.getElementById('tc-k5').textContent=n(ctasRes);
-  document.getElementById('tc-k5s').textContent=pct(ctasRes,ctasTotal)+' del total';
+  const vRes=sumAnt?varPct(ctasRes,sumAnt.ctas_resumen):null;
+  document.getElementById('tc-k5s').textContent=pct(ctasRes,ctasTotal)+(vRes?' · '+varHtml(vRes):'');
+
+  // KPI habilitadas
   document.getElementById('tc-k6').textContent=n(ctasHab);
-  document.getElementById('tc-k6s').textContent=pct(ctasHab,ctasTotal)+' del total';
+  document.getElementById('tc-k6s').textContent=pct(ctasHab,ctasTotal);
+
+  // KPI activación
   document.getElementById('tc-k7').textContent=avgAct+'%';
+
+  // KPI adicionales
   document.getElementById('tc-k8').textContent=n(adicMC+adicVISA);
   document.getElementById('tc-k8s').textContent='MC: '+n(adicMC)+' · VISA: '+n(adicVISA);
-  document.getElementById('fc-tc').textContent=rows.length+' sucursales';
+
+  document.getElementById('fc-tc').textContent=rows.length+' sucursales · '+fmtMesLabel(mesActual||'');
+
+  // Mostrar indicador de consumo con variación en banner
+  if(vCons!==null){
+    document.getElementById('tc-total').textContent=n(tarjetas);
+  }
 
   const sorted=[...rows].sort((a,b)=>b.consumo-a.consumo);
 
-  // Gráfico consumo por suc
+  // Mapa mes anterior por sucursal para comparar
+  const antMap={};
+  if(rowsAnt) rowsAnt.forEach(r=>antMap[r.suc]=r);
+
+  // Gráfico consumo: barras agrupadas MC+VISA por sucursal
   mk('c-tc-cons',{type:'bar',
-    data:{labels:sorted.map(r=>r.suc),datasets:[
+    data:{labels:sorted.map(r=>r.suc),
+    datasets:[
       {label:'MC',data:sorted.map(r=>r.consumo_mc),backgroundColor:'#002056',borderRadius:3},
       {label:'VISA',data:sorted.map(r=>r.consumo_visa),backgroundColor:'#F6955A',borderRadius:3}
     ]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{x:{stacked:true,ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y:{stacked:true,ticks:{font:{size:9},color:'#002056'}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
+      const r=sorted[ctx.dataIndex];
+      const ant=antMap[r.suc];
+      const v=ant&&ctx.datasetIndex===0?varPct(r.consumo_mc,ant.consumo_mc):ant?varPct(r.consumo_visa,ant.consumo_visa):null;
+      return ctx.dataset.label+': $'+ctx.raw.toFixed(1)+'M'+(v?' ('+v+'%)':'');
+    }}}},
+    scales:{x:{stacked:true,ticks:{font:{size:9},callback:v=>'$'+v+'M'}},
+            y:{stacked:true,ticks:{font:{size:9},color:'#002056'}}},
     onClick:(e,el)=>{if(el.length)ddTCSuc(sorted[el[0].index].suc);}
   }});
 
-  // Gráfico cuentas
+  // Gráfico cuentas por estado
   mk('c-tc-ctas',{type:'bar',
     data:{labels:sorted.map(r=>r.suc),datasets:[
-      {label:'Totales',data:sorted.map(r=>r.ctas_total),backgroundColor:'#7CA9DA',borderRadius:2},
-      {label:'Con resumen',data:sorted.map(r=>r.ctas_resumen),backgroundColor:'#9090C2',borderRadius:2},
-      {label:'Habilitadas',data:sorted.map(r=>r.ctas_hab),backgroundColor:'#00ADDB',borderRadius:2},
-      {label:'Activas',data:sorted.map(r=>r.ctas_act),backgroundColor:'#4EBFA4',borderRadius:2},
+      {label:'Totales',   data:sorted.map(r=>r.ctas_total),  backgroundColor:'#7CA9DA',borderRadius:2},
+      {label:'C/resumen', data:sorted.map(r=>r.ctas_resumen),backgroundColor:'#9090C2',borderRadius:2},
+      {label:'Habilitadas',data:sorted.map(r=>r.ctas_hab),  backgroundColor:'#00ADDB',borderRadius:2},
+      {label:'Activas',   data:sorted.map(r=>r.ctas_act),   backgroundColor:'#4EBFA4',borderRadius:2},
     ]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
     plugins:{legend:{display:false}},
@@ -879,33 +948,47 @@ function applyFilterTC(){
     onClick:(e,el)=>{if(el.length)ddTCSuc(sorted[el[0].index].suc);}
   }});
 
-  // MC vs VISA torta
+  // MC vs VISA torta consumo
   mk('c-tc-marca',{type:'doughnut',
     data:{labels:['MC '+pct(consumoMC,consumo),'VISA '+pct(consumoVISA,consumo)],
     datasets:[{data:[consumoMC,consumoVISA],backgroundColor:['#002056','#F6955A'],borderWidth:0}]},
     options:{...PIE,cutout:'52%'}
   });
 
-  // Activación por suc
+  // Gráfico activación con semáforo
   const sorted2=[...rows].sort((a,b)=>b.activacion-a.activacion);
   mk('c-tc-activ',{type:'bar',
     data:{labels:sorted2.map(r=>r.suc),
-    datasets:[{data:sorted2.map(r=>r.activacion),
+    datasets:[{
+      data:sorted2.map(r=>r.activacion),
       backgroundColor:sorted2.map(r=>r.activacion>=75?'#4EBFA4':r.activacion>=55?'#F6955A':'#c0241c'),
-      borderRadius:3}]},
+      borderRadius:3
+    }]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{x:{ticks:{font:{size:9},callback:v=>v+'%',max:100}},y:{ticks:{font:{size:9},color:'#002056'}}}}
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
+      const r=sorted2[ctx.dataIndex];
+      const ant=antMap[r.suc];
+      const v=ant?varPct(r.activacion,ant.activacion):null;
+      return 'Activación: '+ctx.raw.toFixed(1)+'%'+(v?' ('+v+'%)':'');
+    }}}},
+    scales:{x:{ticks:{font:{size:9},callback:v=>v+'%',max:100}},
+            y:{ticks:{font:{size:9},color:'#002056'}}}}
   });
 
-  // Tabla
+  // Tabla con variación vs mes anterior
   const mx=sorted[0]?sorted[0].consumo:1;
+  const mesAntLabel=rowsAnt?fmtMesLabel(getTCMesAnterior(mesActual)?.[0]?.mes||''):'—';
+
   document.getElementById('t-tc').innerHTML=sorted.map((r,i)=>{
+    const ant=antMap[r.suc];
+    const vCon=ant?varPct(r.consumo,ant.consumo):null;
+    const vAc=ant?varPct(r.activacion,ant.activacion):null;
+    const vAlt=ant?varPct(r.altas,ant.altas):null;
     const ac=r.activacion>=75?'var(--vd)':r.activacion>=55?'var(--nrj)':'var(--roj)';
     return`<tr class="crow" data-suc="${r.suc}" onclick="ddTCSuc(this.dataset.suc)">
       <td class="rk">${i+1}</td>
       <td style="font-weight:700">${r.suc}</td>
-      <td style="font-weight:700">$${r.consumo.toFixed(1)}M</td>
+      <td><b>$${r.consumo.toFixed(1)}M</b><br><span style="font-size:10px">${varHtml(vCon)}</span></td>
       <td style="font-size:11px;color:#002056">$${r.consumo_mc.toFixed(1)}M</td>
       <td style="font-size:11px;color:#F6955A">$${r.consumo_visa.toFixed(1)}M</td>
       <td>${n(r.tx)}</td>
@@ -913,38 +996,49 @@ function applyFilterTC(){
       <td><span class="pill p-vio">${n(r.ctas_resumen)}</span></td>
       <td>${n(r.ctas_hab)}</td>
       <td><span class="pill p-act">${n(r.ctas_act)}</span></td>
-      <td style="font-weight:700;color:${ac}">${r.activacion.toFixed(1)}%</td>
-      <td><span class="pill p-az">${r.altas}</span></td>
+      <td style="font-weight:700;color:${ac}">${r.activacion.toFixed(1)}%<br><span style="font-size:10px">${varHtml(vAc)}</span></td>
+      <td><span class="pill p-az">${r.altas}</span><br><span style="font-size:10px">${varHtml(vAlt)}</span></td>
       <td style="font-size:11px">${n(r.adic_mc+r.adic_visa)}</td>
       <td style="font-size:11px">${n(r.tarjetas)}</td>
     </tr>`;
   }).join('');
 }
+
 function ddTCSuc(suc){
+  const mes=document.getElementById('f-tc-mes').value;
   const rows=getTCRows().filter(r=>r.suc===suc);
-  if(!rows.length)return;
+  if(!rows.length) return;
   const r=rows[0];
-  const mes=document.getElementById('f-tc-mes').value||'todos';
-  const hdrs=['Indicador','Total','Mastercard','VISA'];
+
+  // Buscar mes anterior para comparar
+  const rowsAnt=getTCMesAnterior(mes);
+  const ant=rowsAnt?rowsAnt.find(x=>x.suc===suc):null;
+  const mesLabel=fmtMesLabel(mes||'');
+  const antLabel=ant?fmtMesLabel(ant.mes||''):'—';
+
+  const hdrs=['Indicador',mesLabel,'MC','VISA',ant?'vs '+antLabel:'Var.'];
+  const vf=(a,b)=>b>0?((a-b)/b*100).toFixed(1)+'%':'—';
   const data=[
-    ['Consumo ($)','$'+r.consumo.toFixed(1)+'M','$'+r.consumo_mc.toFixed(1)+'M','$'+r.consumo_visa.toFixed(1)+'M'],
-    ['Transacciones',n(r.tx),n(r.tx_mc),n(r.tx_visa)],
-    ['Cuentas Totales',n(r.ctas_total),n(r.ctas_total_mc),n(r.ctas_total_visa)],
-    ['Cuentas con Resumen',n(r.ctas_resumen),n(r.ctas_resumen_mc),n(r.ctas_resumen_visa)],
-    ['Cuentas Habilitadas',n(r.ctas_hab),n(r.ctas_hab_mc),n(r.ctas_hab_visa)],
-    ['Cuentas Activas',n(r.ctas_act),n(r.ctas_act_mc),n(r.ctas_act_visa)],
-    ['Activación %',r.activacion.toFixed(1)+'%',r.activacion_mc.toFixed(1)+'%',r.activacion_visa.toFixed(1)+'%'],
-    ['Altas Nuevas',n(r.altas),n(r.altas_mc),n(r.altas_visa)],
-    ['Tarjetas Totales',n(r.tarjetas),n(r.tarjetas_mc),n(r.tarjetas_visa)],
-    ['Tarjetas Adicionales',n(r.adic_mc+r.adic_visa),n(r.adic_mc),n(r.adic_visa)],
+    ['Consumo ($M)',          '$'+r.consumo.toFixed(1)+'M',       '$'+r.consumo_mc.toFixed(1)+'M',       '$'+r.consumo_visa.toFixed(1)+'M',     ant?vf(r.consumo,ant.consumo):'—'],
+    ['Transacciones',         n(r.tx),                            n(r.tx_mc),                            n(r.tx_visa),                          ant?vf(r.tx,ant.tx):'—'],
+    ['Cuentas Totales',       n(r.ctas_total),                    n(r.ctas_total_mc),                    n(r.ctas_total_visa),                  ant?vf(r.ctas_total,ant.ctas_total):'—'],
+    ['Cuentas con Resumen',   n(r.ctas_resumen),                  n(r.ctas_resumen_mc),                  n(r.ctas_resumen_visa),                ant?vf(r.ctas_resumen,ant.ctas_resumen):'—'],
+    ['Cuentas Habilitadas',   n(r.ctas_hab),                      n(r.ctas_hab_mc),                      n(r.ctas_hab_visa),                    ant?vf(r.ctas_hab,ant.ctas_hab):'—'],
+    ['Cuentas Activas',       n(r.ctas_act),                      n(r.ctas_act_mc),                      n(r.ctas_act_visa),                    ant?vf(r.ctas_act,ant.ctas_act):'—'],
+    ['Activación %',          r.activacion.toFixed(1)+'%',        r.activacion_mc.toFixed(1)+'%',        r.activacion_visa.toFixed(1)+'%',      ant?(r.activacion-ant.activacion).toFixed(1)+'pp':'—'],
+    ['Altas Nuevas',          n(r.altas),                         n(r.altas_mc),                         n(r.altas_visa),                       ant?vf(r.altas,ant.altas):'—'],
+    ['Tarjetas Totales',      n(r.tarjetas),                      n(r.tarjetas_mc),                      n(r.tarjetas_visa),                    ant?vf(r.tarjetas,ant.tarjetas):'—'],
+    ['Adicionales',           n(r.adic_mc+r.adic_visa),           n(r.adic_mc),                          n(r.adic_visa),                        ant?vf(r.adic_mc+r.adic_visa,ant.adic_mc+ant.adic_visa):'—'],
   ];
-  openDD('TC Individuos: '+suc,'Mes: '+(mes||'todos')+' · desglose completo MC/VISA',hdrs,data,[r]);
+  openDD('TC: '+suc,mesLabel+(ant?' · vs '+antLabel:''),hdrs,data,[r]);
 }
+
 function expTC(){
   const rows=getTCRows();
-  const keys=Object.keys(rows[0]||{});
+  if(!rows.length) return;
+  const keys=Object.keys(rows[0]);
   const csv=[keys.join(','),...rows.map(r=>keys.map(k=>r[k]||0).join(','))].join('\n');
-  dlCSV(csv,'tc_individuos.csv');
+  dlCSV(csv,'tc_individuos_'+fmtMesLabel(document.getElementById('f-tc-mes').value||'')+'.csv');
 }
 
 // ══ CEG ══
@@ -1021,6 +1115,13 @@ function ddFacSuc(suc){
 // ══ PROMOCIONES (MARCATÓN + SN/AE) ══
 function rMARC(rows){DD.marc=rows;initPromo('marc',rows);}
 function rSN(rows){DD.sn=rows;initPromo('sn',rows);}
+
+// Detectar si un comercio tiene activo un número de cuenta de tarjeta
+function tieneTarjeta(v){
+  if(!v||v==='0'||v===0) return false;
+  const s=v.toString().trim().toUpperCase();
+  return s!=='' && s!=='NO POSEE' && s!=='NO INFORMA' && s!=='NAN';
+}
 function initPromo(pid,rows){
   DD[pid]=rows;
   const sucs=[...new Set(rows.map(r=>nSuc(r['SUCURSAL'])).filter(Boolean))].sort();
@@ -1050,12 +1151,30 @@ function renderPromo(pid,rows){
   const mp=rows.filter(x=>/MAS.?PAG/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
   const fi=rows.filter(x=>/FISERV/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
   const pr=rows.filter(x=>/PRISMA/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
+
+  // Conteo por red de tarjeta
+  const tNativa =rows.filter(x=>tieneTarjeta(x['NATIVA MC'])).length;
+  const tMaster =rows.filter(x=>tieneTarjeta(x['MASTER'])).length;
+  const tVisa   =rows.filter(x=>tieneTarjeta(x['VISA'])).length;
+  const tMaestro=rows.filter(x=>tieneTarjeta(x['MAESTRO / MDEBIT']||x['MAESTRO/MDEBIT'])).length;
+  const tBancat =rows.filter(x=>tieneTarjeta(x['BANCAT'])||tieneTarjeta(x['BANCAT MC'])).length;
+
   document.getElementById(pid+'-total').textContent=n(al||rows.length);
   document.getElementById(pid+'-k1').textContent=n(al||rows.length);
   document.getElementById(pid+'-k2').textContent=n(bn);document.getElementById(pid+'-k2s').textContent=pct(bn,rows.length);
   document.getElementById(pid+'-k3').textContent=n(mp);
   document.getElementById(pid+'-k4').textContent=n(fi+pr);
   document.getElementById('fc-'+pid).textContent=n(rows.length)+' adheridos';
+
+  // Mostrar conteo tarjetas si los elementos existen
+  const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setEl(pid+'-kv',  n(tVisa));
+  setEl(pid+'-km',  n(tMaster));
+  setEl(pid+'-kn',  n(tNativa));
+  setEl(pid+'-kb',  n(tBancat));
+  setEl(pid+'-kvs', pct(tVisa,rows.length));
+  setEl(pid+'-kms', pct(tMaster,rows.length));
+  setEl(pid+'-kns', pct(tNativa,rows.length));
   const catM={};rows.forEach(r=>{const c=r['NOMBRE DE LA PROMOCION']||'Sin cat.';catM[c]=(catM[c]||0)+1;});
   const cats=Object.entries(catM).sort((a,b)=>b[1]-a[1]).slice(0,10);
   mk(cp+'-cat',{type:'bar',data:{labels:cats.map(x=>x[0].length>26?x[0].slice(0,26)+'…':x[0]),datasets:[{data:cats.map(x=>x[1]),backgroundColor:['#002056','#007094','#65C9D8','#4EBFA4','#D4AC87','#9090C2','#7CA9DA','#F6955A','#BCBCBC','#002056'],borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},onClick:(e,el)=>{if(el.length)ddPromoCat(pid,cats[el[0].index][0]);},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}}}});
@@ -1075,21 +1194,43 @@ function renderPromo(pid,rows){
 // Drill promos — detalle expandido con tel, mail, contacto
 function ddPromoSuc(pid,suc){
   const rows=(DD[pid]||[]).filter(r=>nSuc(r['SUCURSAL'])===suc);
-  const hdrs=['Comercio','Razón Social','CUIT','Localidad','Categoría','Rubro','Adquirente','BNA+','Alta/Baja','Tel.','Mail','WhatsApp','Email'];
+  const hdrs=['Comercio','Razón Social','CUIT','Dirección','Localidad','Categoría','Rubro','Adquirente','BNA+','Nro. NATIVA MC','Nro. MASTER','Nro. VISA','Nro. MAESTRO','Nro. Terminal','Nro. BANCAT','Nro. BANCAT MC','Alta/Baja','Tel.','Mail','WhatsApp','Email'];
+  const fNro=v=>{
+    if(!v||v===0||v==='0') return '<span style="color:#aaa;font-size:10px">No posee</span>';
+    const s=v.toString().trim().toUpperCase();
+    if(s===''||s==='NO POSEE'||s==='NO INFORMA'||s==='NAN') return '<span style="color:#aaa;font-size:10px">No posee</span>';
+    return `<span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--az)">${v}</span>`;
+  };
+  const fAdq=v=>{
+    const s=(v||'').toUpperCase();
+    if(/MAS.?PAG/i.test(s)) return '<span class="pill p-az">+Pagos / MAS PAGOS</span>';
+    if(/FISERV/i.test(s)) return '<span class="pill p-cy">FISERV</span>';
+    if(/PRISMA/i.test(s)) return '<span class="pill p-vio">PRISMA</span>';
+    return `<span class="pill p-gr">${v||'—'}</span>`;
+  };
   const data=rows.map(r=>[
-    r['NOMBRE DEL COMERCIO'],r['RAZON SOCIAL']||r['NOMBRE DEL COMERCIO'],r['CUIT'],r['LOCALIDAD']||'—',
+    r['NOMBRE DEL COMERCIO'],r['RAZON SOCIAL']||r['NOMBRE DEL COMERCIO'],r['CUIT'],
+    r['DIRECCION']||'—',r['LOCALIDAD']||'—',
     r['NOMBRE DE LA PROMOCION']||'—',r['RUBRO']||'—',
-    r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',
+    fAdq(r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']),
     `<span class="pill ${(r['ACEPTA BNA+:']||'').toUpperCase().startsWith('S')?'p-act':'p-gr'}">${r['ACEPTA BNA+:']||'—'}</span>`,
+    fNro(r['NATIVA MC']),
+    fNro(r['MASTER']),
+    fNro(r['VISA']),
+    fNro(r['MAESTRO / MDEBIT']),
+    fNro(r['Terminal']||r['TERMINAL']),
+    fNro(r['BANCAT']),
+    fNro(r['BANCAT MC']),
     r['ALTA / BAJA']||'—',r['TELEFONO']||'—',r['MAIL']||'—',
     btnW(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnM(r['MAIL'])
   ]);
-  openDD((pid==='marc'?'Marcatón':'SN/AE')+': '+suc,rows.length+' comercios · datos de contacto completos',hdrs,data,rows);
+  openDD((pid==='marc'?'Marcatón':'SN/AE')+': '+suc,rows.length+' comercios · datos completos de contacto',hdrs,data,rows);
 }
 function ddPromoCat(pid,cat){
   const rows=(DD[pid]||[]).filter(r=>r['NOMBRE DE LA PROMOCION']===cat);
-  const hdrs=['Comercio','CUIT','Sucursal','Localidad','Rubro','Adquirente','BNA+','Dirección','Tel.','Mail','WhatsApp','Email'];
-  const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['CUIT'],nSuc(r['SUCURSAL']),r['LOCALIDAD']||'—',r['RUBRO']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['ACEPTA BNA+:']||'—',r['DIRECCION']||'—',r['TELEFONO']||'—',r['MAIL']||'—',btnW(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnM(r['MAIL'])]);
+  const hdrs=['Comercio','CUIT','Sucursal','Localidad','Rubro','Adquirente','Nro.Nativa','Nro.Master','Nro.Visa','BNA+','Dirección','Tel.','Mail','WhatsApp','Email'];
+  const fNro3=v=>{if(!v||v===0)return '—';const s=v.toString().trim().toUpperCase();return(s===''||s==='NO POSEE'||s==='NO INFORMA'||s==='NAN')?'—':`<span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--az)">${v}</span>`;};
+  const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['CUIT'],nSuc(r['SUCURSAL']),r['LOCALIDAD']||'—',r['RUBRO']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',fNro3(r['NATIVA MC']),fNro3(r['MASTER']),fNro3(r['VISA']),r['ACEPTA BNA+:']||'—',r['DIRECCION']||'—',r['TELEFONO']||'—',r['MAIL']||'—',btnW(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnM(r['MAIL'])]);
   openDD('Categoría: '+cat,rows.length+' comercios adheridos',hdrs,data,rows);
 }
 function ddPromoRub(pid,rub){
@@ -1105,8 +1246,10 @@ function buscarPromoQ(pid,val){
   const rows=(DD[pid]||[]).filter(r=>(r['NOMBRE DEL COMERCIO']||'').toLowerCase().includes(q)||(r['RAZON SOCIAL']||'').toLowerCase().includes(q)||(r['CUIT']||'').toString().includes(q));
   if(res)res.textContent=rows.length>0?rows.length+' resultado(s)':'Sin resultados';
   if(rows.length>0){
-    const hdrs=['Comercio','Razón Social','CUIT','Sucursal','Localidad','Categoría','Rubro','Adquirente','BNA+','Dirección','Tel.','Mail','WhatsApp','Email'];
-    const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['RAZON SOCIAL']||'—',r['CUIT'],nSuc(r['SUCURSAL']),r['LOCALIDAD']||'—',r['NOMBRE DE LA PROMOCION']||'—',r['RUBRO']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['ACEPTA BNA+:']||'—',r['DIRECCION']||'—',r['TELEFONO']||'—',r['MAIL']||'—',btnW(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnM(r['MAIL'])]);
+    const hdrs=['Comercio','Razón Social','CUIT','Sucursal','Localidad','Categoría','Rubro','Adquirente','BNA+','Nro. NATIVA MC','Nro. MASTER','Nro. VISA','Dirección','Tel.','Mail','WhatsApp','Email'];
+    const fNro2=v=>{if(!v||v===0)return '—';const s=v.toString().trim().toUpperCase();return(s===''||s==='NO POSEE'||s==='NO INFORMA'||s==='NAN')?'—':`<span style="font-family:monospace;font-size:11px;font-weight:700;color:var(--az)">${v}</span>`;};
+    const fAdq2=v=>{const s=(v||'').toUpperCase();if(/MAS.?PAG/i.test(s))return '<span class="pill p-az">+Pagos</span>';if(/FISERV/i.test(s))return '<span class="pill p-cy">FISERV</span>';if(/PRISMA/i.test(s))return '<span class="pill p-vio">PRISMA</span>';return `<span class="pill p-gr">${v||'—'}</span>`;};
+    const data=rows.map(r=>[r['NOMBRE DEL COMERCIO'],r['RAZON SOCIAL']||'—',r['CUIT'],nSuc(r['SUCURSAL']),r['LOCALIDAD']||'—',r['NOMBRE DE LA PROMOCION']||'—',r['RUBRO']||'—',fAdq2(r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']),r['ACEPTA BNA+:']||'—',fNro2(r['NATIVA MC']),fNro2(r['MASTER']),fNro2(r['VISA']),r['DIRECCION']||'—',r['TELEFONO']||'—',r['MAIL']||'—',btnW(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnM(r['MAIL'])]);
     openDD((pid==='marc'?'Marcatón':'SN/AE')+' · búsqueda: "'+val+'"',rows.length+' resultados con datos completos',hdrs,data,rows);
   }
 }

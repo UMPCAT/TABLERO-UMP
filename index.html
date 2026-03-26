@@ -410,9 +410,19 @@ th{background:var(--bna-marino)}
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-com-suc" onchange="applyFilterCOM()"><option value="">Todas</option></select>
-    <button class="fbar-reset" onclick="document.getElementById('f-com-suc').value='';applyFilterCOM()">✕</button>
+    <span class="fbar-lbl" style="margin-left:8px">📅 Alta desde:</span>
+    <input type="date" id="f-com-fecha-desde" onchange="applyFilterCOM()"
+      style="font-size:12px;font-family:inherit;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
+    <span class="fbar-lbl">hasta:</span>
+    <input type="date" id="f-com-fecha-hasta" onchange="applyFilterCOM()"
+      style="font-size:12px;font-family:inherit;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
+    <button class="fbar-reset" onclick="resetFiltrosCOM()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-com">—</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCOM()">⬇ Exportar</button>
+  </div>
+  <div id="com-timeline-wrap" class="card full" style="margin-bottom:10px;display:none">
+    <div class="ctit" id="com-timeline-tit">Altas por mes · línea temporal</div>
+    <div class="cw" style="height:160px"><canvas id="c-com-timeline"></canvas></div>
   </div>
   <div class="metrics">
     <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="com-k1">—</div><div class="msub">registrados</div></div>
@@ -530,6 +540,24 @@ th{background:var(--bna-marino)}
     <span style="color:var(--bna-dorado);font-size:14px;font-weight:800;margin-left:8px" id="fac-acum-total">—</span>
     <span style="color:rgba(255,255,255,.6);font-size:10px">total acumulado</span>
     <span style="margin-left:12px;color:rgba(255,255,255,.5);font-size:10px" id="fac-acum-meses">—</span>
+  </div>
+  <div class="card full" style="margin-bottom:12px;border-top:3px solid var(--bna-azul)">
+    <div class="ctit" id="fac-evo-tit">Evolución mensual · facturación zonal acumulada</div>
+    <div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+      <div style="background:var(--gris);border-radius:8px;padding:8px 14px;border:1px solid var(--brd)">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--txt2)">Total acumulado</div>
+        <div style="font-size:20px;font-weight:800;color:var(--bna-azul)" id="fac-evo-acum">—</div>
+      </div>
+      <div style="background:var(--gris);border-radius:8px;padding:8px 14px;border:1px solid var(--brd)">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--txt2)">Mejor mes</div>
+        <div style="font-size:20px;font-weight:800;color:var(--bna-verde)" id="fac-evo-mejor">—</div>
+      </div>
+      <div style="background:var(--gris);border-radius:8px;padding:8px 14px;border:1px solid var(--brd)">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:var(--txt2)">Tendencia</div>
+        <div style="font-size:20px;font-weight:800" id="fac-evo-tend">—</div>
+      </div>
+    </div>
+    <div class="cw" style="height:200px"><canvas id="c-fac-evo"></canvas></div>
   </div>
   <div class="card full" style="margin-bottom:12px"><div class="ctit">Enero vs Febrero 2026 (MM$) · clic en barra para ver comercios</div><div class="leg"><span class="li"><span class="ld" style="background:#00ADDB"></span>Enero</span><span class="li"><span class="ld" style="background:#F6955A"></span>Febrero</span></div><div class="cw" style="height:360px"><canvas id="c-fac"></canvas></div></div>
 <div class="cuit-bar" id="rsbar-fac" style="margin-top:-4px">
@@ -916,6 +944,31 @@ th{background:var(--bna-marino)}
     <div class="card"><div class="ctit">MC vs VISA · consumo</div><div class="cw" style="height:200px"><canvas id="c-tc-marca"></canvas></div></div>
     <div class="card"><div class="ctit">Activación % por sucursal</div><div class="cw" style="height:200px"><canvas id="c-tc-activ"></canvas></div></div>
   </div>
+  <div class="card full" style="margin-bottom:12px;border-top:3px solid #9090C2">
+    <div class="ctit" id="tc-res-tit" style="color:#6060a0">📋 Cuentas con Resumen · evolución mes a mes · MC y VISA</div>
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+      <div style="background:#f0f0f8;border-radius:8px;padding:8px 16px;text-align:center;border:1px solid #c8c8e8">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:#6060a0">Total c/Resumen</div>
+        <div style="font-size:22px;font-weight:800;color:#6060a0" id="tc-res-total">—</div>
+        <div style="font-size:10px;color:#888" id="tc-res-pct">—</div>
+      </div>
+      <div style="background:#e6f4f8;border-radius:8px;padding:8px 16px;text-align:center;border:1px solid #b3d8e5">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:#007094">MC c/Resumen</div>
+        <div style="font-size:20px;font-weight:800;color:#002056" id="tc-res-mc">—</div>
+      </div>
+      <div style="background:#fef0e8;border-radius:8px;padding:8px 16px;text-align:center;border:1px solid #f0c8a8">
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;color:#c05010">VISA c/Resumen</div>
+        <div style="font-size:20px;font-weight:800;color:#F6955A" id="tc-res-visa">—</div>
+      </div>
+      <div style="margin-left:auto;font-size:11px;color:#888" id="tc-res-var">—</div>
+    </div>
+    <div class="leg">
+      <span class="li"><span class="ld" style="background:#9090C2"></span>Total</span>
+      <span class="li"><span class="ld" style="background:#002056"></span>MC</span>
+      <span class="li"><span class="ld" style="background:#F6955A"></span>VISA</span>
+    </div>
+    <div class="cw" style="height:260px"><canvas id="c-tc-resumen"></canvas></div>
+  </div>
   <div class="tcard">
     <div class="thead2"><span class="ttit">Detalle por sucursal · clic para desglose MC/VISA</span></div>
     <div class="twrap"><table><thead><tr>
@@ -947,7 +1000,10 @@ th{background:var(--bna-marino)}
   <div id="cliente-resultado"></div>
 </div>
 
-<script>
+<script><script>
+
+
+
 
 // eliminado
 
@@ -1128,6 +1184,7 @@ function rCOM(rows){
   poblarSel('f-oport-suc',sucs);
   document.getElementById('fc-com').textContent=n(r.length)+' comercios';
   document.getElementById('op-churn-count').textContent=n(r.filter(x=>x['Status de Actividad']==='Comercio Churn').length);
+  poblarFiltroFechasCOM();
 }
 function renderCOM(r){
   const T=r.length;
@@ -1187,11 +1244,24 @@ function ddComRubro(rubro,src){
 
 // ── FILTRO COM ──
 function applyFilterCOM(){
-  const suc=document.getElementById('f-com-suc').value;
-  const src=(DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
-  const r=suc?src.filter(x=>x['Nombre Sucursal']===suc):src;
+  const r=getFilteredCOM();
   renderCOM(r);
-  document.getElementById('fc-com').textContent=suc?n(r.length)+' en '+suc:n(r.length)+' comercios';
+  const suc=document.getElementById('f-com-suc')?.value||'';
+  const desde=document.getElementById('f-com-fecha-desde')?.value||'';
+  const hasta=document.getElementById('f-com-fecha-hasta')?.value||'';
+  const partes=[];
+  if(suc) partes.push(suc);
+  if(desde) partes.push('desde '+desde);
+  if(hasta) partes.push('hasta '+hasta);
+  document.getElementById('fc-com').textContent=n(r.length)+' comercios'+(partes.length?' · '+partes.join(' '):'');
+  // Mostrar/ocultar timeline
+  const wrap=document.getElementById('com-timeline-wrap');
+  if(wrap){
+    const src=(DD.com||[]).filter(x=>['CATAMARCA','LA RIOJA'].includes(x['Provincia']));
+    const meses=[...new Set(r.map(x=>parseFechaAlta(x['Fecha de Alta'])).filter(Boolean).map(f=>f.slice(0,7)))].sort();
+    if(meses.length>=1){ wrap.style.display='block'; construirTimelineCOM(r,meses); }
+    else wrap.style.display='none';
+  }
 }
 function exportCOM(){
   const suc=document.getElementById('f-com-suc').value;
@@ -1344,6 +1414,7 @@ function rFAC(rows){
   document.getElementById('fc-fac').textContent=n(rows.length)+' comercios';
 }
 function renderFAC(rows){
+  renderFacEvo(rows);
   const p$=v=>parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
   const tE=rows.reduce((a,r)=>a+p$(r['Total  ENERO 26']),0);
   const tF=rows.reduce((a,r)=>a+p$(r['Total  FEBRERO 26']),0);
@@ -2192,11 +2263,11 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 // TABLERO UMP · NOA OESTE · BNA
 // Fuente de datos: Google Apps Script
-// URL: https://script.google.com/macros/s/AKfycbxWYMA7DyOhOJ5fTK8liNn5NxQWBJz_RyetQ79PRQ8sKBrq2Kezybd-gPS-x6SoHnWkSg/exec
+// URL: https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec
 // Sin CORS · colaborativo · actualización automática
 // ══════════════════════════════════════════
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbxWYMA7DyOhOJ5fTK8liNn5NxQWBJz_RyetQ79PRQ8sKBrq2Kezybd-gPS-x6SoHnWkSg/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec';
 const HOJAS = {"com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
 const CACHE = {};
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutos
@@ -2317,6 +2388,355 @@ function go(id, el) {
 }
 
 // ── INICIO ──
+
+// ══════════════════════════════════════════════════════
+// MEJORA 1: +PAGOS — filtro temporal por Fecha de Alta
+// ══════════════════════════════════════════════════════
+
+// Convertir serial Excel o string de fecha → "yyyy-MM-dd"
+function parseFechaAlta(v){
+  if(v===null||v===undefined||v==='') return '';
+  const s=v.toString().trim();
+  if(!s) return '';
+  // 1. Serial numérico Excel (ej: 45251)
+  const num=parseInt(s);
+  if(!isNaN(num)&&num>10000&&num<100000&&!/[-\/]/.test(s)){
+    const d=new Date(Date.UTC(1899,11,30)+num*86400000);
+    if(!isNaN(d.getTime())) return d.toISOString().slice(0,10);
+  }
+  // 2. dd/MM/yyyy — formato Apps Script con formatDate
+  const m1=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(m1) return m1[3]+'-'+m1[2].padStart(2,'0')+'-'+m1[1].padStart(2,'0');
+  // 3. yyyy-MM-dd
+  if(/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
+  // 4. dd-MM-yyyy
+  const m2=s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})/);
+  if(m2) return m2[3]+'-'+m2[2].padStart(2,'0')+'-'+m2[1].padStart(2,'0');
+  // 5. ISO timestamp
+  if(s.includes('T')){const d=new Date(s);if(!isNaN(d.getTime()))return d.toISOString().slice(0,10);}
+  return '';
+}
+
+function mesLabel(m){
+  const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const p=m.split('-');
+  return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:m;
+}
+
+// Inicializar filtro fecha en +Pagos — pone min/max en los inputs
+function poblarFiltroFechasCOM(){
+  const src=(DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
+  const fechas=src.map(r=>parseFechaAlta(r['Fecha de Alta'])).filter(Boolean).sort();
+  if(!fechas.length) return;
+  const min=fechas[0], max=fechas[fechas.length-1];
+  const elDesde=document.getElementById('f-com-fecha-desde');
+  const elHasta=document.getElementById('f-com-fecha-hasta');
+  if(elDesde){elDesde.min=min;elDesde.max=max;}
+  if(elHasta){elHasta.min=min;elHasta.max=max;}
+  // Construir línea de tiempo con todos los meses disponibles
+  const meses=[...new Set(fechas.map(f=>f.slice(0,7)))].sort();
+  construirTimelineCOM(src, meses);
+}
+
+function getFilteredCOM(){
+  const src=(DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
+  const suc=document.getElementById('f-com-suc')?.value||'';
+  const desde=document.getElementById('f-com-fecha-desde')?.value||'';
+  const hasta=document.getElementById('f-com-fecha-hasta')?.value||'';
+  // Debug: log primeros valores crudos para verificar formato
+  if((desde||hasta)&&src.length>0){
+    const muestras=src.slice(0,5).map(r=>r['Fecha de Alta']);
+    console.log('[FECHA] Raw:',muestras);
+    console.log('[FECHA] Parseadas:',muestras.map(parseFechaAlta));
+    console.log('[FECHA] Filtro desde='+desde+' hasta='+hasta);
+  }
+  return src.filter(r=>{
+    if(suc&&r['Nombre Sucursal']!==suc) return false;
+    if(desde||hasta){
+      const fa=parseFechaAlta(r['Fecha de Alta']);
+      if(!fa) return false; // sin fecha de alta → excluir del filtro temporal
+      if(desde&&fa<desde) return false;
+      if(hasta&&fa>hasta) return false;
+    }
+    return true;
+  });
+}
+
+function construirTimelineCOM(src, meses){
+  // Contar altas por mes por sucursal
+  const wrap=document.getElementById('com-timeline-wrap');
+  if(!wrap) return;
+  
+  if(meses.length<2){ wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  
+  const sucs=[...new Set(src.map(r=>r['Nombre Sucursal']).filter(Boolean))].sort();
+  const totalPorMes=meses.map(m=>{
+    return src.filter(r=>parseFechaAlta(r['Fecha de Alta'])===m).length;
+  });
+  
+  if(CH['c-com-timeline']) CH['c-com-timeline'].destroy();
+  CH['c-com-timeline']=new Chart(document.getElementById('c-com-timeline'),{
+    type:'bar',
+    data:{
+      labels:meses.map(mesLabel),
+      datasets:[{
+        label:'Altas por mes',
+        data:totalPorMes,
+        backgroundColor:totalPorMes.map(v=>{
+          const max=Math.max(...totalPorMes)||1;
+          const alpha=0.4+0.6*(v/max);
+          return `rgba(0,32,86,${alpha.toFixed(2)})`;
+        }),
+        borderRadius:4,
+        borderColor:'#002056',
+        borderWidth:1
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label:ctx=>`${ctx.raw} alta${ctx.raw!==1?'s':''} en ${meses[ctx.dataIndex]}`
+        }}
+      },
+      scales:{
+        x:{ticks:{font:{size:9},color:'#002056'}},
+        y:{ticks:{font:{size:9}},title:{display:true,text:'Altas',font:{size:9}}}
+      },
+      onClick:(e,el)=>{
+        if(!el.length) return;
+        const mes=meses[el[0].index];
+        // Filtrar por ese mes
+        document.getElementById('f-com-mes-desde').value=mes;
+        document.getElementById('f-com-mes-hasta').value=mes;
+        applyFilterCOM();
+      }
+    }
+  });
+  
+  const tit=document.getElementById('com-timeline-tit');
+  if(tit) tit.textContent=`Altas por mes · ${meses.length} meses · total ${src.length} comercios · clic en barra para filtrar`;
+}
+
+function resetFiltrosCOM(){
+  ['f-com-suc','f-com-fecha-desde','f-com-fecha-hasta'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  applyFilterCOM();
+}
+
+// ══════════════════════════════════════════════════════
+// MEJORA 2: TC — Cuentas con Resumen destacado
+// ══════════════════════════════════════════════════════
+
+function renderTCResumen(){
+  const mes=document.getElementById('f-tc-mes')?.value||'';
+  const sucFilt=document.getElementById('f-tc-suc')?.value||'';
+  const todos=TC_DATA.meses; // ordenados asc
+  const rowsActual=TC_DATA.records.filter(r=>(!mes||r.mes===mes)&&(!sucFilt||r.suc===sucFilt));
+  const rowsAnt=mes?getTCMesAnterior(mes)?.filter(r=>!sucFilt||r.suc===sucFilt)||[]:[];
+
+  const sum=k=>rowsActual.reduce((a,r)=>a+(r[k]||0),0);
+  const sumAnt=k=>rowsAnt.reduce((a,r)=>a+(r[k]||0),0);
+  const tot=sum('ctas_res'), mc=sum('ctas_res_mc'), visa=sum('ctas_res_visa');
+  const totT=sum('ctas_total');
+  const antTot=sumAnt('ctas_res');
+  
+  const nf=v=>Number(v||0).toLocaleString('es-AR');
+  const pctF=(a,b)=>b>0?(a/b*100).toFixed(1)+'%':'—';
+
+  const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
+  setEl('tc-res-total', nf(tot));
+  setEl('tc-res-mc',    nf(mc));
+  setEl('tc-res-visa',  nf(visa));
+  setEl('tc-res-pct',   pctF(tot,totT)+' del total');
+
+  // Variación vs mes anterior
+  if(antTot>0){
+    const diff=tot-antTot;
+    const pctDiff=(diff/antTot*100).toFixed(1);
+    const color=diff>=0?'var(--bna-verde)':'#c0241c';
+    const arrow=diff>=0?'↑':'↓';
+    setEl('tc-res-var',
+      `vs ${mesLabel(rowsAnt[0]?.mes||'')}: <b style="color:${color}">${arrow} ${diff>=0?'+':''}${nf(diff)} (${pctDiff}%)</b>`
+    );
+  } else {
+    setEl('tc-res-var','Sin mes anterior para comparar');
+  }
+
+  // Gráfico evolución ctas con resumen por mes
+  const elCanvas=document.getElementById('c-tc-resumen');
+  if(!elCanvas) return;
+
+  if(todos.length>=2 && !sucFilt){
+    // Línea temporal zonal
+    const tit=document.getElementById('tc-res-tit');
+    if(tit) tit.textContent='📋 Cuentas con Resumen · evolución zonal · '+todos.map(mesLabel).join(' → ');
+    const dataTot =todos.map(m=>TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.ctas_res,0));
+    const dataMC  =todos.map(m=>TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.ctas_res_mc,0));
+    const dataVISA=todos.map(m=>TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.ctas_res_visa,0));
+    if(CH['c-tc-resumen']) CH['c-tc-resumen'].destroy();
+    CH['c-tc-resumen']=new Chart(elCanvas,{
+      type:'line',
+      data:{labels:todos.map(mesLabel),datasets:[
+        {label:'Total',data:dataTot,borderColor:'#9090C2',backgroundColor:'rgba(144,144,194,.15)',fill:true,tension:.3,pointRadius:7,pointHoverRadius:9,borderWidth:3},
+        {label:'MC',   data:dataMC, borderColor:'#002056',backgroundColor:'transparent',tension:.3,pointRadius:5,borderWidth:2,borderDash:[6,3]},
+        {label:'VISA', data:dataVISA,borderColor:'#F6955A',backgroundColor:'transparent',tension:.3,pointRadius:5,borderWidth:2,borderDash:[6,3]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
+          tooltip:{callbacks:{
+            label:ctx=>{
+              const prev=ctx.dataIndex>0?ctx.dataset.data[ctx.dataIndex-1]:null;
+              const diff=prev!==null?ctx.raw-prev:null;
+              const base=ctx.dataset.label+': '+Number(ctx.raw).toLocaleString('es-AR');
+              return diff!==null?base+' ('+( diff>=0?'+':'')+Number(diff).toLocaleString('es-AR')+')':base;
+            }
+          }}
+        },
+        scales:{
+          x:{ticks:{font:{size:11},color:'#002056'}},
+          y:{ticks:{font:{size:10},callback:v=>Number(v).toLocaleString('es-AR')},
+             title:{display:true,text:'Cuentas con Resumen',font:{size:10},color:'#6060a0'}}
+        }
+      }
+    });
+  } else if(sucFilt && todos.length>=2){
+    // Línea para la sucursal filtrada
+    const rSuc=TC_DATA.records.filter(r=>r.suc===sucFilt);
+    const dataTotS =todos.map(m=>{const r=rSuc.find(x=>x.mes===m);return r?r.ctas_res:null;});
+    const dataMCS  =todos.map(m=>{const r=rSuc.find(x=>x.mes===m);return r?r.ctas_res_mc:null;});
+    const dataVISAS=todos.map(m=>{const r=rSuc.find(x=>x.mes===m);return r?r.ctas_res_visa:null;});
+    const tit=document.getElementById('tc-res-tit');
+    if(tit) tit.textContent='📋 Cuentas con Resumen · '+sucFilt+' · '+todos.map(mesLabel).join(' → ');
+    if(CH['c-tc-resumen']) CH['c-tc-resumen'].destroy();
+    CH['c-tc-resumen']=new Chart(elCanvas,{
+      type:'line',
+      data:{labels:todos.map(mesLabel),datasets:[
+        {label:'Total',data:dataTotS,borderColor:'#9090C2',backgroundColor:'rgba(144,144,194,.2)',fill:true,tension:.3,pointRadius:7,borderWidth:3},
+        {label:'MC',   data:dataMCS, borderColor:'#002056',backgroundColor:'transparent',tension:.3,pointRadius:5,borderWidth:2,borderDash:[6,3]},
+        {label:'VISA', data:dataVISAS,borderColor:'#F6955A',backgroundColor:'transparent',tension:.3,pointRadius:5,borderWidth:2,borderDash:[6,3]},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
+          tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+Number(ctx.raw||0).toLocaleString('es-AR')}}},
+        scales:{
+          x:{ticks:{font:{size:11},color:'#002056'}},
+          y:{ticks:{font:{size:10},callback:v=>Number(v).toLocaleString('es-AR')}}
+        }
+      }
+    });
+  } else {
+    // 1 solo mes: barras por sucursal
+    const rows=TC_DATA.records.filter(r=>(!mes||r.mes===mes)).sort((a,b)=>b.ctas_res-a.ctas_res);
+    const tit=document.getElementById('tc-res-tit');
+    if(tit) tit.textContent='📋 Cuentas con Resumen por sucursal · '+mesLabel(mes||'');
+    if(CH['c-tc-resumen']) CH['c-tc-resumen'].destroy();
+    CH['c-tc-resumen']=new Chart(elCanvas,{
+      type:'bar',
+      data:{labels:rows.map(r=>r.suc),datasets:[
+        {label:'Total', data:rows.map(r=>r.ctas_res),    backgroundColor:'#9090C2',borderRadius:3},
+        {label:'MC',    data:rows.map(r=>r.ctas_res_mc), backgroundColor:'#002056',borderRadius:3},
+        {label:'VISA',  data:rows.map(r=>r.ctas_res_visa),backgroundColor:'#F6955A',borderRadius:3},
+      ]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},
+        scales:{x:{ticks:{font:{size:9},callback:v=>Number(v).toLocaleString('es-AR')}},y:{ticks:{font:{size:9},color:'#002056'}}}
+      }
+    });
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// MEJORA 3: FACTURACIÓN — evolución mensual global
+// ══════════════════════════════════════════════════════
+
+function renderFacEvo(rows){
+  const elCanvas=document.getElementById('c-fac-evo');
+  if(!elCanvas) return;
+
+  const p$=v=>parseFloat((v||'0').toString().replace(/[\$\.]/g,'').replace(',','.'))||0;
+
+  // Detectar columnas de meses (buscar "Total") 
+  const sample=rows[0]||{};
+  const colsMes=Object.keys(sample).filter(k=>/total/i.test(k)&&/\d{2,4}/.test(k));
+  if(colsMes.length===0){ 
+    // fallback a las columnas hardcodeadas
+    const fallback=['Total  ENERO 26','Total  FEBRERO 26'];
+    colsMes.push(...fallback.filter(c=>sample[c]!==undefined));
+  }
+  
+  if(colsMes.length===0) return;
+
+  // Calcular total por columna-mes
+  const totalesPorMes=colsMes.map(col=>rows.reduce((a,r)=>a+p$(r[col]),0));
+  const labels=colsMes.map(col=>{
+    const m=col.match(/(ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC|ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SEPTIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE)/i);
+    if(m) return m[1].charAt(0).toUpperCase()+m[1].slice(1,3).toLowerCase();
+    return col.replace(/total/i,'').trim().slice(0,6);
+  });
+
+  const acum=totalesPorMes.reduce((a,v)=>a+v,0);
+  const mejor=Math.max(...totalesPorMes);
+  const mejorLabel=labels[totalesPorMes.indexOf(mejor)];
+  const tend=totalesPorMes.length>=2?
+    totalesPorMes[totalesPorMes.length-1]-totalesPorMes[totalesPorMes.length-2]:0;
+
+  const nB=v=>'$'+(v/1e9).toFixed(2)+'B';
+  const nM=v=>'$'+(v/1e6).toFixed(0)+'M';
+
+  const setEl=(id,v,color)=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent=v;
+    if(color) el.style.color=color;
+  };
+  setEl('fac-evo-acum',  nB(acum));
+  setEl('fac-evo-mejor', nM(mejor)+' ('+mejorLabel+')');
+  setEl('fac-evo-tend',
+    tend>=0?'↑ '+nM(Math.abs(tend)):'↓ '+nM(Math.abs(tend)),
+    tend>=0?'var(--bna-verde)':'#c0241c'
+  );
+
+  const tit=document.getElementById('fac-evo-tit');
+  if(tit) tit.textContent='Evolución mensual · '+labels.join(' → ')+' · Acum: '+nB(acum);
+
+  if(CH['c-fac-evo']) CH['c-fac-evo'].destroy();
+  CH['c-fac-evo']=new Chart(elCanvas,{
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        label:'Facturación',
+        data:totalesPorMes.map(v=>+(v/1e6).toFixed(1)),
+        backgroundColor:totalesPorMes.map((v,i)=>{
+          if(i===totalesPorMes.length-1) return '#007094'; // último mes más oscuro
+          return 'rgba(0,112,148,0.55)';
+        }),
+        borderRadius:5,
+        borderColor:'#002056',
+        borderWidth:1
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'M'}}
+      },
+      scales:{
+        x:{ticks:{font:{size:11},color:'#002056'}},
+        y:{ticks:{font:{size:9},callback:v=>'$'+v+'M'},
+           title:{display:true,text:'MM$',font:{size:9}}}
+      }
+    }
+  });
+}
+
+
 window.addEventListener('DOMContentLoaded', () => {
   // Botón actualizar
   const btn = document.querySelector('.sbtn');
@@ -2548,6 +2968,9 @@ function applyFilterTC(){
   setEl('tc-acum-ctas',   n(stockAct));
   setEl('tc-acum-activ',  stockActiv+'%');
 
+  // Gráfico cuentas con resumen
+  renderTCResumen();
+
   document.getElementById('t-tc').innerHTML=sorted.map((r,i)=>{
     const ant=antMap[r.suc];
     const vC=ant?varPct(r.consumo,ant.consumo):null;
@@ -2619,6 +3042,9 @@ function tieneTarjeta(v){
 function renderOport(){
   if(typeof renderOportunidades==='function')renderOportunidades();
 }
+
+
+
 
 </script>
 </body>

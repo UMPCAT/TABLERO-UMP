@@ -1007,6 +1007,10 @@ th{background:var(--bna-marino)}
 
 
 
+
+
+
+
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -2320,6 +2324,7 @@ async function loadAll(force=false) {
   // Tareas en orden de prioridad
   const TASKS = [
     ['com',  rCOM],
+    ['tc',   rTC],
     ['fac',  rFAC],
     ['marc', rMARC],
     ['sn',   rSN],
@@ -2355,7 +2360,15 @@ async function loadAll(force=false) {
   // 2 — Resto en paralelo sin bloquear
   const resultados = await Promise.allSettled(
     resto.map(([key, fn]) =>
-      fetchHoja(key).then(rows => fn(rows)).catch(e => { throw {key, e}; })
+      fetchHoja(key)
+        .then(rows => {
+          console.log('[LOAD] '+key+' → '+rows.length+' filas → llamando '+fn.name);
+          fn(rows);
+        })
+        .catch(e => {
+          console.error('[ERROR] '+key+':', e.message||e);
+          throw {key, e};
+        })
     )
   );
 
@@ -2366,20 +2379,13 @@ async function loadAll(force=false) {
   if(errores.length === 0) {
     setOK('Conectado · todos los datos actualizados · caché 15 min');
   } else {
+    console.error('[ERRORES]', errores, resultados.filter(r=>r.status==='rejected').map(r=>r.reason));
     setErr('Parcial. Hojas con error: ' + errores.map(k=>HOJAS[k]).join(', '));
   }
 
   renderOportunidades();
 
-  // 3 — TC al final (datos de tarjetas)
-  try {
-    const tc_rows = await fetchHoja('tc');
-    rTC(tc_rows);
-  } catch(e) {
-    console.warn('[TC] Error al cargar:', e.message);
-  }
-
-  // 4 — CEG al final (más pesado)
+  // 3 — CEG al final (más pesado)
   try {
     const ceg_rows = await fetchHoja('ceg');
     rCEG(ceg_rows);
@@ -2773,8 +2779,14 @@ function fmtMesLabel(m){
 // RATIO (recalcular desde base): Activación = Ctas.Activas / Ctas.Habilitadas
 
 function rTC(rawRows){
-  if(!rawRows||!rawRows.length){ console.warn('[TC] Sin datos'); return; }
-
+  console.log('[TC] ▶ rTC llamada con', rawRows?rawRows.length:0, 'filas');
+  if(!rawRows||!rawRows.length){
+    console.warn('[TC] ✗ Sin datos. Verificar: 1) hoja "TC INDIVIDUOS" existe en Sheet, 2) está en COLS del Apps Script, 3) URL correcta');
+    return;
+  }
+  const keys=Object.keys(rawRows[0]);
+  console.log('[TC] ✓ Columnas:', keys.join(', '));
+  console.log('[TC] Fila 0 MES:', rawRows[0]['MES'], '| Suc:', rawRows[0]['Sucursales'], '| Consumo:', rawRows[0]['Monto Consumo']);
   const MMAP={ene:'01',feb:'02',mar:'03',abr:'04',may:'05',jun:'06',
                jul:'07',ago:'08',sep:'09',oct:'10',nov:'11',dic:'12'};
 
@@ -3166,6 +3178,10 @@ function tieneTarjeta(v){
 function renderOport(){
   if(typeof renderOportunidades==='function')renderOportunidades();
 }
+
+
+
+
 
 
 

@@ -1005,6 +1005,8 @@ th{background:var(--bna-marino)}
 
 
 
+
+
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -2268,7 +2270,7 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec';
-const HOJAS = {"com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
+const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
 const CACHE = {};
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutos
 
@@ -2369,7 +2371,15 @@ async function loadAll(force=false) {
 
   renderOportunidades();
 
-  // 3 — CEG al final (más pesado)
+  // 3 — TC al final (datos de tarjetas)
+  try {
+    const tc_rows = await fetchHoja('tc');
+    rTC(tc_rows);
+  } catch(e) {
+    console.warn('[TC] Error al cargar:', e.message);
+  }
+
+  // 4 — CEG al final (más pesado)
   try {
     const ceg_rows = await fetchHoja('ceg');
     rCEG(ceg_rows);
@@ -2748,13 +2758,124 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ═══ TC INDIVIDUOS (datos embebidos — actualizar Sheet para nuevos meses) ═══
-const TC_DATA = {"records":[{"mes":"2026-01","suc":"AIMOGASTA","consumo":177.08,"consumo_mc":118.78,"consumo_visa":58.29,"tx":3023,"tx_mc":1757,"tx_visa":1266,"altas":5,"altas_mc":3,"altas_visa":2,"ctas_total":2293,"ctas_total_mc":1799,"ctas_total_visa":494,"ctas_res":830,"ctas_res_mc":597,"ctas_res_visa":233,"ctas_hab":916,"ctas_hab_mc":545,"ctas_hab_visa":371,"ctas_act":562,"ctas_act_mc":363,"ctas_act_visa":199,"tarjetas":2427,"tarjetas_mc":1957,"tarjetas_visa":470,"activ":61.4,"activ_mc":66.6,"activ_visa":53.6,"adic_mc":158,"adic_visa":31},{"mes":"2026-01","suc":"ANDALGALA","consumo":1436.58,"consumo_mc":929.76,"consumo_visa":506.82,"tx":23976,"tx_mc":11785,"tx_visa":12191,"altas":18,"altas_mc":18,"altas_visa":0,"ctas_total":7978,"ctas_total_mc":5843,"ctas_total_visa":2135,"ctas_res":4714,"ctas_res_mc":3082,"ctas_res_visa":1632,"ctas_hab":5068,"ctas_hab_mc":3088,"ctas_hab_visa":1980,"ctas_act":3835,"ctas_act_mc":2327,"ctas_act_visa":1508,"tarjetas":8309,"tarjetas_mc":6047,"tarjetas_visa":2262,"activ":75.7,"activ_mc":75.4,"activ_visa":76.2,"adic_mc":204,"adic_visa":79},{"mes":"2026-01","suc":"ANILLACO","consumo":68.56,"consumo_mc":41.88,"consumo_visa":26.68,"tx":1617,"tx_mc":757,"tx_visa":860,"altas":0,"altas_mc":0,"altas_visa":0,"ctas_total":763,"ctas_total_mc":495,"ctas_total_visa":268,"ctas_res":338,"ctas_res_mc":202,"ctas_res_visa":136,"ctas_hab":433,"ctas_hab_mc":203,"ctas_hab_visa":230,"ctas_act":252,"ctas_act_mc":135,"ctas_act_visa":117,"tarjetas":796,"tarjetas_mc":527,"tarjetas_visa":269,"activ":58.2,"activ_mc":66.5,"activ_visa":50.9,"adic_mc":32,"adic_visa":6},{"mes":"2026-01","suc":"BELEN","consumo":1589.03,"consumo_mc":978.57,"consumo_visa":610.46,"tx":26067,"tx_mc":12028,"tx_visa":14039,"altas":10,"altas_mc":10,"altas_visa":0,"ctas_total":10675,"ctas_total_mc":7773,"ctas_total_visa":2902,"ctas_res":5568,"ctas_res_mc":3413,"ctas_res_visa":2155,"ctas_hab":5982,"ctas_hab_mc":3322,"ctas_hab_visa":2660,"ctas_act":4374,"ctas_act_mc":2449,"ctas_act_visa":1925,"tarjetas":11048,"tarjetas_mc":7961,"tarjetas_visa":3087,"activ":73.1,"activ_mc":73.7,"activ_visa":72.4,"adic_mc":188,"adic_visa":89},{"mes":"2026-01","suc":"CHAMICAL","consumo":245.89,"consumo_mc":175.56,"consumo_visa":70.32,"tx":4442,"tx_mc":2767,"tx_visa":1675,"altas":2,"altas_mc":2,"altas_visa":0,"ctas_total":2051,"ctas_total_mc":1591,"ctas_total_visa":460,"ctas_res":914,"ctas_res_mc":650,"ctas_res_visa":264,"ctas_hab":995,"ctas_hab_mc":624,"ctas_hab_visa":371,"ctas_act":653,"ctas_act_mc":433,"ctas_act_visa":220,"tarjetas":2125,"tarjetas_mc":1671,"tarjetas_visa":454,"activ":65.6,"activ_mc":69.4,"activ_visa":59.3,"adic_mc":80,"adic_visa":23},{"mes":"2026-01","suc":"CHEPES","consumo":176.91,"consumo_mc":111.44,"consumo_visa":65.47,"tx":3384,"tx_mc":1895,"tx_visa":1489,"altas":3,"altas_mc":3,"altas_visa":0,"ctas_total":1997,"ctas_total_mc":1414,"ctas_total_visa":583,"ctas_res":854,"ctas_res_mc":571,"ctas_res_visa":283,"ctas_hab":1008,"ctas_hab_mc":518,"ctas_hab_visa":490,"ctas_act":581,"ctas_act_mc":353,"ctas_act_visa":228,"tarjetas":2109,"tarjetas_mc":1544,"tarjetas_visa":565,"activ":57.6,"activ_mc":68.1,"activ_visa":46.5,"adic_mc":130,"adic_visa":52},{"mes":"2026-01","suc":"CHILECITO","consumo":425.18,"consumo_mc":258.81,"consumo_visa":166.37,"tx":7415,"tx_mc":3820,"tx_visa":3595,"altas":24,"altas_mc":17,"altas_visa":7,"ctas_total":4493,"ctas_total_mc":3241,"ctas_total_visa":1252,"ctas_res":1617,"ctas_res_mc":1001,"ctas_res_visa":616,"ctas_hab":2025,"ctas_hab_mc":1123,"ctas_hab_visa":902,"ctas_act":1179,"ctas_act_mc":664,"ctas_act_visa":515,"tarjetas":4624,"tarjetas_mc":3465,"tarjetas_visa":1159,"activ":58.2,"activ_mc":59.1,"activ_visa":57.1,"adic_mc":224,"adic_visa":61},{"mes":"2026-01","suc":"EL MILAGRO","consumo":68.24,"consumo_mc":58.31,"consumo_visa":9.93,"tx":795,"tx_mc":532,"tx_visa":263,"altas":1,"altas_mc":1,"altas_visa":0,"ctas_total":765,"ctas_total_mc":662,"ctas_total_visa":103,"ctas_res":259,"ctas_res_mc":207,"ctas_res_visa":52,"ctas_hab":278,"ctas_hab_mc":202,"ctas_hab_visa":76,"ctas_act":169,"ctas_act_mc":128,"ctas_act_visa":41,"tarjetas":811,"tarjetas_mc":717,"tarjetas_visa":94,"activ":60.8,"activ_mc":63.4,"activ_visa":53.9,"adic_mc":55,"adic_visa":4},{"mes":"2026-01","suc":"FAMATINA","consumo":80.1,"consumo_mc":46.98,"consumo_visa":33.12,"tx":1547,"tx_mc":531,"tx_visa":1016,"altas":5,"altas_mc":5,"altas_visa":0,"ctas_total":1020,"ctas_total_mc":638,"ctas_total_visa":382,"ctas_res":409,"ctas_res_mc":219,"ctas_res_visa":190,"ctas_hab":523,"ctas_hab_mc":221,"ctas_hab_visa":302,"ctas_act":288,"ctas_act_mc":128,"ctas_act_visa":160,"tarjetas":1080,"tarjetas_mc":679,"tarjetas_visa":401,"activ":55.1,"activ_mc":57.9,"activ_visa":53.0,"adic_mc":41,"adic_visa":22},{"mes":"2026-01","suc":"FIAMBALA","consumo":462.82,"consumo_mc":270.77,"consumo_visa":192.05,"tx":6070,"tx_mc":2833,"tx_visa":3237,"altas":9,"altas_mc":9,"altas_visa":0,"ctas_total":3325,"ctas_total_mc":2438,"ctas_total_visa":887,"ctas_res":1625,"ctas_res_mc":1013,"ctas_res_visa":612,"ctas_hab":1740,"ctas_hab_mc":971,"ctas_hab_visa":769,"ctas_act":1222,"ctas_act_mc":693,"ctas_act_visa":529,"tarjetas":3395,"tarjetas_mc":2475,"tarjetas_visa":920,"activ":70.2,"activ_mc":71.4,"activ_visa":68.8,"adic_mc":37,"adic_visa":14},{"mes":"2026-01","suc":"FRAY MAMERTO ESQUIU","consumo":2724.78,"consumo_mc":1389.78,"consumo_visa":1335.01,"tx":55165,"tx_mc":20037,"tx_visa":35128,"altas":33,"altas_mc":32,"altas_visa":1,"ctas_total":9387,"ctas_total_mc":5598,"ctas_total_visa":3789,"ctas_res":5965,"ctas_res_mc":3182,"ctas_res_visa":2783,"ctas_hab":6628,"ctas_hab_mc":3327,"ctas_hab_visa":3301,"ctas_act":5189,"ctas_act_mc":2550,"ctas_act_visa":2639,"tarjetas":9940,"tarjetas_mc":6156,"tarjetas_visa":3784,"activ":78.3,"activ_mc":76.6,"activ_visa":79.9,"adic_mc":558,"adic_visa":223},{"mes":"2026-01","suc":"LA RIOJA","consumo":1326.21,"consumo_mc":758.32,"consumo_visa":567.88,"tx":24505,"tx_mc":11231,"tx_visa":13274,"altas":71,"altas_mc":58,"altas_visa":13,"ctas_total":13359,"ctas_total_mc":9251,"ctas_total_visa":4108,"ctas_res":4623,"ctas_res_mc":2649,"ctas_res_visa":1974,"ctas_hab":6385,"ctas_hab_mc":3675,"ctas_hab_visa":2710,"ctas_act":3527,"ctas_act_mc":1769,"ctas_act_visa":1758,"tarjetas":13683,"tarjetas_mc":9679,"tarjetas_visa":4004,"activ":55.2,"activ_mc":48.1,"activ_visa":64.9,"adic_mc":428,"adic_visa":119},{"mes":"2026-01","suc":"LOS ALTOS","consumo":555.69,"consumo_mc":370.24,"consumo_visa":185.45,"tx":9505,"tx_mc":4401,"tx_visa":5104,"altas":6,"altas_mc":6,"altas_visa":0,"ctas_total":4590,"ctas_total_mc":3541,"ctas_total_visa":1049,"ctas_res":2098,"ctas_res_mc":1365,"ctas_res_visa":733,"ctas_hab":2192,"ctas_hab_mc":1262,"ctas_hab_visa":930,"ctas_act":1486,"ctas_act_mc":849,"ctas_act_visa":637,"tarjetas":4735,"tarjetas_mc":3652,"tarjetas_visa":1083,"activ":67.8,"activ_mc":67.3,"activ_visa":68.5,"adic_mc":111,"adic_visa":26},{"mes":"2026-01","suc":"OLTA","consumo":89.44,"consumo_mc":57.68,"consumo_visa":31.76,"tx":1732,"tx_mc":1039,"tx_visa":693,"altas":3,"altas_mc":3,"altas_visa":0,"ctas_total":1080,"ctas_total_mc":860,"ctas_total_visa":220,"ctas_res":498,"ctas_res_mc":369,"ctas_res_visa":129,"ctas_hab":528,"ctas_hab_mc":358,"ctas_hab_visa":170,"ctas_act":324,"ctas_act_mc":221,"ctas_act_visa":103,"tarjetas":1149,"tarjetas_mc":930,"tarjetas_visa":219,"activ":61.4,"activ_mc":61.7,"activ_visa":60.6,"adic_mc":70,"adic_visa":17},{"mes":"2026-01","suc":"POMAN","consumo":486.35,"consumo_mc":282.25,"consumo_visa":204.1,"tx":8284,"tx_mc":3477,"tx_visa":4807,"altas":5,"altas_mc":5,"altas_visa":0,"ctas_total":4473,"ctas_total_mc":3315,"ctas_total_visa":1158,"ctas_res":1958,"ctas_res_mc":1171,"ctas_res_visa":787,"ctas_hab":2189,"ctas_hab_mc":1247,"ctas_hab_visa":942,"ctas_act":1491,"ctas_act_mc":788,"ctas_act_visa":703,"tarjetas":4555,"tarjetas_mc":3373,"tarjetas_visa":1182,"activ":68.1,"activ_mc":63.2,"activ_visa":74.6,"adic_mc":58,"adic_visa":27},{"mes":"2026-01","suc":"RECREO","consumo":689.95,"consumo_mc":441.36,"consumo_visa":248.6,"tx":11811,"tx_mc":5039,"tx_visa":6772,"altas":19,"altas_mc":19,"altas_visa":0,"ctas_total":6740,"ctas_total_mc":5169,"ctas_total_visa":1571,"ctas_res":2258,"ctas_res_mc":1320,"ctas_res_visa":938,"ctas_hab":2805,"ctas_hab_mc":1555,"ctas_hab_visa":1250,"ctas_act":1721,"ctas_act_mc":907,"ctas_act_visa":814,"tarjetas":6799,"tarjetas_mc":5247,"tarjetas_visa":1552,"activ":61.4,"activ_mc":58.3,"activ_visa":65.1,"adic_mc":78,"adic_visa":23},{"mes":"2026-01","suc":"SALICAS","consumo":59.09,"consumo_mc":29.71,"consumo_visa":29.38,"tx":1042,"tx_mc":434,"tx_visa":608,"altas":3,"altas_mc":3,"altas_visa":0,"ctas_total":609,"ctas_total_mc":402,"ctas_total_visa":207,"ctas_res":265,"ctas_res_mc":173,"ctas_res_visa":92,"ctas_hab":299,"ctas_hab_mc":155,"ctas_hab_visa":144,"ctas_act":191,"ctas_act_mc":111,"ctas_act_visa":80,"tarjetas":643,"tarjetas_mc":433,"tarjetas_visa":210,"activ":63.9,"activ_mc":71.6,"activ_visa":55.6,"adic_mc":31,"adic_visa":13},{"mes":"2026-01","suc":"SAN F. DEL V. DE CATAMARCA","consumo":19217.41,"consumo_mc":10414.31,"consumo_visa":8803.11,"tx":407853,"tx_mc":161783,"tx_visa":246070,"altas":188,"altas_mc":177,"altas_visa":11,"ctas_total":95147,"ctas_total_mc":62031,"ctas_total_visa":33116,"ctas_res":51523,"ctas_res_mc":28763,"ctas_res_visa":22760,"ctas_hab":57731,"ctas_hab_mc":30774,"ctas_hab_visa":26957,"ctas_act":43789,"ctas_act_mc":22606,"ctas_act_visa":21183,"tarjetas":101172,"tarjetas_mc":65983,"tarjetas_visa":35189,"activ":75.9,"activ_mc":73.5,"activ_visa":78.6,"adic_mc":3952,"adic_visa":2124},{"mes":"2026-01","suc":"SANTA MARIA","consumo":1838.59,"consumo_mc":1093.04,"consumo_visa":745.55,"tx":33805,"tx_mc":15925,"tx_visa":17880,"altas":35,"altas_mc":34,"altas_visa":1,"ctas_total":11044,"ctas_total_mc":7604,"ctas_total_visa":3440,"ctas_res":6469,"ctas_res_mc":3969,"ctas_res_visa":2500,"ctas_hab":6981,"ctas_hab_mc":3954,"ctas_hab_visa":3027,"ctas_act":5440,"ctas_act_mc":3156,"ctas_act_visa":2284,"tarjetas":11751,"tarjetas_mc":8060,"tarjetas_visa":3691,"activ":77.9,"activ_mc":79.8,"activ_visa":75.5,"adic_mc":456,"adic_visa":248},{"mes":"2026-01","suc":"TINOGASTA","consumo":893.04,"consumo_mc":544.46,"consumo_visa":348.58,"tx":15510,"tx_mc":7585,"tx_visa":7925,"altas":5,"altas_mc":4,"altas_visa":1,"ctas_total":6062,"ctas_total_mc":4337,"ctas_total_visa":1725,"ctas_res":2949,"ctas_res_mc":1763,"ctas_res_visa":1186,"ctas_hab":3300,"ctas_hab_mc":1760,"ctas_hab_visa":1540,"ctas_act":2336,"ctas_act_mc":1285,"ctas_act_visa":1051,"tarjetas":6289,"tarjetas_mc":4505,"tarjetas_visa":1784,"activ":70.8,"activ_mc":73.0,"activ_visa":68.2,"adic_mc":168,"adic_visa":89},{"mes":"2026-01","suc":"VILLA DOLORES (CAT)","consumo":2396.27,"consumo_mc":1440.13,"consumo_visa":956.14,"tx":50272,"tx_mc":22183,"tx_visa":28089,"altas":25,"altas_mc":24,"altas_visa":1,"ctas_total":13165,"ctas_total_mc":8787,"ctas_total_visa":4378,"ctas_res":7502,"ctas_res_mc":4412,"ctas_res_visa":3090,"ctas_hab":8414,"ctas_hab_mc":4710,"ctas_hab_visa":3704,"ctas_act":6230,"ctas_act_mc":3324,"ctas_act_visa":2906,"tarjetas":13858,"tarjetas_mc":9158,"tarjetas_visa":4700,"activ":74.0,"activ_mc":70.6,"activ_visa":78.5,"adic_mc":371,"adic_visa":209},{"mes":"2026-01","suc":"VILLA UNION","consumo":91.61,"consumo_mc":57.82,"consumo_visa":33.78,"tx":1780,"tx_mc":952,"tx_visa":828,"altas":4,"altas_mc":4,"altas_visa":0,"ctas_total":1229,"ctas_total_mc":915,"ctas_total_visa":314,"ctas_res":524,"ctas_res_mc":370,"ctas_res_visa":154,"ctas_hab":573,"ctas_hab_mc":340,"ctas_hab_visa":233,"ctas_act":342,"ctas_act_mc":213,"ctas_act_visa":129,"tarjetas":1303,"tarjetas_mc":991,"tarjetas_visa":312,"activ":59.7,"activ_mc":62.6,"activ_visa":55.4,"adic_mc":76,"adic_visa":17},{"mes":"2026-01","suc":"VINCHINA","consumo":57.08,"consumo_mc":38.47,"consumo_visa":18.62,"tx":869,"tx_mc":533,"tx_visa":336,"altas":2,"altas_mc":2,"altas_visa":0,"ctas_total":627,"ctas_total_mc":476,"ctas_total_visa":151,"ctas_res":283,"ctas_res_mc":201,"ctas_res_visa":82,"ctas_hab":316,"ctas_hab_mc":196,"ctas_hab_visa":120,"ctas_act":207,"ctas_act_mc":140,"ctas_act_visa":67,"tarjetas":681,"tarjetas_mc":521,"tarjetas_visa":160,"activ":65.5,"activ_mc":71.4,"activ_visa":55.8,"adic_mc":45,"adic_visa":8},{"mes":"2025-12","suc":"AIMOGASTA","consumo":186.09,"consumo_mc":123.45,"consumo_visa":62.64,"tx":3278,"tx_mc":1908,"tx_visa":1370,"altas":6,"altas_mc":6,"altas_visa":0,"ctas_total":2295,"ctas_total_mc":1808,"ctas_total_visa":487,"ctas_res":828,"ctas_res_mc":608,"ctas_res_visa":220,"ctas_hab":918,"ctas_hab_mc":551,"ctas_hab_visa":367,"ctas_act":568,"ctas_act_mc":368,"ctas_act_visa":200,"tarjetas":2429,"tarjetas_mc":1965,"tarjetas_visa":464,"activ":61.9,"activ_mc":66.8,"activ_visa":54.5,"adic_mc":157,"adic_visa":31},{"mes":"2025-12","suc":"ANDALGALA","consumo":1554.64,"consumo_mc":1027.85,"consumo_visa":526.79,"tx":26147,"tx_mc":13196,"tx_visa":12951,"altas":14,"altas_mc":14,"altas_visa":0,"ctas_total":7969,"ctas_total_mc":5843,"ctas_total_visa":2126,"ctas_res":4702,"ctas_res_mc":3071,"ctas_res_visa":1631,"ctas_hab":5093,"ctas_hab_mc":3106,"ctas_hab_visa":1987,"ctas_act":3880,"ctas_act_mc":2369,"ctas_act_visa":1511,"tarjetas":8296,"tarjetas_mc":6047,"tarjetas_visa":2249,"activ":76.2,"activ_mc":76.3,"activ_visa":76.0,"adic_mc":204,"adic_visa":79},{"mes":"2025-12","suc":"ANILLACO","consumo":71.92,"consumo_mc":43.85,"consumo_visa":28.07,"tx":1606,"tx_mc":723,"tx_visa":883,"altas":5,"altas_mc":5,"altas_visa":0,"ctas_total":765,"ctas_total_mc":496,"ctas_total_visa":269,"ctas_res":335,"ctas_res_mc":202,"ctas_res_visa":133,"ctas_hab":432,"ctas_hab_mc":202,"ctas_hab_visa":230,"ctas_act":251,"ctas_act_mc":137,"ctas_act_visa":114,"tarjetas":796,"tarjetas_mc":528,"tarjetas_visa":268,"activ":58.1,"activ_mc":67.8,"activ_visa":49.6,"adic_mc":32,"adic_visa":6},{"mes":"2025-12","suc":"BELEN","consumo":1754.77,"consumo_mc":1074.79,"consumo_visa":679.98,"tx":29805,"tx_mc":13752,"tx_visa":16053,"altas":15,"altas_mc":15,"altas_visa":0,"ctas_total":10665,"ctas_total_mc":7772,"ctas_total_visa":2893,"ctas_res":5585,"ctas_res_mc":3437,"ctas_res_visa":2148,"ctas_hab":5997,"ctas_hab_mc":3321,"ctas_hab_visa":2676,"ctas_act":4577,"ctas_act_mc":2642,"ctas_act_visa":1935,"tarjetas":11024,"tarjetas_mc":7959,"tarjetas_visa":3065,"activ":76.3,"activ_mc":79.6,"activ_visa":72.3,"adic_mc":187,"adic_visa":89},{"mes":"2025-12","suc":"CHAMICAL","consumo":265.85,"consumo_mc":187.27,"consumo_visa":78.58,"tx":4670,"tx_mc":2665,"tx_visa":2005,"altas":8,"altas_mc":8,"altas_visa":0,"ctas_total":2060,"ctas_total_mc":1604,"ctas_total_visa":456,"ctas_res":917,"ctas_res_mc":655,"ctas_res_visa":262,"ctas_hab":997,"ctas_hab_mc":626,"ctas_hab_visa":371,"ctas_act":673,"ctas_act_mc":449,"ctas_act_visa":224,"tarjetas":2136,"tarjetas_mc":1686,"tarjetas_visa":450,"activ":67.5,"activ_mc":71.7,"activ_visa":60.4,"adic_mc":82,"adic_visa":23},{"mes":"2025-12","suc":"CHEPES","consumo":191.06,"consumo_mc":118.31,"consumo_visa":72.75,"tx":3720,"tx_mc":2052,"tx_visa":1668,"altas":5,"altas_mc":5,"altas_visa":0,"ctas_total":2002,"ctas_total_mc":1421,"ctas_total_visa":581,"ctas_res":873,"ctas_res_mc":590,"ctas_res_visa":283,"ctas_hab":1017,"ctas_hab_mc":521,"ctas_hab_visa":496,"ctas_act":611,"ctas_act_mc":374,"ctas_act_visa":237,"tarjetas":2113,"tarjetas_mc":1551,"tarjetas_visa":562,"activ":60.1,"activ_mc":71.8,"activ_visa":47.8,"adic_mc":130,"adic_visa":53},{"mes":"2025-12","suc":"CHILECITO","consumo":451.4,"consumo_mc":275.55,"consumo_visa":175.85,"tx":7903,"tx_mc":3845,"tx_visa":4058,"altas":15,"altas_mc":15,"altas_visa":0,"ctas_total":4484,"ctas_total_mc":3242,"ctas_total_visa":1242,"ctas_res":1616,"ctas_res_mc":998,"ctas_res_visa":618,"ctas_hab":1998,"ctas_hab_mc":1100,"ctas_hab_visa":898,"ctas_act":1210,"ctas_act_mc":676,"ctas_act_visa":534,"tarjetas":4622,"tarjetas_mc":3463,"tarjetas_visa":1159,"activ":60.6,"activ_mc":61.5,"activ_visa":59.5,"adic_mc":221,"adic_visa":63},{"mes":"2025-12","suc":"EL MILAGRO","consumo":55.48,"consumo_mc":40.79,"consumo_visa":14.69,"tx":914,"tx_mc":607,"tx_visa":307,"altas":4,"altas_mc":4,"altas_visa":0,"ctas_total":770,"ctas_total_mc":666,"ctas_total_visa":104,"ctas_res":266,"ctas_res_mc":212,"ctas_res_visa":54,"ctas_hab":286,"ctas_hab_mc":208,"ctas_hab_visa":78,"ctas_act":172,"ctas_act_mc":126,"ctas_act_visa":46,"tarjetas":816,"tarjetas_mc":721,"tarjetas_visa":95,"activ":60.1,"activ_mc":60.6,"activ_visa":59.0,"adic_mc":55,"adic_visa":4},{"mes":"2025-12","suc":"FAMATINA","consumo":83.15,"consumo_mc":39.27,"consumo_visa":43.88,"tx":1962,"tx_mc":670,"tx_visa":1292,"altas":1,"altas_mc":1,"altas_visa":0,"ctas_total":1017,"ctas_total_mc":639,"ctas_total_visa":378,"ctas_res":413,"ctas_res_mc":223,"ctas_res_visa":190,"ctas_hab":517,"ctas_hab_mc":216,"ctas_hab_visa":301,"ctas_act":298,"ctas_act_mc":137,"ctas_act_visa":161,"tarjetas":1078,"tarjetas_mc":681,"tarjetas_visa":397,"activ":57.6,"activ_mc":63.4,"activ_visa":53.5,"adic_mc":42,"adic_visa":22},{"mes":"2025-12","suc":"FIAMBALA","consumo":502.83,"consumo_mc":312.23,"consumo_visa":190.6,"tx":6863,"tx_mc":3215,"tx_visa":3648,"altas":2,"altas_mc":2,"altas_visa":0,"ctas_total":3325,"ctas_total_mc":2438,"ctas_total_visa":887,"ctas_res":1618,"ctas_res_mc":1007,"ctas_res_visa":611,"ctas_hab":1739,"ctas_hab_mc":964,"ctas_hab_visa":775,"ctas_act":1272,"ctas_act_mc":738,"ctas_act_visa":534,"tarjetas":3395,"tarjetas_mc":2475,"tarjetas_visa":920,"activ":73.1,"activ_mc":76.6,"activ_visa":68.9,"adic_mc":37,"adic_visa":12},{"mes":"2025-12","suc":"FRAY MAMERTO ESQUIU","consumo":2951.74,"consumo_mc":1511.93,"consumo_visa":1439.81,"tx":61949,"tx_mc":23099,"tx_visa":38850,"altas":37,"altas_mc":37,"altas_visa":0,"ctas_total":9335,"ctas_total_mc":5576,"ctas_total_visa":3759,"ctas_res":5987,"ctas_res_mc":3195,"ctas_res_visa":2792,"ctas_hab":6639,"ctas_hab_mc":3338,"ctas_hab_visa":3301,"ctas_act":5276,"ctas_act_mc":2620,"ctas_act_visa":2656,"tarjetas":9884,"tarjetas_mc":6132,"tarjetas_visa":3752,"activ":79.5,"activ_mc":78.5,"activ_visa":80.5,"adic_mc":556,"adic_visa":218},{"mes":"2025-12","suc":"LA RIOJA","consumo":1400.57,"consumo_mc":809.45,"consumo_visa":591.12,"tx":26275,"tx_mc":11597,"tx_visa":14678,"altas":59,"altas_mc":59,"altas_visa":0,"ctas_total":13274,"ctas_total_mc":9223,"ctas_total_visa":4051,"ctas_res":4632,"ctas_res_mc":2686,"ctas_res_visa":1946,"ctas_hab":6399,"ctas_hab_mc":3696,"ctas_hab_visa":2703,"ctas_act":3585,"ctas_act_mc":1803,"ctas_act_visa":1782,"tarjetas":13602,"tarjetas_mc":9649,"tarjetas_visa":3953,"activ":56.0,"activ_mc":48.8,"activ_visa":65.9,"adic_mc":426,"adic_visa":116},{"mes":"2025-12","suc":"LOS ALTOS","consumo":586.92,"consumo_mc":384.56,"consumo_visa":202.36,"tx":10340,"tx_mc":4740,"tx_visa":5600,"altas":6,"altas_mc":6,"altas_visa":0,"ctas_total":4585,"ctas_total_mc":3543,"ctas_total_visa":1042,"ctas_res":2135,"ctas_res_mc":1392,"ctas_res_visa":743,"ctas_hab":2213,"ctas_hab_mc":1270,"ctas_hab_visa":943,"ctas_act":1529,"ctas_act_mc":890,"ctas_act_visa":639,"tarjetas":4730,"tarjetas_mc":3655,"tarjetas_visa":1075,"activ":69.1,"activ_mc":70.1,"activ_visa":67.8,"adic_mc":112,"adic_visa":26},{"mes":"2025-12","suc":"OLTA","consumo":109.51,"consumo_mc":75.08,"consumo_visa":34.42,"tx":2117,"tx_mc":1313,"tx_visa":804,"altas":5,"altas_mc":5,"altas_visa":0,"ctas_total":1084,"ctas_total_mc":865,"ctas_total_visa":219,"ctas_res":505,"ctas_res_mc":373,"ctas_res_visa":132,"ctas_hab":547,"ctas_hab_mc":373,"ctas_hab_visa":174,"ctas_act":329,"ctas_act_mc":227,"ctas_act_visa":102,"tarjetas":1155,"tarjetas_mc":936,"tarjetas_visa":219,"activ":60.1,"activ_mc":60.9,"activ_visa":58.6,"adic_mc":71,"adic_visa":17},{"mes":"2025-12","suc":"POMAN","consumo":535.46,"consumo_mc":320.09,"consumo_visa":215.37,"tx":9375,"tx_mc":4071,"tx_visa":5304,"altas":11,"altas_mc":11,"altas_visa":0,"ctas_total":4478,"ctas_total_mc":3324,"ctas_total_visa":1154,"ctas_res":1978,"ctas_res_mc":1188,"ctas_res_visa":790,"ctas_hab":2223,"ctas_hab_mc":1270,"ctas_hab_visa":953,"ctas_act":1548,"ctas_act_mc":844,"ctas_act_visa":704,"tarjetas":4558,"tarjetas_mc":3382,"tarjetas_visa":1176,"activ":69.6,"activ_mc":66.5,"activ_visa":73.9,"adic_mc":58,"adic_visa":27},{"mes":"2025-12","suc":"RECREO","consumo":723.62,"consumo_mc":442.46,"consumo_visa":281.16,"tx":12940,"tx_mc":5470,"tx_visa":7470,"altas":21,"altas_mc":21,"altas_visa":0,"ctas_total":6726,"ctas_total_mc":5169,"ctas_total_visa":1557,"ctas_res":2275,"ctas_res_mc":1332,"ctas_res_visa":943,"ctas_hab":2809,"ctas_hab_mc":1559,"ctas_hab_visa":1250,"ctas_act":1736,"ctas_act_mc":902,"ctas_act_visa":834,"tarjetas":6788,"tarjetas_mc":5252,"tarjetas_visa":1536,"activ":61.8,"activ_mc":57.9,"activ_visa":66.7,"adic_mc":83,"adic_visa":23},{"mes":"2025-12","suc":"SALICAS","consumo":63.23,"consumo_mc":35.59,"consumo_visa":27.64,"tx":1212,"tx_mc":523,"tx_visa":689,"altas":0,"altas_mc":0,"altas_visa":0,"ctas_total":620,"ctas_total_mc":406,"ctas_total_visa":214,"ctas_res":262,"ctas_res_mc":170,"ctas_res_visa":92,"ctas_hab":303,"ctas_hab_mc":157,"ctas_hab_visa":146,"ctas_act":200,"ctas_act_mc":121,"ctas_act_visa":79,"tarjetas":651,"tarjetas_mc":438,"tarjetas_visa":213,"activ":66.0,"activ_mc":77.1,"activ_visa":54.1,"adic_mc":32,"adic_visa":13},{"mes":"2025-12","suc":"SAN F. DEL V. DE CATAMARCA","consumo":21413.38,"consumo_mc":11993.29,"consumo_visa":9420.1,"tx":455523,"tx_mc":184458,"tx_visa":271065,"altas":139,"altas_mc":139,"altas_visa":0,"ctas_total":95041,"ctas_total_mc":62059,"ctas_total_visa":32982,"ctas_res":51858,"ctas_res_mc":28918,"ctas_res_visa":22940,"ctas_hab":58174,"ctas_hab_mc":31035,"ctas_hab_visa":27139,"ctas_act":45152,"ctas_act_mc":23646,"ctas_act_visa":21506,"tarjetas":101029,"tarjetas_mc":66026,"tarjetas_visa":35003,"activ":77.6,"activ_mc":76.2,"activ_visa":79.2,"adic_mc":3967,"adic_visa":2124},{"mes":"2025-12","suc":"SANTA MARIA","consumo":2022.92,"consumo_mc":1212.23,"consumo_visa":810.69,"tx":36144,"tx_mc":17101,"tx_visa":19043,"altas":20,"altas_mc":20,"altas_visa":0,"ctas_total":11018,"ctas_total_mc":7595,"ctas_total_visa":3423,"ctas_res":6510,"ctas_res_mc":4018,"ctas_res_visa":2492,"ctas_hab":6990,"ctas_hab_mc":3958,"ctas_hab_visa":3032,"ctas_act":5534,"ctas_act_mc":3248,"ctas_act_visa":2286,"tarjetas":11715,"tarjetas_mc":8048,"tarjetas_visa":3667,"activ":79.2,"activ_mc":82.1,"activ_visa":75.4,"adic_mc":453,"adic_visa":248},{"mes":"2025-12","suc":"TINOGASTA","consumo":983.53,"consumo_mc":600.34,"consumo_visa":383.19,"tx":17181,"tx_mc":8291,"tx_visa":8890,"altas":19,"altas_mc":19,"altas_visa":0,"ctas_total":6062,"ctas_total_mc":4342,"ctas_total_visa":1720,"ctas_res":2993,"ctas_res_mc":1799,"ctas_res_visa":1194,"ctas_hab":3353,"ctas_hab_mc":1796,"ctas_hab_visa":1557,"ctas_act":2446,"ctas_act_mc":1385,"ctas_act_visa":1061,"tarjetas":6282,"tarjetas_mc":4510,"tarjetas_visa":1772,"activ":72.9,"activ_mc":77.1,"activ_visa":68.1,"adic_mc":168,"adic_visa":89},{"mes":"2025-12","suc":"VILLA DOLORES (CAT)","consumo":2616.11,"consumo_mc":1558.8,"consumo_visa":1057.31,"tx":55987,"tx_mc":24446,"tx_visa":31541,"altas":35,"altas_mc":35,"altas_visa":0,"ctas_total":13146,"ctas_total_mc":8792,"ctas_total_visa":4354,"ctas_res":7537,"ctas_res_mc":4451,"ctas_res_visa":3086,"ctas_hab":8472,"ctas_hab_mc":4759,"ctas_hab_visa":3713,"ctas_act":6414,"ctas_act_mc":3507,"ctas_act_visa":2907,"tarjetas":13834,"tarjetas_mc":9162,"tarjetas_visa":4672,"activ":75.7,"activ_mc":73.7,"activ_visa":78.3,"adic_mc":370,"adic_visa":206},{"mes":"2025-12","suc":"VILLA UNION","consumo":119.26,"consumo_mc":84.5,"consumo_visa":34.76,"tx":2179,"tx_mc":1246,"tx_visa":933,"altas":8,"altas_mc":8,"altas_visa":0,"ctas_total":1223,"ctas_total_mc":911,"ctas_total_visa":312,"ctas_res":535,"ctas_res_mc":379,"ctas_res_visa":156,"ctas_hab":597,"ctas_hab_mc":360,"ctas_hab_visa":237,"ctas_act":367,"ctas_act_mc":237,"ctas_act_visa":130,"tarjetas":1299,"tarjetas_mc":987,"tarjetas_visa":312,"activ":61.5,"activ_mc":65.8,"activ_visa":54.9,"adic_mc":76,"adic_visa":17},{"mes":"2025-12","suc":"VINCHINA","consumo":59.51,"consumo_mc":39.88,"consumo_visa":19.64,"tx":1042,"tx_mc":641,"tx_visa":401,"altas":6,"altas_mc":6,"altas_visa":0,"ctas_total":626,"ctas_total_mc":476,"ctas_total_visa":150,"ctas_res":291,"ctas_res_mc":205,"ctas_res_visa":86,"ctas_hab":329,"ctas_hab_mc":207,"ctas_hab_visa":122,"ctas_act":226,"ctas_act_mc":155,"ctas_act_visa":71,"tarjetas":680,"tarjetas_mc":521,"tarjetas_visa":159,"activ":68.7,"activ_mc":74.9,"activ_visa":58.2,"adic_mc":45,"adic_visa":8}],"meses":["2025-12","2026-01"],"sucs":["AIMOGASTA","ANDALGALA","ANILLACO","BELEN","CHAMICAL","CHEPES","CHILECITO","EL MILAGRO","FAMATINA","FIAMBALA","FRAY MAMERTO ESQUIU","LA RIOJA","LOS ALTOS","OLTA","POMAN","RECREO","SALICAS","SAN F. DEL V. DE CATAMARCA","SANTA MARIA","TINOGASTA","VILLA DOLORES (CAT)","VILLA UNION","VINCHINA"]};
+// TC_DATA se carga desde el Sheet (ver rTC)
+let TC_DATA = {records:[],meses:[],sucs:[]};
 
 function fmtMesLabel(m){
   const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const p=(m||'').split('-');
   return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:m;
 }
+
+// ══ TC INDIVIDUOS — carga y parseo desde Sheet ══
+// FLUJOS (sumar): Consumo, Tx, Altas
+// STOCKS (del mes, NO acumular): Cuentas, Tarjetas, Adicionales
+// RATIO (recalcular desde base): Activación = Ctas.Activas / Ctas.Habilitadas
+
+function rTC(rawRows){
+  if(!rawRows||!rawRows.length){ console.warn('[TC] Sin datos'); return; }
+
+  const MMAP={ene:'01',feb:'02',mar:'03',abr:'04',may:'05',jun:'06',
+               jul:'07',ago:'08',sep:'09',oct:'10',nov:'11',dic:'12'};
+
+  // Parsear número argentino: "$1.234.567,89" | "3.278" | "61,87 %" | "55.165"
+  const pN=v=>{
+    if(!v&&v!==0) return 0;
+    let s=v.toString().replace(/[$\s%]/g,'').trim();
+    if(!s||s==='-') return 0;
+    const hasDot=s.includes('.');
+    const hasComma=s.includes(',');
+    if(hasDot&&hasComma){
+      // "1.234.567,89" → miles=punto, decimal=coma
+      s=s.replace(/\./g,'').replace(',','.');
+    } else if(hasDot&&!hasComma){
+      // "3.278" o "55.165" → si parte decimal tiene 3 dígitos es miles
+      const pts=s.split('.');
+      if(pts.length>1&&pts[pts.length-1].length===3) s=s.replace(/\./g,'');
+      // si 1-2 dígitos después del punto: es decimal, dejar
+    } else if(!hasDot&&hasComma){
+      // "61,87" → decimal
+      s=s.replace(',','.');
+    }
+    const n=parseFloat(s);
+    return isNaN(n)?0:n;
+  };
+
+  // Parsear "dic-2025" → "2025-12"
+  const pMes=v=>{
+    if(!v) return '';
+    const s=v.toString().trim().toLowerCase();
+    const m=s.match(/^([a-z]{3})-(\d{4})$/);
+    if(m&&MMAP[m[1]]) return m[2]+'-'+MMAP[m[1]];
+    if(/^\d{4}-\d{2}/.test(s)) return s.slice(0,7);
+    return '';
+  };
+
+  const records=rawRows.map(r=>{
+    const hab   =pN(r['Cuentas habilitadas']);
+    const act   =pN(r['Cuentas activas']);
+    const habMC =pN(r['Cuentas habilitadas MC']);
+    const actMC =pN(r['Cuentas activas MC']);
+    const habVISA=pN(r['Cuentas habilitadas Visa']);
+    const actVISA=pN(r['Cuentas activas Visa']);
+    // Activación siempre recalculada desde la base (no del texto "61,87 %")
+    const activ    =hab>0?Math.round(act/hab*10000)/100:0;
+    const activMC  =habMC>0?Math.round(actMC/habMC*10000)/100:0;
+    const activVISA=habVISA>0?Math.round(actVISA/habVISA*10000)/100:0;
+
+    return {
+      mes:          pMes(r['MES']),
+      suc:          (r['Sucursales']||'').trim(),
+      // FLUJOS
+      consumo:      Math.round(pN(r['Monto Consumo'])/1e4)/100,   // MM$
+      consumo_mc:   Math.round(pN(r['Monto Consumo MC'])/1e4)/100,
+      consumo_visa: Math.round(pN(r['Monto Consumo VISA'])/1e4)/100,
+      tx:           Math.round(pN(r['Tx Consumo'])),
+      tx_mc:        Math.round(pN(r['Tx Consumo MC'])),
+      tx_visa:      Math.round(pN(r['Tx Consumo VISA'])),
+      altas:        Math.round(pN(r['Alta de Cuentas'])),
+      altas_mc:     Math.round(pN(r['Alta de Cuentas MC'])),
+      altas_visa:   Math.round(pN(r['Alta de Cuentas VISA'])),
+      // STOCKS
+      ctas_total:      Math.round(pN(r['Cuentas Totales'])),
+      ctas_total_mc:   Math.round(pN(r['Cuentas Totales MC'])),
+      ctas_total_visa: Math.round(pN(r['Cuentas Totales Visa'])),
+      ctas_res:        Math.round(pN(r['Cuentas con resumen'])),
+      ctas_res_mc:     Math.round(pN(r['Cuentas con resumen MC'])),
+      ctas_res_visa:   Math.round(pN(r['Cuentas con resumen Visa'])),
+      ctas_hab:     hab,  ctas_hab_mc:habMC, ctas_hab_visa:habVISA,
+      ctas_act:     act,  ctas_act_mc:actMC, ctas_act_visa:actVISA,
+      tarjetas:        Math.round(pN(r['Tarjetas Totales'])),
+      tarjetas_mc:     Math.round(pN(r['Tarjetas MC'])),
+      tarjetas_visa:   Math.round(pN(r['Tarjetas Visa'])),
+      adic_mc:         Math.round(pN(r['Tarjetas Adicionales MC'])),
+      adic_visa:       Math.round(pN(r['Tarjetas Adicionales Visa'])),
+      // RATIO recalculado
+      activ, activ_mc:activMC, activ_visa:activVISA,
+    };
+  }).filter(r=>r.suc&&r.mes);
+
+  const meses=[...new Set(records.map(r=>r.mes))].sort();
+  const sucs =[...new Set(records.map(r=>r.suc))].sort();
+  TC_DATA={records,meses,sucs};
+
+  // Verificación en consola
+  const tot=mes=>records.filter(r=>r.mes===mes);
+  meses.forEach(m=>{
+    const rr=tot(m);
+    const hab=rr.reduce((a,r)=>a+r.ctas_hab,0);
+    const act=rr.reduce((a,r)=>a+r.ctas_act,0);
+    const res=rr.reduce((a,r)=>a+r.ctas_res,0);
+    const cons=rr.reduce((a,r)=>a+r.consumo,0);
+    console.log('[TC]',m,'| Sucs:'+rr.length,'| Consumo:$'+cons.toFixed(0)+'M',
+      '| Activ:'+(hab>0?(act/hab*100).toFixed(1):'-')+'%',
+      '| C/Res:'+res+' ('+  (rr.reduce((a,r)=>a+r.ctas_total,0)>0?
+        (res/rr.reduce((a,r)=>a+r.ctas_total,0)*100).toFixed(1):'?')+'%)');
+  });
+
+  initTC();
+}
+
 
 function initTC(){
   const meses=[...TC_DATA.meses].reverse();
@@ -2809,7 +2930,9 @@ function applyFilterTC(){
   const ctasH=sum('ctas_hab'),ctasA=sum('ctas_act');
   const adicMC=sum('adic_mc'),adicVISA=sum('adic_visa');
   const tarjetas=sum('tarjetas');
-  const avgAct=rows.length>0?(rows.reduce((a,r)=>a+(r.activ||0),0)/rows.length).toFixed(1):0;
+  // Activación zonal: Σctas_activas / Σctas_habilitadas (no promedio)
+  const totalHab=sum('ctas_hab'), totalAct=sum('ctas_act');
+  const avgAct=totalHab>0?(totalAct/totalHab*100).toFixed(1):0;
 
   const n=v=>Number(v||0).toLocaleString('es-AR');
   const pct=(a,b)=>b>0?(a/b*100).toFixed(1)+'%':'—';
@@ -2957,8 +3080,9 @@ function applyFilterTC(){
 
   // Stocks: último mes disponible
   const stockRecs = allRecords.filter(r=>r.mes===mesReciente&&(!sucFiltAcum||r.suc===sucFiltAcum));
-  const stockAct  = stockRecs.reduce((a,r)=>a+r.ctas_act,0);
-  const stockActiv= stockRecs.length>0?(stockRecs.reduce((a,r)=>a+r.activ,0)/stockRecs.length).toFixed(1):0;
+  const stockAct   = stockRecs.reduce((a,r)=>a+r.ctas_act,0);
+  const stockHab   = stockRecs.reduce((a,r)=>a+r.ctas_hab,0);
+  const stockActiv = stockHab>0?(stockAct/stockHab*100).toFixed(1):0; // recalculado, no promedio
 
   const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
   setEl('tc-acum-meses',  mesesAnio.length+' mes'+(mesesAnio.length!==1?'es':'')+' acum. ('+mesesAnio.map(fmtMesLabel).join(', ')+')');
@@ -3042,6 +3166,9 @@ function tieneTarjeta(v){
 function renderOport(){
   if(typeof renderOportunidades==='function')renderOportunidades();
 }
+
+
+
 
 
 

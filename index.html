@@ -1011,6 +1011,7 @@ th{background:var(--bna-marino)}
 
 
 
+
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -2813,13 +2814,22 @@ function rTC(rawRows){
     return isNaN(n)?0:n;
   };
 
-  // Parsear "dic-2025" → "2025-12"
+  // Parsear mes en cualquier formato → "yyyy-MM" para ordenar
   const pMes=v=>{
     if(!v) return '';
-    const s=v.toString().trim().toLowerCase();
-    const m=s.match(/^([a-z]{3})-(\d{4})$/);
-    if(m&&MMAP[m[1]]) return m[2]+'-'+MMAP[m[1]];
+    const s=v.toString().trim();
+    // "dic-2025" → "2025-12"
+    const m1=s.toLowerCase().match(/^([a-z]{3})-(\d{4})$/);
+    if(m1&&MMAP[m1[1]]) return m1[2]+'-'+MMAP[m1[1]];
+    // "01/12/2025" → dd/MM/yyyy (Apps Script formatea fecha como texto)
+    // El mes es la parte del MEDIO
+    const m2=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if(m2) return m2[3]+'-'+m2[2].padStart(2,'0'); // yyyy-MM (ignorar día)
+    // "2025-12" o "2025-12-01" → ya correcto
     if(/^\d{4}-\d{2}/.test(s)) return s.slice(0,7);
+    // "12/2025" → MM/yyyy
+    const m3=s.match(/^(\d{1,2})\/(\d{4})$/);
+    if(m3) return m3[2]+'-'+m3[1].padStart(2,'0');
     return '';
   };
 
@@ -3178,6 +3188,7 @@ function tieneTarjeta(v){
 function renderOport(){
   if(typeof renderOportunidades==='function')renderOportunidades();
 }
+
 
 
 

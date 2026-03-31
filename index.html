@@ -765,7 +765,9 @@ th{background:var(--bna-marino)}
   <span id="rs-result-pyme" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   <span id="cuit-result-pyme" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
 </div>
-  <div class="tcard" id="tcard-pyme"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-pyme"></tbody></table></div></div>
+    <!-- Ranking Top5 / Alerta5 -->
+  <div id="pyme-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+<div class="tcard" id="tcard-pyme"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-pyme"></tbody></table></div></div>
 </div>
 
 <!-- ═══ AGRONACIÓN ═══ -->
@@ -808,7 +810,9 @@ th{background:var(--bna-marino)}
   <span id="rs-result-agro" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   <span id="cuit-result-agro" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
 </div>
-  <div class="tcard" id="tcard-agro"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-agro"></tbody></table></div></div>
+    <!-- Ranking Top5 / Alerta5 -->
+  <div id="agro-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+<div class="tcard" id="tcard-agro"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-agro"></tbody></table></div></div>
 </div>
 
 <!-- ═══ CORPORATIVA ═══ -->
@@ -836,7 +840,9 @@ th{background:var(--bna-marino)}
   <span id="rs-result-corp" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   <span id="cuit-result-corp" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
 </div>
-  <div class="tcard" id="tcard-corp"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Cuentas</th><th>Vol.</th></tr></thead><tbody id="t-corp"></tbody></table></div></div>
+    <!-- Ranking Top5 / Alerta5 -->
+  <div id="corp-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+<div class="tcard" id="tcard-corp"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Cuentas</th><th>Vol.</th></tr></thead><tbody id="t-corp"></tbody></table></div></div>
 </div>
 
 <!-- ═══ BNA CONECTA ═══ -->
@@ -877,7 +883,9 @@ th{background:var(--bna-marino)}
   <span id="rs-result-bna" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   <span id="cuit-result-bna" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
 </div>
-  <div class="tcard" id="tcard-bna"><div class="thead2"><span class="ttit">Por sucursal · clic para ver empresas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Compradores</th><th>Vendedores</th><th>Vol.</th></tr></thead><tbody id="t-bna"></tbody></table></div></div>
+    <!-- Ranking Top5 / Alerta5 -->
+  <div id="bna-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+<div class="tcard" id="tcard-bna"><div class="thead2"><span class="ttit">Por sucursal · clic para ver empresas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Compradores</th><th>Vendedores</th><th>Vol.</th></tr></thead><tbody id="t-bna"></tbody></table></div></div>
 </div>
 
 
@@ -1001,6 +1009,7 @@ th{background:var(--bna-marino)}
 </div>
 
 <script>
+
 
 
 
@@ -1731,6 +1740,8 @@ function renderPYME(rows){
   setP('pyme-acum-lim',  fmtP(pymLim));
 
   document.getElementById('t-pyme').innerHTML=all.map((s,i)=>`<tr class="crow" data-nm="${s.nm}" onclick="ddPymeSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>${s.t}</td><td><span class="pill p-act">${s.a}</span></td><td><span class="pill p-chu">${s.t-s.a}</span></td><td style="font-weight:700;color:${+s.p>=25?'var(--bna-verde)':+s.p>=10?'var(--bna-naranja)':'var(--roj)'}">${s.p}%</td></tr>`).join('');
+
+  rankPYME(rows);
 }
 function applyFilterPYME(){
   const suc=document.getElementById('f-pyme-suc').value;
@@ -1777,6 +1788,8 @@ function renderAGRO(rows){
   setAg('agro-acum-lim',  fmtAg(agrLim));
 
   document.getElementById('t-agro').innerHTML=sa.map(([nm,v],i)=>`<tr class="crow" data-nm="${nm}" onclick="ddAgroSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${nm}</td><td>${v.t}</td><td><span class="pill p-act">${v.a}</span></td><td><span class="pill p-chu">${v.t-v.a}</span></td><td style="font-weight:700;color:${v.a>0?'var(--bna-verde)':'var(--roj)'}">${(v.a/v.t*100).toFixed(1)}%</td></tr>`).join('');
+
+  rankAGRO(rows);
 }
 function applyFilterAGRO(){
   const suc=document.getElementById('f-agro-suc').value;
@@ -1798,6 +1811,8 @@ function rCORP(rows){
   poblarSel('f-corp-suc',sucs);
   renderCORP(rows);
   document.getElementById('fc-corp').textContent=n(rows.length)+' cuentas';
+
+  rankCORP(rows);
 }
 function renderCORP(rows){
   const sm={};rows.forEach(x=>{const s=x['Columna1']||'';if(!s)return;sm[s]=(sm[s]||0)+1;});
@@ -1842,6 +1857,8 @@ function rBNA(rows){
   poblarSel('f-bna-suc',sucs);
   renderBNA(rows);
   document.getElementById('fc-bna').textContent=n(rows.length)+' empresas';
+
+  rankBNA(rows);
 }
 function renderBNA(rows){
   const T=rows.length,co=rows.filter(x=>x['TIPO CLIENTE']==='Comprador').length,ve=T-co;
@@ -2754,6 +2771,215 @@ function renderFacEvo(rows){
 }
 
 
+
+// ══ RANKING TOP5 / ALERTA5 ══
+// Métrica principal: % uso del límite (Compras / Límite de Compra)
+// Consideración de tamaño: se rankea dentro de la misma zonal, comparando %
+
+function renderRanking(containerId, items, metricLabel, metricFn, alertFn, fmtVal){
+  const el=document.getElementById(containerId);
+  if(!el) return;
+
+  // items: [{suc, n (cuentas), lim, val (valor métrica), ...}]
+  // ordenar por metricFn desc
+  const sorted=[...items].filter(x=>x.lim>0).sort((a,b)=>metricFn(b)-metricFn(a));
+  const top5   =sorted.slice(0,5);
+  const alerta5=sorted.slice(-5).reverse(); // peores primero
+
+  const medal=['🥇','🥈','🥉','4°','5°'];
+
+  const cardHtml=(title,color,borderColor,list,isAlert)=>{
+    const rows=list.map((x,i)=>{
+      const pct=metricFn(x);
+      const alert=alertFn(x);
+      const bar=Math.min(100,Math.max(0,pct));
+      const barColor=isAlert
+        ? (pct<2?'#c0241c':pct<5?'#F6955A':'#e0a020')
+        : (pct>15?'#4EBFA4':pct>8?'#007094':'#00ADDB');
+      return `<div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
+          <span style="font-size:11px;font-weight:700;color:#002056">${medal[i]} ${x.suc}</span>
+          <span style="font-size:11px;font-weight:800;color:${barColor}">${fmtVal(x)}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="flex:1;background:#e8eef5;border-radius:4px;height:6px;overflow:hidden">
+            <div style="width:${bar}%;height:100%;background:${barColor};border-radius:4px;transition:width .4s"></div>
+          </div>
+          <span style="font-size:9px;color:#888;white-space:nowrap">${x.n} ctas · $${(x.lim/1e9).toFixed(2)}B lím.</span>
+        </div>
+        ${alert?`<div style="font-size:9px;color:#c0241c;margin-top:1px">${alert}</div>`:''}
+      </div>`;
+    }).join('');
+
+    return `<div style="flex:1;min-width:220px;background:#fff;border:1.5px solid ${borderColor};border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:${color};margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        ${isAlert?'⚠️':'🏆'} ${title}
+        <span style="margin-left:auto;font-size:9px;font-weight:400;color:#888">${metricLabel}</span>
+      </div>
+      ${rows}
+    </div>`;
+  };
+
+  el.innerHTML=
+    cardHtml('Top 5 · Mejor uso','#1a7a4a','#4EBFA4',top5,false)+
+    cardHtml('Alerta 5 · Límite ocioso','#c0241c','#F6955A',alerta5,true);
+}
+
+// ─── PYME ranking ───
+function rankPYME(rows){
+  const g={};
+  rows.forEach(r=>{
+    const s=r['Sucursal']||'';
+    if(!g[s])g[s]={suc:s,n:0,lim:0,c26:0,c25:0,act:0};
+    g[s].n++;
+    g[s].lim+=parseMonto(r['Límite de Compra']);
+    g[s].c26+=parseMonto(r['Compras 2026']);
+    g[s].c25+=parseMonto(r['Compras 2025']);
+    if((r['Activo']||'').trim().toUpperCase()==='SI') g[s].act++;
+  });
+  const items=Object.values(g);
+  renderRanking(
+    'pyme-ranking', items,
+    '% uso límite 2026',
+    x=>x.lim>0?x.c26/x.lim*100:0,
+    x=>{
+      const uso=x.lim>0?x.c26/x.lim*100:0;
+      const ocio=x.lim>0?(x.lim-x.c26)/x.lim*100:100;
+      if(uso===0) return `Sin movimiento 2026 · $${(x.lim/1e9).toFixed(2)}B ocioso`;
+      if(ocio>85) return `${ocio.toFixed(0)}% límite ocioso`;
+      return '';
+    },
+    x=>{
+      const uso=x.lim>0?x.c26/x.lim*100:0;
+      return uso.toFixed(1)+'% uso';
+    }
+  );
+}
+
+// ─── AGRO ranking ───
+function rankAGRO(rows){
+  const g={};
+  rows.forEach(r=>{
+    const s=r['Sucursal']||'';
+    if(!g[s])g[s]={suc:s,n:0,lim:0,c26:0,c25:0};
+    g[s].n++;
+    g[s].lim+=parseMonto(r['Límite de Compra']);
+    g[s].c26+=parseMonto(r['Compras 2026']);
+    g[s].c25+=parseMonto(r['Compras 2025']);
+  });
+  const items=Object.values(g);
+  renderRanking(
+    'agro-ranking', items,
+    '% uso límite 2026',
+    x=>x.lim>0?x.c26/x.lim*100:0,
+    x=>{
+      const uso=x.lim>0?x.c26/x.lim*100:0;
+      if(uso===0) return `Sin compras 2026 · $${(x.lim/1e9).toFixed(2)}B ocioso`;
+      if(uso<3) return `Uso muy bajo: ${uso.toFixed(1)}%`;
+      return '';
+    },
+    x=>{
+      const uso=x.lim>0?x.c26/x.lim*100:0;
+      return uso.toFixed(1)+'% uso';
+    }
+  );
+}
+
+// ─── CORP ranking ───
+function rankCORP(rows){
+  const g={};
+  rows.forEach(r=>{
+    const s=r['Columna1']||'';
+    if(!g[s])g[s]={suc:s,n:0,lim:0,rem:0};
+    g[s].n++;
+    const lim=parseMonto(r['Lim.Compra']);
+    const rem=parseMonto(r['Reman Compra']);
+    g[s].lim+=lim;
+    g[s].rem+=rem;
+  });
+  const items=Object.values(g).filter(x=>x.lim>0);
+  renderRanking(
+    'corp-ranking', items,
+    '% uso LC',
+    x=>x.lim>0?(x.lim-x.rem)/x.lim*100:0,
+    x=>{
+      const uso=x.lim>0?(x.lim-x.rem)/x.lim*100:0;
+      if(uso<=0) return `Remanente supera el límite`;
+      if(uso<3) return `Uso muy bajo: ${uso.toFixed(1)}%`;
+      return '';
+    },
+    x=>{
+      const uso=x.lim>0?(x.lim-x.rem)/x.lim*100:0;
+      return uso.toFixed(1)+'% LC usado';
+    }
+  );
+}
+
+// ─── BNA CONECTA ranking ───
+function rankBNA(rows){
+  const g={};
+  rows.forEach(r=>{
+    const s=r['SUCURSAL']||'';
+    if(!g[s])g[s]={suc:s,n:0,lim:0,c26:0,v26:0,opTotal:0};
+    g[s].n++;
+    const c=parseMonto(r['COMPRAS 2026']);
+    const v=parseMonto(r['VENTAS 2026']);
+    g[s].c26+=c;
+    g[s].v26+=v;
+    if(c>0||v>0) g[s].opTotal++;
+    // Para BNA: "límite" conceptual = total empresas * participación esperada
+    // Usamos total de empresas registradas como denominador del ranking
+    g[s].lim=g[s].n; // comparamos % operando vs total
+  });
+  // Métrica BNA: % de empresas que operaron
+  const items=Object.values(g).map(x=>({
+    ...x,
+    pctOp: x.n>0?x.opTotal/x.n*100:0,
+    volTotal: x.c26+x.v26
+  }));
+  const el=document.getElementById('bna-ranking');
+  if(!el) return;
+
+  const sorted=[...items].sort((a,b)=>b.pctOp-a.pctOp);
+  const top5   =sorted.slice(0,5);
+  const alerta5=sorted.filter(x=>x.pctOp===0).slice(0,5);
+  const medal=['🥇','🥈','🥉','4°','5°'];
+
+  const rowHtml=(x,i,isAlert)=>{
+    const pct=x.pctOp;
+    const barColor=isAlert?'#c0241c':pct>50?'#4EBFA4':pct>20?'#007094':'#00ADDB';
+    return `<div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
+        <span style="font-size:11px;font-weight:700;color:#002056">${medal[i]} ${x.suc}</span>
+        <span style="font-size:11px;font-weight:800;color:${barColor}">${pct.toFixed(0)}% activos</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="flex:1;background:#e8eef5;border-radius:4px;height:6px;overflow:hidden">
+          <div style="width:${Math.min(100,pct)}%;height:100%;background:${barColor};border-radius:4px"></div>
+        </div>
+        <span style="font-size:9px;color:#888;white-space:nowrap">${x.opTotal}/${x.n} · $${((x.c26+x.v26)/1e9).toFixed(2)}B</span>
+      </div>
+      ${isAlert?`<div style="font-size:9px;color:#c0241c;margin-top:1px">Sin operaciones 2026 · ${x.n} empresas registradas</div>`:''}
+    </div>`;
+  };
+
+  el.innerHTML=`
+    <div style="flex:1;min-width:220px;background:#fff;border:1.5px solid #4EBFA4;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">
+        🏆 Top 5 · Mayor actividad
+        <span style="float:right;font-size:9px;font-weight:400;color:#888">% empresas operando</span>
+      </div>
+      ${top5.map((x,i)=>rowHtml(x,i,false)).join('')}
+    </div>
+    <div style="flex:1;min-width:220px;background:#fff;border:1.5px solid #F6955A;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#c0241c;margin-bottom:10px">
+        ⚠️ Sin operaciones 2026
+        <span style="float:right;font-size:9px;font-weight:400;color:#888">0% activos</span>
+      </div>
+      ${(alerta5.length?alerta5:sorted.slice(-5).reverse()).map((x,i)=>rowHtml(x,i,true)).join('')}
+    </div>`;
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   // Botón actualizar
   const btn = document.querySelector('.sbtn');
@@ -3188,6 +3414,7 @@ function tieneTarjeta(v){
 function renderOport(){
   if(typeof renderOportunidades==='function')renderOportunidades();
 }
+
 
 
 

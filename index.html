@@ -331,7 +331,7 @@ th{background:var(--bna-marino)}
   <div class="loader-logo">
     <div class="loader-escudo">🏦</div>
     <div class="loader-titulo">Medios de Pago</div>
-    <div class="loader-subtitulo">Banco Nación Argentina</div>
+    <div class="loader-subtitulo">Banco de la Nación Argentina</div>
     <div class="loader-zonal">Zonal NOA Oeste</div>
   </div>
 
@@ -1129,8 +1129,8 @@ id="page-pyme">
 
   <div id="cliente-resultado"></div>
 </div>
-
 <script>
+
 
 
 
@@ -4104,9 +4104,21 @@ function resetFilters_VIAJA(){
   applyFilter_VIAJA();
 }
 
+// ══ INICIO DE LA APLICACIÓN ══
+window.addEventListener('DOMContentLoaded', () => {
+  // Botón actualizar
+  const btn = document.querySelector('.sbtn');
+  if(btn) btn.onclick = () => loadAll(true);
 
+  // Iniciar promo si existe
+  if(typeof initPromo === 'function') initPromo();
 
+  // Cargar Facturación +Pagos (Sheet separado)
+  if(typeof loadFACMP === 'function' && API_URL_FAC) loadFACMP();
 
+  // Cargar todos los datos principales
+  loadAll();
+});
 
 </script>
 <script>

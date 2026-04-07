@@ -81,8 +81,21 @@ body{font-family:'Barlow','Segoe UI',sans-serif;background:#eef2f9;color:var(--t
 .page.active{display:block}
 
 /* LOADER */
-.loader{position:fixed;inset:0;background:rgba(0,30,80,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;color:#fff}
-.spin{width:38px;height:38px;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;margin-bottom:12px}
+.loader{position:fixed;inset:0;background:linear-gradient(160deg,#001540 0%,#002056 50%,#003070 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;color:#fff;gap:0}
+.loader-logo{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:28px;animation:fadeIn .6s ease both}
+.loader-escudo{width:64px;height:64px;background:rgba(255,255,255,.12);border-radius:16px;border:2px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:32px;backdrop-filter:blur(8px);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.loader-titulo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#fff;line-height:1.1;text-align:center}
+.loader-subtitulo{font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:rgba(255,255,255,.75);letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.loader-zonal{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:#D4AC87;letter-spacing:.1em;text-transform:uppercase;text-align:center;margin-top:2px}
+.loader-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#D4AC87,transparent);margin:16px 0;opacity:.7}
+.loader-msg{font-size:12px;color:rgba(255,255,255,.6);text-align:center;min-height:18px;transition:opacity .3s}
+.loader-aguarde{font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;letter-spacing:.05em}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseBar{0%,100%{opacity:.4}50%{opacity:1}}
+.loader-bar-wrap{width:200px;height:4px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden;margin-top:20px}
+.loader-bar{height:100%;width:30%;background:linear-gradient(90deg,#D4AC87,#00ADDB);border-radius:4px;animation:slideBar 1.4s ease-in-out infinite}
+@keyframes slideBar{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+.spin{display:none}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loader p{font-size:12px;opacity:.7}
 .loader.hidden{display:none}
@@ -314,9 +327,28 @@ th{background:var(--bna-marino)}
 <body>
 
 <div id="loader" class="loader">
+  <!-- Logo y título -->
+  <div class="loader-logo">
+    <div class="loader-escudo">🏦</div>
+    <div class="loader-titulo">Medios de Pago</div>
+    <div class="loader-subtitulo">Banco Nación Argentina</div>
+    <div class="loader-zonal">Zonal NOA Oeste</div>
+  </div>
+
+  <!-- Divisor dorado -->
+  <div class="loader-divider"></div>
+
+  <!-- Mensaje dinámico -->
+  <p class="loader-msg" id="loader-txt">Conectando con Google Sheets…</p>
+  <p class="loader-aguarde">Aguarde un instante</p>
+
+  <!-- Barra de progreso animada -->
+  <div class="loader-bar-wrap">
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- spin hidden para compatibilidad -->
   <div class="spin"></div>
-  <p id="loader-txt" style="margin-bottom:8px">Cargando +Pagos Nación…</p>
-  <p style="font-size:10px;opacity:.5">El resto carga en segundo plano</p>
 </div>
 
 <div class="topbar"></div>
@@ -1099,6 +1131,7 @@ id="page-pyme">
 </div>
 
 <script>
+
 
 
 
@@ -2438,6 +2471,9 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec';
+const API_URL_FAC = ''; // ← Pegar aquí la URL del Apps Script de FACTURACION MAS PAGOS
+let TC_DATA = {records:[],meses:[],sucs:[]};
+
 const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "viaja": "VIAJA+", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
 const CACHE = {};
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutos
@@ -3697,6 +3733,386 @@ function renderMetas(){
 
 
 
+// ══════════════════════════════════════════════
+// TC INDIVIDUOS — funciones completas
+// ══════════════════════════════════════════════
+
+const MMAP_TC={ene:'01',feb:'02',mar:'03',abr:'04',may:'05',jun:'06',
+               jul:'07',ago:'08',sep:'09',oct:'10',nov:'11',dic:'12'};
+
+// Parsear número argentino "$1.234.567,89" | "3.278" | "61,87 %"
+function pNtc(v){
+  if(!v&&v!==0) return 0;
+  let s=v.toString().replace(/[$\s%]/g,'').trim();
+  if(!s||s==='-') return 0;
+  const hasDot=s.includes('.');const hasComma=s.includes(',');
+  if(hasDot&&hasComma){ s=s.replace(/\./g,'').replace(',','.'); }
+  else if(hasDot&&!hasComma){ const pts=s.split('.');if(pts.length>1&&pts[pts.length-1].length===3)s=s.replace(/\./g,''); }
+  else if(!hasDot&&hasComma){ s=s.replace(',','.'); }
+  const n=parseFloat(s);return isNaN(n)?0:n;
+}
+
+// Parsear mes "dic-2025"→"2025-12" o "01/12/2025"→"2025-12"
+function pMestc(v){
+  if(!v) return '';
+  const s=v.toString().trim();
+  const m1=s.toLowerCase().match(/^([a-z]{3})-(\d{4})$/);
+  if(m1&&MMAP_TC[m1[1]]) return m1[2]+'-'+MMAP_TC[m1[1]];
+  const m2=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if(m2) return m2[3]+'-'+m2[2].padStart(2,'0');
+  if(/^\d{4}-\d{2}/.test(s)) return s.slice(0,7);
+  return '';
+}
+
+function rTC(rawRows){
+  console.log('[TC] rTC llamada con', rawRows?rawRows.length:0, 'filas');
+  if(!rawRows||!rawRows.length){ console.warn('[TC] Sin datos'); return; }
+  console.log('[TC] Columnas:', Object.keys(rawRows[0]).slice(0,6).join(', '));
+
+  const records=rawRows.map(r=>{
+    const hab=pNtc(r['Cuentas habilitadas']), act=pNtc(r['Cuentas activas']);
+    const habMC=pNtc(r['Cuentas habilitadas MC']), actMC=pNtc(r['Cuentas activas MC']);
+    const habV=pNtc(r['Cuentas habilitadas Visa']), actV=pNtc(r['Cuentas activas Visa']);
+    return {
+      mes: pMestc(r['MES']),
+      suc: (r['Sucursales']||'').trim(),
+      // FLUJOS
+      consumo:      Math.round(pNtc(r['Monto Consumo'])/1e4)/100,
+      consumo_mc:   Math.round(pNtc(r['Monto Consumo MC'])/1e4)/100,
+      consumo_visa: Math.round(pNtc(r['Monto Consumo VISA'])/1e4)/100,
+      tx:           Math.round(pNtc(r['Tx Consumo'])),
+      tx_mc:        Math.round(pNtc(r['Tx Consumo MC'])),
+      tx_visa:      Math.round(pNtc(r['Tx Consumo VISA'])),
+      altas:        Math.round(pNtc(r['Alta de Cuentas'])),
+      altas_mc:     Math.round(pNtc(r['Alta de Cuentas MC'])),
+      altas_visa:   Math.round(pNtc(r['Alta de Cuentas VISA'])),
+      // STOCKS
+      ctas_total:      Math.round(pNtc(r['Cuentas Totales'])),
+      ctas_total_mc:   Math.round(pNtc(r['Cuentas Totales MC'])),
+      ctas_total_visa: Math.round(pNtc(r['Cuentas Totales Visa'])),
+      ctas_res:        Math.round(pNtc(r['Cuentas con resumen'])),
+      ctas_res_mc:     Math.round(pNtc(r['Cuentas con resumen MC'])),
+      ctas_res_visa:   Math.round(pNtc(r['Cuentas con resumen Visa'])),
+      ctas_hab:hab, ctas_hab_mc:habMC, ctas_hab_visa:habV,
+      ctas_act:act, ctas_act_mc:actMC, ctas_act_visa:actV,
+      tarjetas:        Math.round(pNtc(r['Tarjetas Totales'])),
+      tarjetas_mc:     Math.round(pNtc(r['Tarjetas MC'])),
+      tarjetas_visa:   Math.round(pNtc(r['Tarjetas Visa'])),
+      adic_mc:         Math.round(pNtc(r['Tarjetas Adicionales MC'])),
+      adic_visa:       Math.round(pNtc(r['Tarjetas Adicionales Visa'])),
+      // RATIO recalculado
+      activ:     hab>0?Math.round(act/hab*10000)/100:0,
+      activ_mc:  habMC>0?Math.round(actMC/habMC*10000)/100:0,
+      activ_visa:habV>0?Math.round(actV/habV*10000)/100:0,
+    };
+  }).filter(r=>r.suc&&r.mes);
+
+  const meses=[...new Set(records.map(r=>r.mes))].sort();
+  const sucs =[...new Set(records.map(r=>r.suc))].sort();
+  TC_DATA={records,meses,sucs};
+
+  // Log verificación
+  meses.forEach(m=>{
+    const rr=records.filter(r=>r.mes===m);
+    const hab=rr.reduce((a,r)=>a+r.ctas_hab,0);
+    const act=rr.reduce((a,r)=>a+r.ctas_act,0);
+    const res=rr.reduce((a,r)=>a+r.ctas_res,0);
+    console.log('[TC]',m,'| sucs:'+rr.length,'| consumo:$'+rr.reduce((a,r)=>a+r.consumo,0).toFixed(0)+'M',
+      '| activ:'+(hab>0?(act/hab*100).toFixed(1):'-')+'%','| c/res:'+res);
+  });
+
+  initTC();
+}
+
+function initTC(){
+  const meses=[...TC_DATA.meses].reverse();
+  const sucs=TC_DATA.sucs;
+  const sel=document.getElementById('f-tc-mes');
+  if(!sel) return;
+  while(sel.options.length>1) sel.remove(1);
+  meses.forEach(m=>{
+    const o=document.createElement('option');
+    o.value=m;
+    o.textContent=fmtMesLabel(m);
+    sel.appendChild(o);
+  });
+  if(meses.length) sel.value=meses[0];
+  poblarSel('f-tc-suc',sucs);
+  applyFilterTC();
+  if(typeof renderMetas==='function') renderMetas();
+}
+
+function fmtMesLabel(m){
+  if(!m) return '';
+  const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const p=m.split('-');
+  return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:'';
+}
+
+function getTCRows(){
+  const mes=document.getElementById('f-tc-mes')?.value||'';
+  const suc=document.getElementById('f-tc-suc')?.value||'';
+  let r=TC_DATA.records;
+  if(mes) r=r.filter(x=>x.mes===mes);
+  if(suc) r=r.filter(x=>x.suc===suc);
+  return r;
+}
+
+function getTCMesAnterior(mes){
+  const idx=TC_DATA.meses.indexOf(mes);
+  if(idx<=0) return null;
+  const mesPrev=TC_DATA.meses[idx-1];
+  return TC_DATA.records.filter(r=>r.mes===mesPrev);
+}
+
+function varPct(a,b){ return b>0?((a-b)/b*100).toFixed(1):null; }
+
+function varHtml(v){
+  if(v===null||v===undefined) return '';
+  const n=parseFloat(v);
+  const color=n>0?'var(--bna-verde)':n<0?'var(--bna-rojo)':'#888';
+  const arrow=n>0?'↑':n<0?'↓':'→';
+  return '<span style="color:'+color+';font-size:10px">'+arrow+Math.abs(n)+'%</span>';
+}
+
+function expTC(){
+  const rows=getTCRows();
+  if(!rows.length) return;
+  const keys=Object.keys(rows[0]);
+  const csv=[keys.join(','),...rows.map(r=>keys.map(k=>r[k]??'').join(','))].join('\n');
+  dlCSV(csv,'tc_'+(document.getElementById('f-tc-mes')?.value||'todos')+'.csv');
+}
+
+function ddTCSuc(suc){
+  const mes=document.getElementById('f-tc-mes')?.value||'';
+  const rows=TC_DATA.records.filter(r=>r.suc===suc&&(!mes||r.mes===mes));
+  if(!rows.length) return;
+  const r=rows[0];
+  const n=v=>Number(v||0).toLocaleString('es-AR');
+  const hdrs=['Mes','Consumo','C/Resumen','C/Habilitadas','C/Activas','Activación%','Altas','Tarjetas'];
+  const data=rows.map(r=>[fmtMesLabel(r.mes),'$'+r.consumo.toFixed(1)+'M',n(r.ctas_res),n(r.ctas_hab),n(r.ctas_act),r.activ.toFixed(1)+'%',r.altas,n(r.tarjetas)]);
+  openDD('💳 '+suc,'TC Individuos',hdrs,data,rows);
+}
+
+function applyFilterTC(){
+  const rows=getTCRows();
+  if(!rows.length){
+    document.getElementById('tc-total').textContent='—';
+    return;
+  }
+  const mes=document.getElementById('f-tc-mes')?.value||'';
+  const rowsAnt=mes?getTCMesAnterior(mes):null;
+  const antMap={};
+  if(rowsAnt) rowsAnt.forEach(r=>antMap[r.suc]=r);
+  const antRows=rowsAnt||[];
+
+  const sum=k=>rows.reduce((a,r)=>a+(r[k]||0),0);
+  const asum=k=>antRows.reduce((a,r)=>a+(r[k]||0),0);
+  const consumo=sum('consumo'),cMC=sum('consumo_mc'),cVISA=sum('consumo_visa');
+  const tx=sum('tx'),txMC=sum('tx_mc'),txVISA=sum('tx_visa');
+  const altas=sum('altas'),altasMC=sum('altas_mc'),altasVISA=sum('altas_visa');
+  const ctasT=sum('ctas_total'),ctasR=sum('ctas_res');
+  const ctasH=sum('ctas_hab'),ctasA=sum('ctas_act');
+  const adicMC=sum('adic_mc'),adicVISA=sum('adic_visa');
+  const tarjetas=sum('tarjetas');
+  const totalHab=ctasH,totalAct=ctasA;
+  const avgAct=totalHab>0?(totalAct/totalHab*100).toFixed(1):0;
+
+  const nf=v=>Number(v||0).toLocaleString('es-AR');
+  const pct=(a,b)=>b>0?(a/b*100).toFixed(1)+'%':'—';
+
+  const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  const setHTML=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
+
+  setEl('tc-total', nf(tarjetas));
+  setEl('tc-k1',    '$'+(consumo/1000).toFixed(2)+'B');
+  setEl('tc-k2',    nf(tx));
+  setHTML('tc-k2s', 'MC:'+nf(txMC)+' VISA:'+nf(txVISA)+(antRows.length?' '+varHtml(varPct(tx,asum('tx'))):''));
+  setEl('tc-k3',    nf(ctasA));
+  setHTML('tc-k3s', pct(ctasA,ctasT)+(antRows.length?' '+varHtml(varPct(ctasA,asum('ctas_act'))):''));
+  setEl('tc-k4',    nf(altas));
+  setHTML('tc-k4s', 'MC:'+nf(altasMC)+' VISA:'+nf(altasVISA)+(antRows.length?' '+varHtml(varPct(altas,asum('altas'))):''));
+  setEl('tc-k5',    nf(ctasR));
+  setHTML('tc-k5s', pct(ctasR,ctasT)+(antRows.length?' '+varHtml(varPct(ctasR,asum('ctas_res'))):''));
+  setEl('tc-k6',    nf(ctasH));
+  setEl('tc-k6s',   pct(ctasH,ctasT));
+  setEl('tc-k7',    avgAct+'%');
+  setEl('tc-k8',    nf(adicMC+adicVISA));
+  setEl('tc-k8s',   'MC:'+nf(adicMC)+' VISA:'+nf(adicVISA));
+
+  const fcEl=document.getElementById('fc-tc');
+  if(fcEl) fcEl.textContent=rows.length+' sucursales'+(mes?' · '+fmtMesLabel(mes):'');
+
+  const PIE={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},cutout:'55%'};
+  const sorted=[...rows].sort((a,b)=>b.consumo-a.consumo);
+
+  // Gráfico 1: Barras consumo por sucursal
+  if(CH['c-tc-cons'])CH['c-tc-cons'].destroy();
+  CH['c-tc-cons']=new Chart(document.getElementById('c-tc-cons'),{
+    type:'bar',
+    data:{labels:sorted.map(r=>r.suc),datasets:[
+      {label:'MC',  data:sorted.map(r=>+r.consumo_mc.toFixed(1)),backgroundColor:'#002056',borderRadius:3},
+      {label:'VISA',data:sorted.map(r=>+r.consumo_visa.toFixed(1)),backgroundColor:'#F6955A',borderRadius:3}
+    ]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
+        const r=sorted[ctx.dataIndex];const ant=antMap[r.suc];
+        const f=ctx.datasetIndex===0?'consumo_mc':'consumo_visa';
+        const v=ant?varPct(r[f],ant[f]):null;
+        return ctx.dataset.label+': $'+ctx.raw+'M'+(v?' ('+v+'%)':'');
+      }}}},
+      scales:{x:{stacked:true,ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y:{stacked:true,ticks:{font:{size:9},color:'#002056'}}},
+      onClick:(e,el)=>{if(el.length)ddTCSuc(sorted[el[0].index].suc);}
+    }
+  });
+
+  // Gráfico 2: Evolución o cuentas por estado
+  const todosMeses=TC_DATA.meses;
+  const sucFiltrada=document.getElementById('f-tc-suc')?.value||'';
+  const g2tit=document.getElementById('tc-g2-tit');
+
+  if(todosMeses.length>1&&!sucFiltrada){
+    if(g2tit)g2tit.textContent='Evolución consumo zonal (B$) · '+todosMeses.map(fmtMesLabel).join(' → ');
+    const cPorMes=todosMeses.map(m=>+(TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo,0)/1000).toFixed(2));
+    const mcPorMes=todosMeses.map(m=>+(TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo_mc,0)/1000).toFixed(2));
+    const vPorMes=todosMeses.map(m=>+(TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo_visa,0)/1000).toFixed(2));
+    if(CH['c-tc-evo'])CH['c-tc-evo'].destroy();
+    CH['c-tc-evo']=new Chart(document.getElementById('c-tc-evo'),{
+      type:'line',
+      data:{labels:todosMeses.map(fmtMesLabel),datasets:[
+        {label:'Total',data:cPorMes,borderColor:'#002056',backgroundColor:'rgba(0,32,86,.1)',fill:true,tension:.3,pointRadius:5},
+        {label:'MC',   data:mcPorMes,borderColor:'#00ADDB',backgroundColor:'transparent',tension:.3,pointRadius:4},
+        {label:'VISA', data:vPorMes, borderColor:'#F6955A',backgroundColor:'transparent',tension:.3,pointRadius:4},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'B'}}},
+        scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:9},callback:v=>'$'+v+'B'}}}
+      }
+    });
+  } else if(sucFiltrada&&todosMeses.length>1){
+    if(g2tit)g2tit.textContent='Evolución: '+sucFiltrada;
+    const rSuc=TC_DATA.records.filter(r=>r.suc===sucFiltrada);
+    const cSuc=todosMeses.map(m=>{const rr=rSuc.find(r=>r.mes===m);return rr?+rr.consumo.toFixed(1):null;});
+    const aSuc=todosMeses.map(m=>{const rr=rSuc.find(r=>r.mes===m);return rr?rr.activ:null;});
+    if(CH['c-tc-evo'])CH['c-tc-evo'].destroy();
+    CH['c-tc-evo']=new Chart(document.getElementById('c-tc-evo'),{
+      type:'line',
+      data:{labels:todosMeses.map(fmtMesLabel),datasets:[
+        {label:'Consumo ($M)',data:cSuc,borderColor:'#002056',backgroundColor:'rgba(0,32,86,.1)',fill:true,tension:.3,pointRadius:5,yAxisID:'y'},
+        {label:'Activación %',data:aSuc,borderColor:'#4EBFA4',backgroundColor:'transparent',tension:.3,pointRadius:5,yAxisID:'y2'},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
+        scales:{y:{type:'linear',position:'left',ticks:{font:{size:9},callback:v=>'$'+v+'M'}},
+                y2:{type:'linear',position:'right',ticks:{font:{size:9},callback:v=>v+'%'},grid:{drawOnChartArea:false}}}
+      }
+    });
+  } else {
+    if(g2tit)g2tit.textContent='Cuentas por estado · '+fmtMesLabel(mes||'');
+    if(CH['c-tc-evo'])CH['c-tc-evo'].destroy();
+    CH['c-tc-evo']=new Chart(document.getElementById('c-tc-evo'),{
+      type:'bar',
+      data:{labels:sorted.map(r=>r.suc),datasets:[
+        {label:'Totales',    data:sorted.map(r=>r.ctas_total),backgroundColor:'#7CA9DA',borderRadius:2},
+        {label:'C/resumen',  data:sorted.map(r=>r.ctas_res),  backgroundColor:'#9090C2',borderRadius:2},
+        {label:'Habilitadas',data:sorted.map(r=>r.ctas_hab),  backgroundColor:'#00ADDB',borderRadius:2},
+        {label:'Activas',    data:sorted.map(r=>r.ctas_act),  backgroundColor:'#4EBFA4',borderRadius:2},
+      ]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false}},
+        scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}}
+      }
+    });
+  }
+
+  // Gráfico 3: MC vs VISA
+  if(CH['c-tc-marca'])CH['c-tc-marca'].destroy();
+  CH['c-tc-marca']=new Chart(document.getElementById('c-tc-marca'),{
+    type:'doughnut',
+    data:{labels:['MC '+pct(cMC,consumo),'VISA '+pct(cVISA,consumo)],
+    datasets:[{data:[+cMC.toFixed(1),+cVISA.toFixed(1)],backgroundColor:['#002056','#F6955A'],borderWidth:0}]},
+    options:{...PIE,cutout:'52%'}
+  });
+
+  // Gráfico 4: Activación por sucursal
+  const sorted2=[...rows].sort((a,b)=>b.activ-a.activ);
+  if(CH['c-tc-activ'])CH['c-tc-activ'].destroy();
+  CH['c-tc-activ']=new Chart(document.getElementById('c-tc-activ'),{
+    type:'bar',
+    data:{labels:sorted2.map(r=>r.suc),
+    datasets:[{data:sorted2.map(r=>+r.activ.toFixed(1)),
+      backgroundColor:sorted2.map(r=>r.activ>=75?'#4EBFA4':r.activ>=55?'#F6955A':'#c0241c'),
+      borderRadius:3}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
+        const r=sorted2[ctx.dataIndex];const ant=antMap[r.suc];
+        const v=ant?varPct(r.activ,ant.activ):null;
+        return 'Activación: '+ctx.raw+'%'+(v?' ('+v+'pp)':'');
+      }}}},
+      scales:{x:{ticks:{font:{size:9},callback:v=>v+'%',max:100}},y:{ticks:{font:{size:9},color:'#002056'}}}
+    }
+  });
+
+  // Tabla
+  const mx=sorted[0]?sorted[0].consumo:1;
+  document.getElementById('t-tc').innerHTML=sorted.map((r,i)=>{
+    const ant=antMap[r.suc];
+    const vC=ant?varPct(r.consumo,ant.consumo):null;
+    const vA=ant?varPct(r.activ,ant.activ):null;
+    const vAl=ant?varPct(r.altas,ant.altas):null;
+    const ac=r.activ>=75?'var(--bna-verde)':r.activ>=55?'var(--bna-naranja)':'#c0241c';
+    return '<tr class="crow" data-suc="'+r.suc+'" onclick="ddTCSuc(this.dataset.suc)">'+
+      '<td class="rk">'+(i+1)+'</td>'+
+      '<td style="font-weight:700">'+r.suc+'</td>'+
+      '<td><b>$'+r.consumo.toFixed(1)+'M</b><br><small>'+varHtml(vC)+'</small></td>'+
+      '<td style="font-size:11px;color:#002056">$'+r.consumo_mc.toFixed(1)+'M</td>'+
+      '<td style="font-size:11px;color:#F6955A">$'+r.consumo_visa.toFixed(1)+'M</td>'+
+      '<td>'+nf(r.tx)+'</td>'+
+      '<td>'+nf(r.ctas_total)+'</td>'+
+      '<td><span class="pill p-vio">'+nf(r.ctas_res)+'</span></td>'+
+      '<td>'+nf(r.ctas_hab)+'</td>'+
+      '<td><span class="pill p-act">'+nf(r.ctas_act)+'</span></td>'+
+      '<td style="font-weight:700;color:'+ac+'">'+r.activ.toFixed(1)+'%<br><small>'+varHtml(vA)+'</small></td>'+
+      '<td><span class="pill p-az">'+r.altas+'</span><br><small>'+varHtml(vAl)+'</small></td>'+
+      '<td style="font-size:11px">'+nf(r.adic_mc+r.adic_visa)+'</td>'+
+      '<td style="font-size:11px">'+nf(r.tarjetas)+'</td>'+
+      '</tr>';
+  }).join('');
+
+  renderTCResumen();
+}
+
+// applyFilter_VIAJA — alias de applyFilter_SN adaptado para VIAJA+
+function applyFilter_VIAJA(){
+  const suc  = document.getElementById('f-viaja-suc')?.value||'';
+  const rubro= document.getElementById('f-viaja-rubro')?.value||'';
+  const promo= document.getElementById('f-viaja-promo')?.value||'';
+  let r=DD.viaja||[];
+  if(suc)   r=r.filter(x=>x['SUCURSAL']===suc);
+  if(rubro) r=r.filter(x=>normRubro(x['RUBRO'])===rubro);
+  if(promo) r=r.filter(x=>x['NOMBRE DE LA PROMOCION']===promo);
+  if(typeof renderVIAJA==='function') renderVIAJA(r);
+  const el=document.getElementById('fc-viaja');
+  if(el) el.textContent=r.length+' comercios'+(suc?' · '+suc:'');
+}
+
+function resetFilters_VIAJA(){
+  ['f-viaja-suc','f-viaja-rubro','f-viaja-promo'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  applyFilter_VIAJA();
+}
+
+
+
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js',{scope:'./'}).then(r=>console.log('[SW]',r.scope)).catch(e=>console.warn('[SW]',e));
+  });
+}
+</script>
 </script>
 
 <div id="page-metas" class="page">

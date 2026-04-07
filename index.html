@@ -1151,6 +1151,7 @@ id="page-pyme">
 
 
 
+
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -2471,7 +2472,7 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec';
-const API_URL_FAC = 'https://script.google.com/macros/s/AKfycbxATeQUULVmPMP7pNvExCmAHVzJhHeL7R5H-i8s17sYrAasP0Qaum_xlRxIExDpoQG4PQ/exec'; // ← Pegar aquí la URL del Apps Script de FACTURACION MAS PAGOS
+const API_URL_FAC = ''; // ← Pegar aquí la URL del Apps Script de FACTURACION MAS PAGOS
 let TC_DATA = {records:[],meses:[],sucs:[]};
 
 const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "viaja": "VIAJA+", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
@@ -4106,6 +4107,8 @@ function resetFilters_VIAJA(){
 
 
 
+
+</script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -4113,7 +4116,7 @@ if('serviceWorker' in navigator){
   });
 }
 </script>
-</script>
+
 
 <div id="page-metas" class="page">
   <div class="banner">

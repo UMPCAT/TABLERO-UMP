@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#002056">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UMP NOA">
 <title>Tablero UMP · NOA Oeste · BNA</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -338,14 +343,17 @@ th{background:var(--bna-marino)}
   <div class="ntab" onclick="go('tc',this)">💳 TC Individuos</div>
   <div class="ntab" onclick="go('ceg',this)">Comercios General</div>
   <div class="ntab" onclick="go('fac',this)">Facturación</div>
+  <div class="ntab" onclick="go('facmp',this)">💳 Fac. +Pagos</div>
   <div class="ntab" onclick="go('marc',this)">Marcatón</div>
   <div class="ntab" onclick="go('sn',this)">SN / AE</div>
+  <div class="ntab" onclick="go('viaja',this)">✈ Viaja+</div>
   <div class="ntab" onclick="go('pyme',this)">PyMENación</div>
   <div class="ntab" onclick="go('agro',this)">AgroNación</div>
   <div class="ntab" onclick="go('corp',this)">Corporativa</div>
   <div class="ntab" onclick="go('bna',this)">BNA Conecta</div>
   <div class="ntab highlight" onclick="go('cliente',this)">🔍 Cliente</div>
   <div class="ntab" onclick="go('oport',this)">📊 Oportunidades</div>
+  <div class="ntab" onclick="go('metas',this)">🎯 Metas</div>
 </div>
 
 <!-- DRILL-DOWN -->
@@ -519,7 +527,12 @@ th{background:var(--bna-marino)}
 </div>
 
 <!-- ═══ FACTURACIÓN ═══ -->
-<div class="page" id="page-fac">
+<div class="page"  <!-- Ranking FAC -->
+  <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+    <div id="fac-ranking-suc" style="flex:1;min-width:220px"></div>
+    <div id="fac-ranking-top" style="flex:1;min-width:220px"></div>
+  </div>
+ id="page-fac">
   <div class="banner"><div><div class="ban-t">Facturación de Comercios</div><div class="ban-s">Enero 2026 vs Febrero 2026</div></div><div><div class="ban-n" id="fac-total">—</div><div class="ban-nl">facturación feb (B$)</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -726,7 +739,83 @@ th{background:var(--bna-marino)}
 </div>
 
 <!-- ═══ PYMENACIÓN ═══ -->
-<div class="page" id="page-pyme">
+<div class="page" id="page-viaja">
+  <div class="banner">
+    <div><div class="ban-t">Semana Nación / AE</div><div class="ban-s">Promociones vigentes · categorías · rubros · sucursales</div></div>
+    <div><div class="ban-n" id="viaja-total">—</div><div class="ban-nl">adheridos</div></div>
+  </div>
+
+  <div class="fbar">
+    <span class="fbar-lbl">Sucursal:</span>
+    <select id="f-viaja-suc" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
+    <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
+    <select id="f-sn-cat" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
+    <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
+    <select id="f-sn-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
+    <button class="fbar-reset" onclick="resetFilters_VIAJA()">✕ Limpiar</button>
+    <span class="fbar-count" id="fc-viaja">—</span>
+  </div>
+
+  <div class="cuit-bar">
+    <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
+    <input type="text" id="rs-sn" placeholder="Nombre de comercio..." style="flex:2"
+      oninput="buscarPromo('sn',this.value)"
+      onkeydown="if(event.key==='Enter')buscarPromo('sn',this.value)">
+    <input type="text" id="cuit-sn" placeholder="Por CUIT..." maxlength="20"
+      oninput="buscarPromo('sn',document.getElementById('cuit-sn').value,true)">
+    <button onclick="buscarPromo('sn',document.getElementById('rs-sn').value||document.getElementById('cuit-sn').value)">🔍</button>
+    <button class="clear-btn" onclick="limpiarPromo('sn')">✕</button>
+    <span id="rs-result-sn" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
+  </div>
+
+  <div class="metrics">
+    <div class="metric az"><div class="mlbl">Adheridos SN/AE</div><div class="mval" id="viaja-k1">—</div><div class="msub">altas vigentes</div></div>
+    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="viaja-k2">—</div><div class="msub" id="sn-k2s">—</div></div>
+    <div class="metric dr"><div class="mlbl">+Pagos / MAS PAGOS</div><div class="mval" id="viaja-k3">—</div><div class="msub">adquirente</div></div>
+    <div class="metric rj"><div class="mlbl">FISERV / PRISMA</div><div class="mval" id="viaja-k4">—</div><div class="msub">otros adquirentes</div></div>
+  </div>
+
+  <div class="g2" style="margin-bottom:12px">
+    <div class="card">
+      <div class="ctit">Por categoría · clic para ver comercios</div>
+      <div class="cw" style="height:240px"><canvas id="c-viaja-cat"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ctit">Top rubros · clic para ver comercios</div>
+      <div class="cw" style="height:240px"><canvas id="c-viaja-rub"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2" style="margin-bottom:12px">
+    <div class="card">
+      <div class="ctit">Por adquirente</div>
+      <div class="leg">
+        <span class="li"><span class="ld" style="background:#002056"></span>+Pagos/MAS PAGOS</span>
+        <span class="li"><span class="ld" style="background:#00ADDB"></span>FISERV</span>
+        <span class="li"><span class="ld" style="background:#4EBFA4"></span>PRISMA</span>
+      </div>
+      <div class="cw" style="height:180px"><canvas id="c-viaja-adq"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ctit">Top sucursales · clic para ver comercios</div>
+      <div class="cw" style="height:180px"><canvas id="c-viaja-suc"></canvas></div>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <div class="thead2">
+      <span class="ttit">Detalle por sucursal · clic para ver comercios</span>
+      <button class="action-btn btn-exp" onclick="exportPromo('sn')">⬇ Exportar</button>
+    </div>
+    <div class="twrap"><table><thead><tr>
+      <th>#</th><th>Sucursal</th><th>Total</th><th>+Pagos</th><th>FISERV</th><th>PRISMA</th><th>BNA+</th><th>Top Categoría</th><th>Top Rubro</th><th>Vol.</th>
+    </tr></thead><tbody id="t-viaja"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══ PYMENACIÓN ═══ -->
+<div class="page" 
+id="page-pyme">
   <div class="banner"><div><div class="ban-t">PyMENación</div><div class="ban-s">Tarjeta empresarial PyME</div></div><div><div class="ban-n" id="pyme-total">—</div><div class="ban-nl">cuentas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -1009,6 +1098,13 @@ th{background:var(--bna-marino)}
 </div>
 
 <script>
+
+
+
+
+
+
+
 
 
 
@@ -1366,20 +1462,62 @@ function renderCEG(rows){
     </tr>`).join('');
 }
 
+function parseFechaAltaCEG(v){
+  if(!v) return '';
+  const s=v.toString().trim();
+  if(/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
+  const m1=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(m1) return m1[3]+'-'+m1[2].padStart(2,'0')+'-'+m1[1].padStart(2,'0');
+  return '';
+}
 function applyFilterCEG(){
   const suc=document.getElementById('f-ceg-suc').value;
   const prod=document.getElementById('f-ceg-prod').value;
   const act=document.getElementById('f-ceg-act').value;
+  const desde=document.getElementById('f-ceg-fecha-desde')?.value||'';
+  const hasta=document.getElementById('f-ceg-fecha-hasta')?.value||'';
   let rows=DD.ceg||[];
   if(suc) rows=rows.filter(r=>r['Sucursal']===suc);
   if(prod) rows=rows.filter(r=>r['Producto']===prod);
   if(act) rows=rows.filter(r=>r['Actividad']===act);
+  // Filtro temporal Fecha de Alta
+  if(desde||hasta) rows=rows.filter(x=>{
+    const fa=parseFechaAltaCEG(x['Fecha de Alta']);
+    if(!fa) return false;
+    if(desde&&fa<desde) return false;
+    if(hasta&&fa>hasta) return false;
+    return true;
+  });
+  // Timeline
+  const wrap=document.getElementById('ceg-timeline-wrap');
+  if(wrap){
+    if(desde||hasta){
+      wrap.style.display='block';
+      const meses=[...new Set(rows.map(x=>parseFechaAltaCEG(x['Fecha de Alta'])).filter(Boolean).map(f=>f.slice(0,7)))].sort();
+      const tit=document.getElementById('ceg-timeline-tit');
+      if(tit) tit.textContent='Altas por mes · '+rows.length+' comercios · clic en barra para filtrar mes';
+      const totalPorMes=meses.map(m=>rows.filter(x=>parseFechaAltaCEG(x['Fecha de Alta']).startsWith(m)).length);
+      if(CH['c-ceg-timeline'])CH['c-ceg-timeline'].destroy();
+      CH['c-ceg-timeline']=new Chart(document.getElementById('c-ceg-timeline'),{
+        type:'bar',
+        data:{labels:meses.map(m=>{const p=m.split('-');const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];return ms[parseInt(p[1])-1]+' '+p[0].slice(2);}),
+          datasets:[{label:'Altas',data:totalPorMes,backgroundColor:totalPorMes.map((v,i)=>{const mx=Math.max(...totalPorMes)||1;return 'rgba(0,32,86,'+(0.4+0.6*(v/mx)).toFixed(2)+')';}),borderRadius:4,borderWidth:1,borderColor:'#002056'}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+' altas'}}},
+          scales:{x:{ticks:{font:{size:9},color:'#002056'}},y:{ticks:{font:{size:9}}}},
+          onClick:(e,el)=>{if(!el.length)return;const m=meses[el[0].index];const ld=new Date(+m.split('-')[0],+m.split('-')[1],0);document.getElementById('f-ceg-fecha-desde').value=m+'-01';document.getElementById('f-ceg-fecha-hasta').value=m+'-'+ld.getDate().toString().padStart(2,'0');applyFilterCEG();}}
+      });
+    } else {
+      wrap.style.display='none';
+    }
+  }
   renderCEG(rows);
-  document.getElementById('fc-ceg').textContent=n(rows.length)+' comercios';
+  document.getElementById('fc-ceg').textContent=n(rows.length)+' comercios'+(desde||hasta?' · filtro temporal':'');
 }
 
 function resetFilterCEG(){
-  ['f-ceg-suc','f-ceg-prod','f-ceg-act'].forEach(id=>document.getElementById(id).value='');
+  ['f-ceg-suc','f-ceg-prod','f-ceg-act','f-ceg-fecha-desde','f-ceg-fecha-hasta'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
   applyFilterCEG();
 }
 
@@ -1460,6 +1598,10 @@ function renderFAC(rows){
     const alerta=v<=-10?'<span class="pill p-chu">⚠ Caída</span>':v>10?'<span class="pill p-act">↑ Sube</span>':'<span class="pill p-gr">Estable</span>';
     return`<tr class="crow" data-nm="${s.nm}" onclick="ddFacSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>$${s.e.toFixed(1)}M</td><td>$${s.f.toFixed(1)}M</td><td style="font-weight:700;color:${v>=0?'var(--bna-verde)':'var(--roj)'}">${v>=0?'+':''}${v.toFixed(1)}%</td><td>${alerta}</td><td><span class="bm" style="width:${Math.round(s.f/mx*60)}px"></span></td></tr>`;
   }).join('');
+
+  rankFAC(rows);
+
+  if(typeof renderMetas==='function') renderMetas();
 }
 function applyFilterFAC(){
   const suc=document.getElementById('f-fac-suc').value;
@@ -1705,6 +1847,9 @@ function exportPromo(pid){
 // ── ALIAS PARA CARGA ──
 function rMARC(rows){ initPromo('marc',rows); }
 function rSN(rows){ initPromo('sn',rows); }
+
+
+// ── RENDER PYME ──function rVIAJA(rows){ initPromo('sn',rows); }
 
 
 // ── RENDER PYME ──
@@ -2292,7 +2437,7 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec';
-const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
+const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "viaja": "VIAJA+", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
 const CACHE = {};
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutos
 
@@ -2346,6 +2491,7 @@ async function loadAll(force=false) {
     ['fac',  rFAC],
     ['marc', rMARC],
     ['sn',   rSN],
+    ['viaja', rVIAJA],
     ['pyme', rPYME],
     ['agro', rAGRO],
     ['corp', rCORP],
@@ -2980,453 +3126,709 @@ function rankBNA(rows){
     </div>`;
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  // Botón actualizar
-  const btn = document.querySelector('.sbtn');
-  if(btn) btn.onclick = () => loadAll(true);
-  // TC desde datos embebidos — instantáneo
-  initTC();
-  // Arrancar carga desde Sheet
-  loadAll();
-});
 
-// ═══ TC INDIVIDUOS (datos embebidos — actualizar Sheet para nuevos meses) ═══
-// TC_DATA se carga desde el Sheet (ver rTC)
-let TC_DATA = {records:[],meses:[],sucs:[]};
+// ── Ranking FAC por sucursal y top facturadores ──
+function rankFAC(rows){
+  const p$=v=>parseFloat((v||'0').toString().replace(/[$\.]/g,'').replace(',','.'))||0;
+  const fac=document.getElementById('f-fac-suc')?.value||'';
+  const filtered=fac?rows.filter(r=>r['Sucursal']&&r['Sucursal'].includes(fac)):rows;
 
-function fmtMesLabel(m){
-  const ms=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const p=(m||'').split('-');
-  return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:m;
+  // Por sucursal — sumar Ene + Feb
+  const gSuc={};
+  filtered.forEach(r=>{
+    const s=r['Sucursal']||'—';
+    const cod=s.replace(/^\d+-/,'').trim();
+    if(!gSuc[cod])gSuc[cod]={suc:cod,ene:0,feb:0};
+    gSuc[cod].ene+=p$(r['Total  ENERO 26']);
+    gSuc[cod].feb+=p$(r['Total  FEBRERO 26']);
+  });
+  const sucArr=Object.values(gSuc).map(x=>({...x,total:x.ene+x.feb})).sort((a,b)=>b.total-a.total);
+  const topSuc=sucArr.slice(0,8);
+  const mx=topSuc[0]?.total||1;
+  const medal=['🥇','🥈','🥉','4°','5°','6°','7°','8°'];
+  const fmtM=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Number(v).toLocaleString('es-AR');
+
+  const elSuc=document.getElementById('fac-ranking-suc');
+  if(elSuc) elSuc.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #4EBFA4;border-radius:10px;padding:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">
+        🏆 Ranking sucursales · Ene+Feb
+      </div>
+      ${topSuc.map((x,i)=>`
+        <div style="margin-bottom:7px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+            <span style="font-size:10px;font-weight:700;color:#002056">${medal[i]} ${x.suc}</span>
+            <span style="font-size:10px;font-weight:800;color:#4EBFA4">${fmtM(x.total)}</span>
+          </div>
+          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
+            <div style="width:${(x.total/mx*100).toFixed(0)}%;height:100%;background:#4EBFA4;border-radius:4px"></div>
+          </div>
+          <div style="font-size:8px;color:#888">Ene: ${fmtM(x.ene)} · Feb: ${fmtM(x.feb)}</div>
+        </div>`).join('')}
+    </div>`;
+
+  // Top facturadores individuales
+  const gCUIT={};
+  filtered.forEach(r=>{
+    const k=r['CUIT']||'';
+    if(!k) return;
+    const nom=(r['Razon Social / Apellido']||r['RAZONSOCIAL']||k).toString().trim().slice(0,28);
+    const suc=(r['Sucursal']||'').replace(/^\d+-/,'').trim();
+    if(!gCUIT[k])gCUIT[k]={nom,suc,ene:0,feb:0};
+    gCUIT[k].ene+=p$(r['Total  ENERO 26']);
+    gCUIT[k].feb+=p$(r['Total  FEBRERO 26']);
+  });
+  const topFac=Object.values(gCUIT).map(x=>({...x,total:x.ene+x.feb}))
+    .filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8);
+  const mxF=topFac[0]?.total||1;
+
+  const elTop=document.getElementById('fac-ranking-top');
+  if(elTop) elTop.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #007094;border-radius:10px;padding:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#007094;margin-bottom:10px">
+        💼 Top facturadores
+      </div>
+      ${topFac.map((x,i)=>`
+        <div style="margin-bottom:7px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+            <span style="font-size:9px;font-weight:700;color:#002056;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px" title="${x.nom}">${medal[i]} ${x.nom}</span>
+            <span style="font-size:10px;font-weight:800;color:#007094">${fmtM(x.total)}</span>
+          </div>
+          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
+            <div style="width:${(x.total/mxF*100).toFixed(0)}%;height:100%;background:#007094;border-radius:4px"></div>
+          </div>
+          <div style="font-size:8px;color:#888">${x.suc}</div>
+        </div>`).join('')}
+    </div>`;
 }
 
-// ══ TC INDIVIDUOS — carga y parseo desde Sheet ══
-// FLUJOS (sumar): Consumo, Tx, Altas
-// STOCKS (del mes, NO acumular): Cuentas, Tarjetas, Adicionales
-// RATIO (recalcular desde base): Activación = Ctas.Activas / Ctas.Habilitadas
+// ══ FACTURACION MAS PAGOS — versión dinámica ══
+// Detecta automáticamente todos los meses del Sheet.
+// Para agregar Abril: solo creá la hoja "ABRIL ZON NOA" en el Sheet.
+// No hay que tocar ningún código.
 
-function rTC(rawRows){
-  console.log('[TC] ▶ rTC llamada con', rawRows?rawRows.length:0, 'filas');
-  if(!rawRows||!rawRows.length){
-    console.warn('[TC] ✗ Sin datos. Verificar: 1) hoja "TC INDIVIDUOS" existe en Sheet, 2) está en COLS del Apps Script, 3) URL correcta');
+let FACMP_DATA   = {};  // {nombreHoja: [{RAZONSOCIAL,CUIT,Tipo,NETO,SUCURSAL,_mes},...]}
+let FACMP_MESES  = [];  // ['ENERO ZON NOA','FEBRERO ZON NOA',...] ordenados
+
+const MESES_LABEL = {
+  ENERO:'Enero', FEBRERO:'Febrero', MARZO:'Marzo', ABRIL:'Abril',
+  MAYO:'Mayo', JUNIO:'Junio', JULIO:'Julio', AGOSTO:'Agosto',
+  SEPTIEMBRE:'Sep', OCTUBRE:'Oct', NOVIEMBRE:'Nov', DICIEMBRE:'Dic'
+};
+
+function mesShortLabel(nombreHoja){
+  const m = nombreHoja.match(/^(\w+)/);
+  return m ? (MESES_LABEL[m[1].toUpperCase()] || m[1]) : nombreHoja;
+}
+
+async function loadFACMP(){
+  if(!API_URL_FAC){
+    console.warn('[FACMP] API_URL_FAC no configurada — cargá la URL del Apps Script');
     return;
   }
-  const keys=Object.keys(rawRows[0]);
-  console.log('[TC] ✓ Columnas:', keys.join(', '));
-  console.log('[TC] Fila 0 MES:', rawRows[0]['MES'], '| Suc:', rawRows[0]['Sucursales'], '| Consumo:', rawRows[0]['Monto Consumo']);
-  const MMAP={ene:'01',feb:'02',mar:'03',abr:'04',may:'05',jun:'06',
-               jul:'07',ago:'08',sep:'09',oct:'10',nov:'11',dic:'12'};
 
-  // Parsear número argentino: "$1.234.567,89" | "3.278" | "61,87 %" | "55.165"
-  const pN=v=>{
-    if(!v&&v!==0) return 0;
-    let s=v.toString().replace(/[$\s%]/g,'').trim();
-    if(!s||s==='-') return 0;
-    const hasDot=s.includes('.');
-    const hasComma=s.includes(',');
-    if(hasDot&&hasComma){
-      // "1.234.567,89" → miles=punto, decimal=coma
-      s=s.replace(/\./g,'').replace(',','.');
-    } else if(hasDot&&!hasComma){
-      // "3.278" o "55.165" → si parte decimal tiene 3 dígitos es miles
-      const pts=s.split('.');
-      if(pts.length>1&&pts[pts.length-1].length===3) s=s.replace(/\./g,'');
-      // si 1-2 dígitos después del punto: es decimal, dejar
-    } else if(!hasDot&&hasComma){
-      // "61,87" → decimal
-      s=s.replace(',','.');
-    }
-    const n=parseFloat(s);
-    return isNaN(n)?0:n;
-  };
+  // 1. Pedir al Apps Script la lista de meses disponibles
+  try {
+    const urlLista = API_URL_FAC + '?action=listar_meses';
+    console.log('[FACMP] Consultando meses disponibles...');
+    const r   = await fetch(urlLista, {redirect:'follow'});
+    const txt = await r.text();
+    const json = JSON.parse(txt);
+    if(json.error){ console.error('[FACMP] Error listando meses:', json.error); return; }
+    FACMP_MESES = json.meses || [];
+    console.log('[FACMP] Meses detectados:', FACMP_MESES);
+  } catch(e){
+    console.error('[FACMP] No se pudo obtener lista de meses:', e.message);
+    return;
+  }
 
-  // Parsear mes en cualquier formato → "yyyy-MM" para ordenar
-  const pMes=v=>{
-    if(!v) return '';
-    const s=v.toString().trim();
-    // "dic-2025" → "2025-12"
-    const m1=s.toLowerCase().match(/^([a-z]{3})-(\d{4})$/);
-    if(m1&&MMAP[m1[1]]) return m1[2]+'-'+MMAP[m1[1]];
-    // "01/12/2025" → dd/MM/yyyy (Apps Script formatea fecha como texto)
-    // El mes es la parte del MEDIO
-    const m2=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if(m2) return m2[3]+'-'+m2[2].padStart(2,'0'); // yyyy-MM (ignorar día)
-    // "2025-12" o "2025-12-01" → ya correcto
-    if(/^\d{4}-\d{2}/.test(s)) return s.slice(0,7);
-    // "12/2025" → MM/yyyy
-    const m3=s.match(/^(\d{1,2})\/(\d{4})$/);
-    if(m3) return m3[2]+'-'+m3[1].padStart(2,'0');
-    return '';
-  };
+  if(!FACMP_MESES.length){
+    console.warn('[FACMP] No se encontraron hojas de meses (patrón: MES ZON NOA)');
+    return;
+  }
 
-  const records=rawRows.map(r=>{
-    const hab   =pN(r['Cuentas habilitadas']);
-    const act   =pN(r['Cuentas activas']);
-    const habMC =pN(r['Cuentas habilitadas MC']);
-    const actMC =pN(r['Cuentas activas MC']);
-    const habVISA=pN(r['Cuentas habilitadas Visa']);
-    const actVISA=pN(r['Cuentas activas Visa']);
-    // Activación siempre recalculada desde la base (no del texto "61,87 %")
-    const activ    =hab>0?Math.round(act/hab*10000)/100:0;
-    const activMC  =habMC>0?Math.round(actMC/habMC*10000)/100:0;
-    const activVISA=habVISA>0?Math.round(actVISA/habVISA*10000)/100:0;
-
-    return {
-      mes:          pMes(r['MES']),
-      suc:          (r['Sucursales']||'').trim(),
-      // FLUJOS
-      consumo:      Math.round(pN(r['Monto Consumo'])/1e4)/100,   // MM$
-      consumo_mc:   Math.round(pN(r['Monto Consumo MC'])/1e4)/100,
-      consumo_visa: Math.round(pN(r['Monto Consumo VISA'])/1e4)/100,
-      tx:           Math.round(pN(r['Tx Consumo'])),
-      tx_mc:        Math.round(pN(r['Tx Consumo MC'])),
-      tx_visa:      Math.round(pN(r['Tx Consumo VISA'])),
-      altas:        Math.round(pN(r['Alta de Cuentas'])),
-      altas_mc:     Math.round(pN(r['Alta de Cuentas MC'])),
-      altas_visa:   Math.round(pN(r['Alta de Cuentas VISA'])),
-      // STOCKS
-      ctas_total:      Math.round(pN(r['Cuentas Totales'])),
-      ctas_total_mc:   Math.round(pN(r['Cuentas Totales MC'])),
-      ctas_total_visa: Math.round(pN(r['Cuentas Totales Visa'])),
-      ctas_res:        Math.round(pN(r['Cuentas con resumen'])),
-      ctas_res_mc:     Math.round(pN(r['Cuentas con resumen MC'])),
-      ctas_res_visa:   Math.round(pN(r['Cuentas con resumen Visa'])),
-      ctas_hab:     hab,  ctas_hab_mc:habMC, ctas_hab_visa:habVISA,
-      ctas_act:     act,  ctas_act_mc:actMC, ctas_act_visa:actVISA,
-      tarjetas:        Math.round(pN(r['Tarjetas Totales'])),
-      tarjetas_mc:     Math.round(pN(r['Tarjetas MC'])),
-      tarjetas_visa:   Math.round(pN(r['Tarjetas Visa'])),
-      adic_mc:         Math.round(pN(r['Tarjetas Adicionales MC'])),
-      adic_visa:       Math.round(pN(r['Tarjetas Adicionales Visa'])),
-      // RATIO recalculado
-      activ, activ_mc:activMC, activ_visa:activVISA,
-    };
-  }).filter(r=>r.suc&&r.mes);
-
-  const meses=[...new Set(records.map(r=>r.mes))].sort();
-  const sucs =[...new Set(records.map(r=>r.suc))].sort();
-  TC_DATA={records,meses,sucs};
-
-  // Verificación en consola
-  const tot=mes=>records.filter(r=>r.mes===mes);
-  meses.forEach(m=>{
-    const rr=tot(m);
-    const hab=rr.reduce((a,r)=>a+r.ctas_hab,0);
-    const act=rr.reduce((a,r)=>a+r.ctas_act,0);
-    const res=rr.reduce((a,r)=>a+r.ctas_res,0);
-    const cons=rr.reduce((a,r)=>a+r.consumo,0);
-    console.log('[TC]',m,'| Sucs:'+rr.length,'| Consumo:$'+cons.toFixed(0)+'M',
-      '| Activ:'+(hab>0?(act/hab*100).toFixed(1):'-')+'%',
-      '| C/Res:'+res+' ('+  (rr.reduce((a,r)=>a+r.ctas_total,0)>0?
-        (res/rr.reduce((a,r)=>a+r.ctas_total,0)*100).toFixed(1):'?')+'%)');
+  // 2. Cargar cada mes en paralelo
+  FACMP_DATA = {};
+  const cargas = FACMP_MESES.map(async hoja => {
+    try {
+      const url  = API_URL_FAC + '?sheet=' + encodeURIComponent(hoja);
+      const resp = await fetch(url, {redirect:'follow'});
+      const json = JSON.parse(await resp.text());
+      if(json.error){ console.warn('[FACMP]', hoja, json.error); return; }
+      const label = mesShortLabel(hoja);
+      FACMP_DATA[hoja] = json.rows.map(row => {
+        const obj = {}; json.headers.forEach((h,i) => obj[h] = row[i]||'');
+        obj['_mes'] = label;  // etiqueta corta para la tabla
+        return obj;
+      });
+      console.log('[FACMP]', hoja + ':', FACMP_DATA[hoja].length, 'filas');
+    } catch(e){ console.warn('[FACMP] Error cargando', hoja, e.message); }
   });
+  await Promise.allSettled(cargas);
 
-  initTC();
-}
-
-
-function initTC(){
-  const meses=[...TC_DATA.meses].reverse();
-  const sucs=TC_DATA.sucs;
-  const sel=document.getElementById('f-tc-mes');
-  while(sel.options.length>1)sel.remove(1);
-  meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=fmtMesLabel(m);sel.appendChild(o);});
-  if(meses.length)sel.value=meses[0];
-  poblarSel('f-tc-suc',sucs);
-  applyFilterTC();
-}
-
-function getTCRows(){
-  const mes=document.getElementById('f-tc-mes').value;
-  const suc=document.getElementById('f-tc-suc').value;
-  let r=TC_DATA.records;
-  if(mes)r=r.filter(x=>x.mes===mes);
-  if(suc)r=r.filter(x=>x.suc===suc);
-  return r;
-}
-
-function getTCMesAnterior(mesActual){
-  const meses=TC_DATA.meses;
-  const idx=meses.indexOf(mesActual);
-  if(idx<=0)return null;
-  return TC_DATA.records.filter(r=>r.mes===meses[idx-1]);
-}
-
-function varHtml(v){
-  if(v===null||v===undefined)return '<span style="color:#aaa">—</span>';
-  const num=parseFloat(v);
-  const color=num>0?'var(--bna-verde)':num<0?'#c0241c':'var(--txt2)';
-  return `<span style="color:${color};font-weight:700;font-size:11px">${num>0?'↑+':'↓'}${v}%</span>`;
-}
-function varPct(a,b){return b&&b>0?((a-b)/b*100).toFixed(1):null;}
-
-function applyFilterTC(){
-  const rows=getTCRows();
-  if(!rows.length){document.getElementById('tc-total').textContent='—';return;}
-  const mes=document.getElementById('f-tc-mes').value;
-  const rowsAnt=mes?getTCMesAnterior(mes):null;
-  const antMap={};
-  if(rowsAnt)rowsAnt.forEach(r=>antMap[r.suc]=r);
-  const antRows=rowsAnt||[];
-
-  const sum=k=>rows.reduce((a,r)=>a+(r[k]||0),0);
-  const asum=k=>antRows.reduce((a,r)=>a+(r[k]||0),0);
-  const consumo=sum('consumo'),cMC=sum('consumo_mc'),cVISA=sum('consumo_visa');
-  const tx=sum('tx'),txMC=sum('tx_mc'),txVISA=sum('tx_visa');
-  const altas=sum('altas'),altasMC=sum('altas_mc'),altasVISA=sum('altas_visa');
-  const ctasT=sum('ctas_total'),ctasR=sum('ctas_res');
-  const ctasH=sum('ctas_hab'),ctasA=sum('ctas_act');
-  const adicMC=sum('adic_mc'),adicVISA=sum('adic_visa');
-  const tarjetas=sum('tarjetas');
-  // Activación zonal: Σctas_activas / Σctas_habilitadas (no promedio)
-  const totalHab=sum('ctas_hab'), totalAct=sum('ctas_act');
-  const avgAct=totalHab>0?(totalAct/totalHab*100).toFixed(1):0;
-
-  const n=v=>Number(v||0).toLocaleString('es-AR');
-  const pct=(a,b)=>b>0?(a/b*100).toFixed(1)+'%':'—';
-
-  document.getElementById('tc-total').textContent=n(tarjetas);
-  document.getElementById('tc-k1').textContent='$'+(consumo/1000).toFixed(2)+'B';
-  document.getElementById('tc-k2').textContent=n(tx);
-  document.getElementById('tc-k2s').innerHTML='MC:'+n(txMC)+' VISA:'+n(txVISA)+(antRows.length?' '+varHtml(varPct(tx,asum('tx'))):'');
-  document.getElementById('tc-k3').textContent=n(ctasA);
-  document.getElementById('tc-k3s').innerHTML=pct(ctasA,ctasT)+(antRows.length?' '+varHtml(varPct(ctasA,asum('ctas_act'))):'');
-  document.getElementById('tc-k4').textContent=n(altas);
-  document.getElementById('tc-k4s').innerHTML='MC:'+n(altasMC)+' VISA:'+n(altasVISA)+(antRows.length?' '+varHtml(varPct(altas,asum('altas'))):'');
-  document.getElementById('tc-k5').textContent=n(ctasR);
-  document.getElementById('tc-k5s').innerHTML=pct(ctasR,ctasT)+(antRows.length?' '+varHtml(varPct(ctasR,asum('ctas_res'))):'');
-  document.getElementById('tc-k6').textContent=n(ctasH);
-  document.getElementById('tc-k6s').textContent=pct(ctasH,ctasT);
-  document.getElementById('tc-k7').textContent=avgAct+'%';
-  document.getElementById('tc-k8').textContent=n(adicMC+adicVISA);
-  document.getElementById('tc-k8s').textContent='MC:'+n(adicMC)+' VISA:'+n(adicVISA);
-  document.getElementById('fc-tc').textContent=rows.length+' sucursales'+(mes?' · '+fmtMesLabel(mes):'');
-
-  const PIE={responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},cutout:'55%'};
-  const BHx=()=>{return{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}}}};
-
-  // Gráfico 1: Barras MC+VISA por suc
-  const sorted=[...rows].sort((a,b)=>b.consumo-a.consumo);
-  if(CH['c-tc-cons'])CH['c-tc-cons'].destroy();
-  CH['c-tc-cons']=new Chart(document.getElementById('c-tc-cons'),{
-    type:'bar',
-    data:{labels:sorted.map(r=>r.suc),datasets:[
-      {label:'MC',  data:sorted.map(r=>+r.consumo_mc.toFixed(1)), backgroundColor:'#002056',borderRadius:3},
-      {label:'VISA',data:sorted.map(r=>+r.consumo_visa.toFixed(1)),backgroundColor:'#F6955A',borderRadius:3}
-    ]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
-        const r=sorted[ctx.dataIndex];const ant=antMap[r.suc];
-        const f=ctx.datasetIndex===0?'consumo_mc':'consumo_visa';
-        const v=ant?varPct(r[f],ant[f]):null;
-        return ctx.dataset.label+': $'+ctx.raw+'M'+(v?' ('+v+'%)':'');
-      }}}},
-      scales:{x:{stacked:true,ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y:{stacked:true,ticks:{font:{size:9},color:'#002056'}}},
-      onClick:(e,el)=>{if(el.length)ddTCSuc(sorted[el[0].index].suc);}
-    }
-  });
-
-  // Gráfico 2: Evolución temporal (línea) o cuentas por estado
-  const todosMeses=TC_DATA.meses;
-  const sucFiltrada=document.getElementById('f-tc-suc').value;
-  const g2tit=document.getElementById('tc-g2-tit');
-
-  if(todosMeses.length>1 && !sucFiltrada){
-    if(g2tit)g2tit.textContent='Evolución consumo zonal (B$) · '+todosMeses.map(fmtMesLabel).join(' → ');
-    const cPorMes=todosMeses.map(m=>+(TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo,0)/1000).toFixed(2));
-    const mcPorMes=todosMeses.map(m=>+(TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo_mc,0)/1000).toFixed(2));
-    const vPorMes=todosMeses.map(m=>+(TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo_visa,0)/1000).toFixed(2));
-    if(CH['c-tc-evo'])CH['c-tc-evo'].destroy();
-    CH['c-tc-evo']=new Chart(document.getElementById('c-tc-evo'),{
-      type:'line',
-      data:{labels:todosMeses.map(fmtMesLabel),datasets:[
-        {label:'Total',data:cPorMes,borderColor:'#002056',backgroundColor:'rgba(0,32,86,.1)',fill:true,tension:.3,pointRadius:5},
-        {label:'MC',   data:mcPorMes,borderColor:'#00ADDB',backgroundColor:'transparent',tension:.3,pointRadius:4},
-        {label:'VISA', data:vPorMes, borderColor:'#F6955A',backgroundColor:'transparent',tension:.3,pointRadius:4},
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'B'}}},
-        scales:{x:{ticks:{font:{size:11}}},y:{ticks:{font:{size:9},callback:v=>'$'+v+'B'}}}
-      }
-    });
-  } else if(sucFiltrada && todosMeses.length>1){
-    if(g2tit)g2tit.textContent='Evolución: '+sucFiltrada;
-    const rSuc=TC_DATA.records.filter(r=>r.suc===sucFiltrada);
-    const cSuc=todosMeses.map(m=>{const rr=rSuc.find(r=>r.mes===m);return rr?+rr.consumo.toFixed(1):null;});
-    const aSuc=todosMeses.map(m=>{const rr=rSuc.find(r=>r.mes===m);return rr?rr.activ:null;});
-    if(CH['c-tc-evo'])CH['c-tc-evo'].destroy();
-    CH['c-tc-evo']=new Chart(document.getElementById('c-tc-evo'),{
-      type:'line',
-      data:{labels:todosMeses.map(fmtMesLabel),datasets:[
-        {label:'Consumo ($M)',data:cSuc,borderColor:'#002056',backgroundColor:'rgba(0,32,86,.1)',fill:true,tension:.3,pointRadius:5,yAxisID:'y'},
-        {label:'Activación %',data:aSuc,borderColor:'#4EBFA4',backgroundColor:'transparent',tension:.3,pointRadius:5,yAxisID:'y2'},
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
-        scales:{y:{type:'linear',position:'left',ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y2:{type:'linear',position:'right',ticks:{font:{size:9},callback:v=>v+'%'},grid:{drawOnChartArea:false}}}
-      }
-    });
-  } else {
-    if(g2tit)g2tit.textContent='Cuentas por estado · '+fmtMesLabel(mes||'');
-    if(CH['c-tc-evo'])CH['c-tc-evo'].destroy();
-    CH['c-tc-evo']=new Chart(document.getElementById('c-tc-evo'),{
-      type:'bar',
-      data:{labels:sorted.map(r=>r.suc),datasets:[
-        {label:'Totales',    data:sorted.map(r=>r.ctas_total),  backgroundColor:'#7CA9DA',borderRadius:2},
-        {label:'C/resumen',  data:sorted.map(r=>r.ctas_res),   backgroundColor:'#9090C2',borderRadius:2},
-        {label:'Habilitadas',data:sorted.map(r=>r.ctas_hab),   backgroundColor:'#00ADDB',borderRadius:2},
-        {label:'Activas',    data:sorted.map(r=>r.ctas_act),   backgroundColor:'#4EBFA4',borderRadius:2},
-      ]},
-      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false}},
-        scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}}
-      }
+  // 3. Poblar selector de meses y renderizar
+  const selMes = document.getElementById('f-facmp-mes');
+  if(selMes){
+    while(selMes.options.length > 1) selMes.remove(1);
+    FACMP_MESES.forEach(hoja => {
+      const o = document.createElement('option');
+      o.value = hoja;
+      o.textContent = mesShortLabel(hoja);
+      selMes.appendChild(o);
     });
   }
 
-  // Gráfico 3: MC vs VISA
-  if(CH['c-tc-marca'])CH['c-tc-marca'].destroy();
-  CH['c-tc-marca']=new Chart(document.getElementById('c-tc-marca'),{
-    type:'doughnut',
-    data:{labels:['MC '+pct(cMC,consumo),'VISA '+pct(cVISA,consumo)],
-    datasets:[{data:[+cMC.toFixed(1),+cVISA.toFixed(1)],backgroundColor:['#002056','#F6955A'],borderWidth:0}]},
-    options:{...PIE,cutout:'52%'}
-  });
+  renderFACMP();
+}
 
-  // Gráfico 4: Activación
-  const sorted2=[...rows].sort((a,b)=>b.activ-a.activ);
-  if(CH['c-tc-activ'])CH['c-tc-activ'].destroy();
-  CH['c-tc-activ']=new Chart(document.getElementById('c-tc-activ'),{
-    type:'bar',
-    data:{labels:sorted2.map(r=>r.suc),
-    datasets:[{data:sorted2.map(r=>+r.activ.toFixed(1)),
-      backgroundColor:sorted2.map(r=>r.activ>=75?'#4EBFA4':r.activ>=55?'#F6955A':'#c0241c'),
-      borderRadius:3}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{
-        const r=sorted2[ctx.dataIndex];const ant=antMap[r.suc];
-        const v=ant?varPct(r.activ,ant.activ):null;
-        return 'Activación: '+ctx.raw+'%'+(v?' ('+v+'pp)':'');
-      }}}},
-      scales:{x:{ticks:{font:{size:9},callback:v=>v+'%',max:100}},y:{ticks:{font:{size:9},color:'#002056'}}}
+function getFACMPRows(){
+  const mesSeleccionado = document.getElementById('f-facmp-mes')?.value || '';
+  if(mesSeleccionado){
+    return FACMP_DATA[mesSeleccionado] || [];
+  }
+  // Todos los meses
+  return FACMP_MESES.flatMap(h => FACMP_DATA[h] || []);
+}
+
+function applyFilterFACMP(){
+  const suc  = document.getElementById('f-facmp-suc')?.value  || '';
+  const tipo = document.getElementById('f-facmp-tipo')?.value || '';
+  let rows = getFACMPRows();
+  if(suc)  rows = rows.filter(r => r['SUCURSAL'] === suc);
+  if(tipo) rows = rows.filter(r => r['Tipo']     === tipo);
+  renderFACMP(rows);
+}
+
+function renderFACMP(rows){
+  if(!rows) rows = getFACMPRows();
+  const pN  = v => parseFloat((v||'0').toString().replace(/[$\s]/g,'').replace(/\./g,'').replace(',','.'))||0;
+  const nf  = v => Number(v||0).toLocaleString('es-AR');
+  const fmtM= v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const medal = ['🥇','🥈','🥉','4°','5°','6°','7°','8°','9°','10°'];
+
+  // Total y contador
+  const totalNeto = rows.reduce((a,r) => a+pN(r['NETO']),0);
+  document.getElementById('facmp-total').textContent = nf(rows.length);
+  document.getElementById('fc-facmp').textContent = nf(rows.length)+' registros · '+fmtM(totalNeto)+' total';
+  const statusEl = document.getElementById('facmp-status');
+  if(statusEl) statusEl.style.display = (rows.length||FACMP_MESES.length) ? 'none' : 'block';
+
+  // Poblar sucursales
+  const sucs = [...new Set(rows.map(r=>r['SUCURSAL']).filter(Boolean))].sort();
+  const sel  = document.getElementById('f-facmp-suc');
+  if(sel){
+    const cur = sel.value;
+    while(sel.options.length>1) sel.remove(1);
+    sucs.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
+    if(cur) sel.value=cur;
+  }
+
+  // ─ Ranking sucursales ─
+  const gSuc={};
+  rows.forEach(r=>{
+    const s=r['SUCURSAL']||'—';
+    if(!gSuc[s])gSuc[s]={suc:s,total:0,cnt:0};
+    gSuc[s].total+=pN(r['NETO']); gSuc[s].cnt++;
+  });
+  const topSuc=Object.values(gSuc).sort((a,b)=>b.total-a.total).slice(0,10);
+  const mxS=topSuc[0]?.total||1;
+  const elSuc=document.getElementById('facmp-ranking-suc');
+  if(elSuc) elSuc.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #4EBFA4;border-radius:10px;padding:14px;height:100%">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">
+        🏆 Ranking sucursales <span style="font-size:9px;font-weight:400;color:#888">(${FACMP_MESES.map(mesShortLabel).join(' + ')||'todos los meses'})</span>
+      </div>
+      ${topSuc.map((x,i)=>`
+        <div style="margin-bottom:7px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
+            <span style="font-size:10px;font-weight:700;color:#002056">${medal[i]} ${x.suc}</span>
+            <span style="font-size:10px;font-weight:800;color:#4EBFA4">${fmtM(x.total)}</span>
+          </div>
+          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
+            <div style="width:${(x.total/mxS*100).toFixed(0)}%;height:100%;background:#4EBFA4;border-radius:4px"></div>
+          </div>
+          <div style="font-size:8px;color:#888">${nf(x.cnt)} operaciones</div>
+        </div>`).join('')}
+    </div>`;
+
+  // ─ Top facturadores ─
+  const gCUIT={};
+  rows.forEach(r=>{
+    const k=r['CUIT']||''; if(!k)return;
+    const nom=(r['RAZONSOCIAL']||k).toString().trim();
+    if(!gCUIT[k])gCUIT[k]={nom,suc:r['SUCURSAL']||'',total:0,cnt:0};
+    gCUIT[k].total+=pN(r['NETO']); gCUIT[k].cnt++;
+  });
+  const topF=Object.values(gCUIT).filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,10);
+  const mxF=topF[0]?.total||1;
+  const elTop=document.getElementById('facmp-ranking-top');
+  if(elTop) elTop.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #007094;border-radius:10px;padding:14px;height:100%">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#007094;margin-bottom:10px">
+        💼 Top facturadores
+      </div>
+      ${topF.map((x,i)=>`
+        <div style="margin-bottom:7px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
+            <span style="font-size:9px;font-weight:700;color:#002056;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px" title="${x.nom}">${medal[i]} ${x.nom}</span>
+            <span style="font-size:10px;font-weight:800;color:#007094">${fmtM(x.total)}</span>
+          </div>
+          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
+            <div style="width:${(x.total/mxF*100).toFixed(0)}%;height:100%;background:#007094;border-radius:4px"></div>
+          </div>
+          <div style="font-size:8px;color:#888">${x.suc} · ${nf(x.cnt)} ops</div>
+        </div>`).join('')}
+    </div>`;
+
+  // ─ Tabla (top 300 por monto) ─
+  const sorted=[...rows].sort((a,b)=>pN(b['NETO'])-pN(a['NETO']));
+  document.getElementById('t-facmp').innerHTML=sorted.slice(0,300).map((r,i)=>`
+    <tr>
+      <td class="rk">${i+1}</td>
+      <td style="font-weight:600;font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['RAZONSOCIAL']||''}">${(r['RAZONSOCIAL']||'').slice(0,32)}</td>
+      <td style="font-size:10px;color:#888">${r['CUIT']||''}</td>
+      <td><span class="pill p-az" style="font-size:9px;white-space:nowrap">${r['Tipo']||''}</span></td>
+      <td style="font-weight:700;text-align:right">$${Math.round(pN(r['NETO'])).toLocaleString('es-AR')}</td>
+      <td style="font-size:10px">${(r['SUCURSAL']||'').replace(/^\d+-/,'').trim()}</td>
+      <td style="font-size:10px;color:#888">${r['_mes']||''}</td>
+    </tr>`).join('');
+}
+
+function resetFilterFACMP(){
+  ['f-facmp-suc','f-facmp-mes','f-facmp-tipo'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  applyFilterFACMP();
+}
+
+function exportFACMP(){
+  const rows=getFACMPRows();
+  if(!rows.length)return;
+  const keys=['RAZONSOCIAL','CUIT','Tipo','NETO','SUCURSAL','_mes'];
+  const hdr=['Razón Social','CUIT','Tipo','Neto','Sucursal','Mes'];
+  const csv=[hdr.join(','),...rows.map(r=>keys.map(k=>(r[k]||'').toString().replace(/,/g,';')).join(','))].join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='facturacion_maspagos.csv';
+  a.click();
+}
+
+
+
+// ══ METAS 2026 — NOA OESTE ══
+// Cuentas con Resumen TC: stock mensual, meta por trimestre
+// Acreditaciones: acumulado trimestral (FAC FISERV/Payway = hoja FACTURACION)
+
+// Normalizar nombre de sucursal para cruzar entre fuentes
+function normSuc(s){
+  if(!s) return '';
+  return s.toString().toUpperCase()
+    .replace(/^\d+-/,'')
+    .replace('SAN F. DEL V. DE CATAMARCA','SAN F. DEL V. DE CATAMARCA')
+    .replace('S.F.V.CATAMARCA','SAN F. DEL V. DE CATAMARCA')
+    .replace('VILLA DOLORES-CAT','VILLA DOLORES (CAT)')
+    .replace('F.MAMERTO ESQUIU','FRAY MAMERTO ESQUIU')
+    .replace('FRAY MAMERTO SQUIU','FRAY MAMERTO ESQUIU')
+    .trim();
+}
+
+// Metas Cuentas con Resumen TC (hitos trimestrales)
+const META_RES = {
+  'AIMOGASTA':                  {dic25:828,  mar26:842,  jun26:877,  sep26:909,  dic26:1021},
+  'ANDALGALA':                  {dic25:4702, mar26:4735, jun26:4836, sep26:4942, dic26:5376},
+  'ANILLACO':                   {dic25:335,  mar26:339,  jun26:351,  sep26:362,  dic26:404},
+  'BELEN':                      {dic25:5585, mar26:5633, jun26:5772, sep26:5912, dic26:6462},
+  'CHAMICAL':                   {dic25:917,  mar26:928,  jun26:958,  sep26:986,  dic26:1091},
+  'CHEPES':                     {dic25:873,  mar26:884,  jun26:915,  sep26:944,  dic26:1051},
+  'CHILECITO':                  {dic25:1616, mar26:1644, jun26:1714, sep26:1777, dic26:2000},
+  'EL MILAGRO':                 {dic25:266,  mar26:271,  jun26:283,  sep26:294,  dic26:331},
+  'FAMATINA':                   {dic25:413,  mar26:419,  jun26:435,  sep26:450,  dic26:504},
+  'FRAY MAMERTO ESQUIU':        {dic25:5987, mar26:6022, jun26:6136, sep26:6260, dic26:6783},
+  'LA RIOJA':                   {dic25:4632, mar26:4717, jun26:4932, sep26:5125, dic26:5796},
+  'LOS ALTOS':                  {dic25:2135, mar26:2158, jun26:2222, sep26:2284, dic26:2519},
+  'OLTA':                       {dic25:505,  mar26:511,  jun26:527,  sep26:543,  dic26:602},
+  'POMAN':                      {dic25:1978, mar26:2002, jun26:2065, sep26:2125, dic26:2349},
+  'FIAMBALA':                   {dic25:1618, mar26:1634, jun26:1679, sep26:1723, dic26:1893},
+  'RECREO':                     {dic25:2275, mar26:2317, jun26:2421, sep26:2514, dic26:2834},
+  'SALICAS':                    {dic25:262,  mar26:266,  jun26:275,  sep26:284,  dic26:316},
+  'SAN F. DEL V. DE CATAMARCA': {dic25:51858,mar26:52275,jun26:53503,sep26:54756,dic26:59744},
+  'SANTA MARIA':                {dic25:6510, mar26:6555, jun26:6693, sep26:6838, dic26:7430},
+  'TINOGASTA':                  {dic25:2993, mar26:3022, jun26:3104, sep26:3185, dic26:3497},
+  'VILLA DOLORES (CAT)':        {dic25:7537, mar26:7593, jun26:7763, sep26:7939, dic26:8652},
+  'VILLA UNION':                {dic25:535,  mar26:542,  jun26:560,  sep26:578,  dic26:643},
+  'VINCHINA':                   {dic25:291,  mar26:294,  jun26:303,  sep26:312,  dic26:344},
+};
+
+// Metas acreditaciones $ trimestrales (Q1=Ene-Mar, Q2=Abr-Jun, Q3=Jul-Sep, Q4=Oct-Dic)
+const META_ACRED = {
+  'AIMOGASTA':                  {q1:1408560060,  q2:1760703245,  q3:1760703245,  q4:2112846431},
+  'ANDALGALA':                  {q1:4558362791,  q2:5697963751,  q3:5697963751,  q4:6837564710},
+  'ANILLACO':                   {q1:145289004,   q2:181611582,   q3:181611582,   q4:217934160},
+  'BELEN':                      {q1:5458088225,  q2:6822622568,  q3:6822622568,  q4:8187156911},
+  'CHAMICAL':                   {q1:2292036058,  q2:2865050232,  q3:2865050232,  q4:3438064406},
+  'CHEPES':                     {q1:1043806808,  q2:1304760860,  q3:1304760860,  q4:1565714911},
+  'CHILECITO':                  {q1:2741592784,  q2:3426997151,  q3:3426997151,  q4:4112401519},
+  'EL MILAGRO':                 {q1:80348620,    q2:100435956,   q3:100435956,   q4:120523292},
+  'FRAY MAMERTO ESQUIU':        {q1:7732346432,  q2:9665450447,  q3:9665450447,  q4:11598554461},
+  'FAMATINA':                   {q1:320708272,   q2:400886062,   q3:400886062,   q4:481063852},
+  'FIAMBALA':                   {q1:519252163,   q2:649066372,   q3:649066372,   q4:778880582},
+  'LA RIOJA':                   {q1:6503116054,  q2:8128909707,  q3:8128909707,  q4:9754703360},
+  'LOS ALTOS':                  {q1:447025954,   q2:558783449,   q3:558783449,   q4:670540944},
+  'OLTA':                       {q1:273856781,   q2:342321593,   q3:342321593,   q4:410786404},
+  'POMAN':                      {q1:700322073,   q2:875404167,   q3:875404167,   q4:1050486262},
+  'RECREO':                     {q1:1939511941,  q2:2424394292,  q3:2424394292,  q4:2909276644},
+  'SALICAS':                    {q1:144655532,   q2:180819741,   q3:180819741,   q4:216983949},
+  'SAN F. DEL V. DE CATAMARCA': {q1:55330065554, q2:69162706498, q3:69162706498, q4:82995347442},
+  'SANTA MARIA':                {q1:4341756223,  q2:5427205052,  q3:5427205052,  q4:6512653882},
+  'TINOGASTA':                  {q1:4117689681,  q2:5147121371,  q3:5147121371,  q4:6176553061},
+  'VILLA DOLORES (CAT)':        {q1:9282554334,  q2:11603213814, q3:11603213814, q4:13923873294},
+  'VILLA UNION':                {q1:1634292484,  q2:2042869284,  q3:2042869284,  q4:2451446084},
+  'VINCHINA':                   {q1:39762173,    q2:49702806,    q3:49702806,    q4:59643439},
+};
+
+// Obtener meta de C/Resumen según el mes seleccionado
+// Interpolar linealmente entre los hitos trimestrales
+function getMetaRes(suc, mesStr){
+  // mesStr: "2025-12", "2026-01", etc.
+  const m = META_RES[suc]; if(!m) return null;
+  const [yy, mm] = mesStr.split('-').map(Number);
+  // Hitos: dic25=12/2025, mar26=3/2026, jun26=6/2026, sep26=9/2026, dic26=12/2026
+  const hitos = [
+    {y:2025,m:12,v:m.dic25},
+    {y:2026,m:3, v:m.mar26},
+    {y:2026,m:6, v:m.jun26},
+    {y:2026,m:9, v:m.sep26},
+    {y:2026,m:12,v:m.dic26},
+  ];
+  // Encontrar entre qué dos hitos cae el mes
+  const toMes = (h) => h.y*12+h.m;
+  const target = yy*12+mm;
+  // Antes del primer hito
+  if(target <= toMes(hitos[0])) return hitos[0].v;
+  // Después del último hito
+  if(target >= toMes(hitos[hitos.length-1])) return hitos[hitos.length-1].v;
+  // Interpolar
+  for(let i=0;i<hitos.length-1;i++){
+    const a=hitos[i], b=hitos[i+1];
+    if(target>=toMes(a)&&target<=toMes(b)){
+      const t=(target-toMes(a))/(toMes(b)-toMes(a));
+      return Math.round(a.v + t*(b.v-a.v));
     }
+  }
+  return null;
+}
+
+// Obtener meta de acreditaciones según el mes (prorrateada al mes dentro del trimestre)
+function getMetaAcred(suc, mesStr){
+  const m = META_ACRED[suc]; if(!m) return null;
+  const [yy, mm] = mesStr.split('-').map(Number);
+  // Q1=1-3, Q2=4-6, Q3=7-9, Q4=10-12
+  // La meta trimestral dividida por 3 = meta mensual
+  let qVal = null;
+  if(mm>=1&&mm<=3)  qVal=m.q1;
+  else if(mm>=4&&mm<=6)  qVal=m.q2;
+  else if(mm>=7&&mm<=9)  qVal=m.q3;
+  else if(mm>=10&&mm<=12) qVal=m.q4;
+  return qVal ? Math.round(qVal/3) : null;
+}
+
+// ── Render principal de Metas ──
+function renderMetas(){
+  const mesStr  = document.getElementById('f-metas-mes')?.value || '2026-01';
+  const tipoVer = document.getElementById('f-metas-tipo')?.value || 'ambas';
+  const n = v => Number(v||0).toLocaleString('es-AR');
+  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const pctColor = p => p>=100?'var(--bna-verde)':p>=80?'var(--bna-naranja)':'#c0241c';
+  const pctEmoji = p => p>=100?'✅':p>=80?'⚠️':'🚨';
+
+  // ── Label mes ──
+  const meses = {'2025-12':'Dic 2025','2026-01':'Ene 2026','2026-02':'Feb 2026','2026-03':'Mar 2026',
+                 '2026-04':'Abr 2026','2026-05':'May 2026','2026-06':'Jun 2026','2026-07':'Jul 2026',
+                 '2026-08':'Ago 2026','2026-09':'Sep 2026','2026-10':'Oct 2026','2026-11':'Nov 2026','2026-12':'Dic 2026'};
+  const mesLabel = meses[mesStr] || mesStr;
+  const el = document.getElementById('metas-mes-lbl');
+  if(el) el.textContent = mesLabel;
+
+  // ── Obtener datos reales de C/Resumen del TC ──
+  const tcRows = (TC_DATA.records||[]).filter(r => r.mes === mesStr);
+  const resReal = {}; // {SUC_NORMALIZADA: valor}
+  tcRows.forEach(r => { resReal[normSuc(r.suc)] = r.ctas_res || 0; });
+
+  // ── Obtener datos reales de Acreditaciones de FAC ──
+  const facRows = DD.fac || [];
+  const p$ = v => parseFloat((v||'0').toString().replace(/[$\.]/g,'').replace(',','.'))||0;
+  // FAC tiene Total ENERO 26, Total FEBRERO 26 — detectar columna del mes
+  const mesColMap = {
+    '2026-01':'Total  ENERO 26', '2026-02':'Total  FEBRERO 26',
+    '2026-03':'Total  MARZO 26', '2026-04':'Total  ABRIL 26',
+  };
+  const facCol = mesColMap[mesStr];
+  const acredReal = {};
+  if(facCol){
+    facRows.forEach(r => {
+      const suc = normSuc(r['Sucursal']||'');
+      if(!acredReal[suc]) acredReal[suc] = 0;
+      acredReal[suc] += p$(r[facCol]);
+    });
+  } else {
+    // Si no hay columna para ese mes, aviso
+    console.warn('[METAS] Sin columna FAC para mes:', mesStr);
+  }
+
+  // ── Construir filas por sucursal ──
+  const sucs = Object.keys(META_RES);
+  const rows = sucs.map(suc => {
+    const metaRes   = getMetaRes(suc, mesStr);
+    const realRes   = resReal[suc] || 0;
+    const pctRes    = metaRes ? Math.round(realRes/metaRes*100) : null;
+
+    const metaAcred = getMetaAcred(suc, mesStr);
+    const realAcred = acredReal[suc] || 0;
+    const pctAcred  = metaAcred ? Math.round(realAcred/metaAcred*100) : null;
+
+    return { suc, metaRes, realRes, pctRes, metaAcred, realAcred, pctAcred };
   });
 
-  // Tabla
-  const mx=sorted[0]?sorted[0].consumo:1;
-  // ── Acumulado año ──
-  const allRecords = TC_DATA.records;
-  const mesesAnio  = [...new Set(allRecords.map(r=>r.mes))].filter(m=>m.startsWith('2026'));
-  const mesReciente= mesesAnio.sort().slice(-1)[0]||'';
-  const sucFiltAcum= document.getElementById('f-tc-suc').value;
+  // ── KPIs globales ──
+  const totRealRes   = rows.reduce((a,r)=>a+r.realRes,0);
+  const totMetaRes   = rows.reduce((a,r)=>a+(r.metaRes||0),0);
+  const totRealAcred = rows.reduce((a,r)=>a+r.realAcred,0);
+  const totMetaAcred = rows.reduce((a,r)=>a+(r.metaAcred||0),0);
+  const pctGlbRes    = totMetaRes?Math.round(totRealRes/totMetaRes*100):0;
+  const pctGlbAcred  = totMetaAcred?Math.round(totRealAcred/totMetaAcred*100):0;
 
-  // Flujos: sumar todos los meses 2026
-  const acumRecs = allRecords.filter(r=>mesesAnio.includes(r.mes)&&(!sucFiltAcum||r.suc===sucFiltAcum));
-  const acumConsumo = acumRecs.reduce((a,r)=>a+r.consumo,0);
-  const acumTx     = acumRecs.reduce((a,r)=>a+r.tx,0);
-  const acumAltas  = acumRecs.reduce((a,r)=>a+r.altas,0);
+  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+  const setC= (id,c) => { const el=document.getElementById(id); if(el) el.style.color=c; };
+  set('metas-k1-real', n(totRealRes));
+  set('metas-k1-meta', 'meta: '+n(totMetaRes));
+  set('metas-k1-pct',  pctGlbRes+'%');
+  set('metas-k1-dif',  (totRealRes>=totMetaRes?'+':(totRealRes-totMetaRes<0?'':'+'))+n(totRealRes-totMetaRes)+' cuentas');
+  setC('metas-k1-pct', pctColor(pctGlbRes));
+  document.getElementById('metas-k1-pill').style.borderLeft='3px solid '+pctColor(pctGlbRes);
 
-  // Stocks: último mes disponible
-  const stockRecs = allRecords.filter(r=>r.mes===mesReciente&&(!sucFiltAcum||r.suc===sucFiltAcum));
-  const stockAct   = stockRecs.reduce((a,r)=>a+r.ctas_act,0);
-  const stockHab   = stockRecs.reduce((a,r)=>a+r.ctas_hab,0);
-  const stockActiv = stockHab>0?(stockAct/stockHab*100).toFixed(1):0; // recalculado, no promedio
+  set('metas-k2-real', fmtB(totRealAcred));
+  set('metas-k2-meta', 'meta: '+fmtB(totMetaAcred));
+  set('metas-k2-pct',  facCol ? pctGlbAcred+'%' : 'Sin datos');
+  set('metas-k2-dif',  facCol ? fmtB(totRealAcred-totMetaAcred) : 'Agregá columna en FAC');
+  setC('metas-k2-pct', pctColor(pctGlbAcred));
+  document.getElementById('metas-k2-pill').style.borderLeft='3px solid '+pctColor(pctGlbAcred);
 
-  const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
-  setEl('tc-acum-meses',  mesesAnio.length+' mes'+(mesesAnio.length!==1?'es':'')+' acum. ('+mesesAnio.map(fmtMesLabel).join(', ')+')');
-  setEl('tc-acum-consumo','$'+(acumConsumo/1000).toFixed(2)+'B');
-  setEl('tc-acum-tx',     n(acumTx));
-  setEl('tc-acum-altas',  n(acumAltas));
-  setEl('tc-acum-ctas',   n(stockAct));
-  setEl('tc-acum-activ',  stockActiv+'%');
+  set('fc-metas', rows.filter(r=>(r.pctRes||0)>=100).length+'/'+rows.length+' sucursales cumplen C/Resumen');
 
-  // Gráfico cuentas con resumen
-  renderTCResumen();
+  // ── Tabla ──
+  const sorted = [...rows].sort((a,b)=>(b.pctRes||0)-(a.pctRes||0));
+  const showRes   = tipoVer!=='acred';
+  const showAcred = tipoVer!=='res';
 
-  document.getElementById('t-tc').innerHTML=sorted.map((r,i)=>{
-    const ant=antMap[r.suc];
-    const vC=ant?varPct(r.consumo,ant.consumo):null;
-    const vA=ant?varPct(r.activ,ant.activ):null;
-    const vAl=ant?varPct(r.altas,ant.altas):null;
-    const ac=r.activ>=75?'var(--bna-verde)':r.activ>=55?'var(--bna-naranja)':'#c0241c';
-    return`<tr class="crow" data-suc="${r.suc}" onclick="ddTCSuc(this.dataset.suc)">
+  // Encabezado dinámico
+  const thead = document.getElementById('metas-thead');
+  if(thead) thead.innerHTML = `<tr>
+    <th>#</th><th>Sucursal</th>
+    ${showRes?`<th>C/Resumen real</th><th>Meta</th><th style="min-width:80px">% Cumpl.</th>`:''}
+    ${showAcred?`<th>Acred. real</th><th>Meta mensual</th><th style="min-width:80px">% Cumpl.</th>`:''}
+  </tr>`;
+
+  document.getElementById('t-metas').innerHTML = sorted.map((r,i) => {
+    const crColor  = pctColor(r.pctRes||0);
+    const acColor  = pctColor(r.pctAcred||0);
+    const difRes   = r.metaRes ? r.realRes - r.metaRes : null;
+    const difAcred = r.metaAcred ? r.realAcred - r.metaAcred : null;
+
+    const barRes = r.pctRes!=null ? `<div style="background:#e8eef5;border-radius:3px;height:4px;margin-top:2px;overflow:hidden"><div style="width:${Math.min(100,r.pctRes)}%;height:100%;background:${crColor};border-radius:3px"></div></div>` : '';
+    const barAcred = r.pctAcred!=null ? `<div style="background:#e8eef5;border-radius:3px;height:4px;margin-top:2px;overflow:hidden"><div style="width:${Math.min(100,r.pctAcred||0)}%;height:100%;background:${acColor};border-radius:3px"></div></div>` : '';
+
+    return `<tr class="crow">
       <td class="rk">${i+1}</td>
       <td style="font-weight:700">${r.suc}</td>
-      <td><b>$${r.consumo.toFixed(1)}M</b><br><small>${varHtml(vC)}</small></td>
-      <td style="font-size:11px;color:#002056">$${r.consumo_mc.toFixed(1)}M</td>
-      <td style="font-size:11px;color:#F6955A">$${r.consumo_visa.toFixed(1)}M</td>
-      <td>${n(r.tx)}</td>
-      <td>${n(r.ctas_total)}</td>
-      <td><span class="pill p-vio">${n(r.ctas_res)}</span></td>
-      <td>${n(r.ctas_hab)}</td>
-      <td><span class="pill p-act">${n(r.ctas_act)}</span></td>
-      <td style="font-weight:700;color:${ac}">${r.activ.toFixed(1)}%<br><small>${varHtml(vA)}</small></td>
-      <td><span class="pill p-az">${r.altas}</span><br><small>${varHtml(vAl)}</small></td>
-      <td style="font-size:11px">${n(r.adic_mc+r.adic_visa)}</td>
-      <td style="font-size:11px">${n(r.tarjetas)}</td>
+      ${showRes?`
+        <td style="font-weight:700">${r.realRes>0?n(r.realRes):'—'}</td>
+        <td style="color:var(--txt2);font-size:11px">${r.metaRes?n(r.metaRes):'—'}</td>
+        <td>${r.pctRes!=null?`<span style="font-weight:800;color:${crColor}">${pctEmoji(r.pctRes)} ${r.pctRes}%</span>${barRes}<div style="font-size:9px;color:${crColor}">${difRes!=null?(difRes>=0?'+':'')+n(difRes):''}</div>`:'—'}</td>`:''}
+      ${showAcred?`
+        <td style="font-weight:700">${r.realAcred>0?fmtB(r.realAcred):'—'}</td>
+        <td style="color:var(--txt2);font-size:11px">${r.metaAcred?fmtB(r.metaAcred):'—'}</td>
+        <td>${r.pctAcred!=null?`<span style="font-weight:800;color:${acColor}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${barAcred}<div style="font-size:9px;color:${acColor}">${difAcred!=null?(difAcred>=0?'+':'')+fmtB(difAcred):''}</div>`:facCol?'Sin datos':'—'}</td>`:''}
     </tr>`;
   }).join('');
+
+  // ── Gráfico ──
+  const chartData = tipoVer==='acred' ? sorted.filter(r=>r.pctAcred!=null) : sorted;
+  const labels    = chartData.map(r=>r.suc.replace('SAN F. DEL V. DE CATAMARCA','SFV Catamarca'));
+  const dataRes   = chartData.map(r=>r.pctRes||0);
+  const dataAcred = chartData.map(r=>r.pctAcred||0);
+  const bgRes     = dataRes.map(v=>v>=100?'rgba(78,191,164,.85)':v>=80?'rgba(246,149,90,.85)':'rgba(192,36,28,.85)');
+  const bgAcred   = dataAcred.map(v=>v>=100?'rgba(0,112,148,.85)':v>=80?'rgba(246,149,90,.6)':'rgba(192,36,28,.6)');
+
+  const tit = document.getElementById('metas-chart-tit');
+  if(tit) tit.textContent='% Cumplimiento por sucursal · '+mesLabel;
+
+  if(CH['c-metas'])CH['c-metas'].destroy();
+  const datasets=[];
+  if(showRes)   datasets.push({label:'C/Resumen TC %',data:dataRes,backgroundColor:bgRes,borderRadius:3});
+  if(showAcred&&facCol) datasets.push({label:'Acreditaciones %',data:dataAcred,backgroundColor:bgAcred,borderRadius:3});
+
+  if(datasets.length){
+    CH['c-metas']=new Chart(document.getElementById('c-metas'),{
+      type:'bar',
+      data:{labels, datasets},
+      options:{
+        indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{
+          legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},
+          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},
+          annotation:{
+            annotations:{
+              meta100:{type:'line',xMin:100,xMax:100,borderColor:'rgba(0,32,86,.4)',borderWidth:1.5,borderDash:[4,3],
+                label:{content:'Meta 100%',enabled:true,position:'start',font:{size:8},color:'#002056'}}
+            }
+          }
+        },
+        scales:{
+          x:{min:0,max:Math.max(120,Math.max(...dataRes,...dataAcred)+10),
+             ticks:{font:{size:9},callback:v=>v+'%'},
+             title:{display:true,text:'% de cumplimiento',font:{size:9}}},
+          y:{ticks:{font:{size:9},color:'#002056'}}
+        }
+      }
+    });
+  }
 }
-
-function ddTCSuc(suc){
-  const mes=document.getElementById('f-tc-mes').value;
-  const rows=getTCRows().filter(r=>r.suc===suc);
-  if(!rows.length)return;
-  const r=rows[0];
-  const rowsAnt=mes?getTCMesAnterior(mes):null;
-  const ant=rowsAnt?rowsAnt.find(x=>x.suc===suc):null;
-  const mesLabel=mes?fmtMesLabel(mes):'Todos';
-  const antLabel=ant?fmtMesLabel(ant.mes||''):'—';
-  const vf=(a,b)=>b&&b>0?((a-b)/b*100).toFixed(1)+'%':'—';
-  const pp=(a,b)=>b&&b>0?(a-b).toFixed(1)+'pp':'—';
-  const hdrs=['Indicador',mesLabel,'MC','VISA',ant?'vs '+antLabel:'Var.'];
-  const data=[
-    ['Consumo ($M)',      '$'+r.consumo.toFixed(1)+'M','$'+r.consumo_mc.toFixed(1)+'M','$'+r.consumo_visa.toFixed(1)+'M',ant?vf(r.consumo,ant.consumo):'—'],
-    ['Transacciones',    n(r.tx),n(r.tx_mc),n(r.tx_visa),ant?vf(r.tx,ant.tx):'—'],
-    ['Cuentas Totales',  n(r.ctas_total),n(r.ctas_total_mc),n(r.ctas_total_visa),ant?vf(r.ctas_total,ant.ctas_total):'—'],
-    ['Ctas. c/Resumen',  n(r.ctas_res),n(r.ctas_res_mc),n(r.ctas_res_visa),ant?vf(r.ctas_res,ant.ctas_res):'—'],
-    ['Ctas. Habilitadas',n(r.ctas_hab),n(r.ctas_hab_mc),n(r.ctas_hab_visa),ant?vf(r.ctas_hab,ant.ctas_hab):'—'],
-    ['Ctas. Activas',    n(r.ctas_act),n(r.ctas_act_mc),n(r.ctas_act_visa),ant?vf(r.ctas_act,ant.ctas_act):'—'],
-    ['Activación %',     r.activ.toFixed(1)+'%',r.activ_mc.toFixed(1)+'%',r.activ_visa.toFixed(1)+'%',ant?pp(r.activ,ant.activ):'—'],
-    ['Altas Nuevas',     n(r.altas),n(r.altas_mc),n(r.altas_visa),ant?vf(r.altas,ant.altas):'—'],
-    ['Tarjetas Totales', n(r.tarjetas),n(r.tarjetas_mc),n(r.tarjetas_visa),ant?vf(r.tarjetas,ant.tarjetas):'—'],
-    ['Adicionales',      n(r.adic_mc+r.adic_visa),n(r.adic_mc),n(r.adic_visa),ant?vf(r.adic_mc+r.adic_visa,ant.adic_mc+ant.adic_visa):'—'],
-  ];
-  openDD('TC: '+suc,mesLabel+(ant?' vs '+antLabel:''),hdrs,data,[r]);
-}
-
-function expTC(){
-  const rows=getTCRows();
-  if(!rows.length)return;
-  const keys=Object.keys(rows[0]);
-  const csv=[keys.join(','),...rows.map(r=>keys.map(k=>r[k]??'').join(','))].join('\n');
-  dlCSV(csv,'tc_'+fmtMesLabel(document.getElementById('f-tc-mes').value||'todos')+'.csv');
-}
-
-// ═══ TIENEETARJETA helper para Marcatón/SN ═══
-function tieneTarjeta(v){
-  if(!v||v===0||v==='0')return false;
-  const s=v.toString().trim().toUpperCase();
-  return s!==''&&s!=='NO POSEE'&&s!=='NO INFORMA'&&s!=='NAN';
-}
-
-// ═══ renderOport alias ═══
-function renderOport(){
-  if(typeof renderOportunidades==='function')renderOportunidades();
-}
-
-
-
-
-
-
-
-
-
-
 
 
 
 </script>
+
+<div id="page-metas" class="page">
+  <div class="banner">
+    <div>
+      <div class="ban-t">🎯 Cumplimiento de Metas · NOA Oeste</div>
+      <div class="ban-s">Cuentas con Resumen TC · Acreditaciones Comercios (FISERV/Payway)</div>
+    </div>
+    <div><div class="ban-n" id="metas-mes-lbl" style="font-size:14px">—</div><div class="ban-nl">período</div></div>
+  </div>
+
+  <div class="fbar">
+    <span class="fbar-lbl">Mes:</span>
+    <select id="f-metas-mes" onchange="renderMetas()">
+      <option value="2025-12">Dic 2025</option>
+      <option value="2026-01" selected>Ene 2026</option>
+      <option value="2026-02">Feb 2026</option>
+      <option value="2026-03">Mar 2026</option>
+    </select>
+    <span class="fbar-lbl" style="margin-left:10px">Ver:</span>
+    <select id="f-metas-tipo" onchange="renderMetas()">
+      <option value="ambas">Ambas metas</option>
+      <option value="res">Solo C/Resumen TC</option>
+      <option value="acred">Solo Acreditaciones</option>
+    </select>
+    <span class="fbar-count" id="fc-metas" style="margin-left:auto">—</span>
+  </div>
+
+  <!-- KPIs globales -->
+  <div class="metrics" style="margin-bottom:12px">
+    <div class="metric az">
+      <div class="mlbl">C/Resumen zonal</div>
+      <div class="mval" id="metas-k1-real">—</div>
+      <div class="msub" id="metas-k1-meta">meta: —</div>
+    </div>
+    <div class="metric" id="metas-k1-pill" style="background:var(--gris)">
+      <div class="mlbl">% cumpl. C/Resumen</div>
+      <div class="mval" id="metas-k1-pct">—</div>
+      <div class="msub" id="metas-k1-dif">—</div>
+    </div>
+    <div class="metric az">
+      <div class="mlbl">Acreditaciones zonal</div>
+      <div class="mval" id="metas-k2-real">—</div>
+      <div class="msub" id="metas-k2-meta">meta: —</div>
+    </div>
+    <div class="metric" id="metas-k2-pill" style="background:var(--gris)">
+      <div class="mlbl">% cumpl. Acreditaciones</div>
+      <div class="mval" id="metas-k2-pct">—</div>
+      <div class="msub" id="metas-k2-dif">—</div>
+    </div>
+  </div>
+
+  <!-- Tabla por sucursal -->
+  <div class="tcard">
+    <div class="thead2">
+      <span class="tti">Cumplimiento por sucursal</span>
+      <span id="metas-tabla-sub" style="font-size:10px;color:var(--txt2);margin-left:8px"></span>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead id="metas-thead"></thead>
+        <tbody id="t-metas"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Gráfico barras -->
+  <div class="card full" style="margin-top:12px">
+    <div class="ctit" id="metas-chart-tit">Cumplimiento % por sucursal</div>
+    <div class="leg">
+      <span class="li"><span class="ld" style="background:#4EBFA4"></span>≥100% (cumple)</span>
+      <span class="li"><span class="ld" style="background:#F6955A"></span>80–99% (cerca)</span>
+      <span class="li"><span class="ld" style="background:#c0241c"></span>&lt;80% (alerta)</span>
+    </div>
+    <div class="cw" style="height:340px"><canvas id="c-metas"></canvas></div>
+  </div>
+</div>
+
 </body>
 </html>
+<div id="page-facmp" class="page">
+  <div class="banner">
+    <div>
+      <div class="ban-t">💳 Facturación +Pagos Nación</div>
+      <div class="ban-s">Movimientos TD/TC · QR · TC Adelantado · por sucursal y facturador</div>
+    </div>
+    <div><div class="ban-n" id="facmp-total">—</div><div class="ban-nl">registros</div></div>
+  </div>
+  <div class="fbar">
+    <span class="fbar-lbl">Sucursal:</span>
+    <select id="f-facmp-suc" onchange="applyFilterFACMP()"><option value="">Todas</option></select>
+    <span class="fbar-lbl" style="margin-left:6px">Mes:</span>
+    <select id="f-facmp-mes" onchange="applyFilterFACMP()">
+      <option value="">Todos</option>
+      <option value="ENERO">Enero</option>
+      <option value="FEBRERO">Febrero</option>
+      <option value="MARZO">Marzo</option>
+    </select>
+    <span class="fbar-lbl" style="margin-left:6px">Tipo:</span>
+    <select id="f-facmp-tipo" onchange="applyFilterFACMP()">
+      <option value="">Todos</option>
+      <option value="TD/TC">TD/TC</option>
+      <option value="TC ADELANTADO">TC Adelantado</option>
+      <option value="QRPCT">QR PCT</option>
+    </select>
+    <button class="fbar-reset" onclick="resetFilterFACMP()">✕ Limpiar</button>
+    <span class="fbar-count" id="fc-facmp">—</span>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFACMP()">⬇ Exportar</button>
+  </div>
+
+  <!-- Rankings -->
+  <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+    <div id="facmp-ranking-suc" style="flex:1;min-width:220px"></div>
+    <div id="facmp-ranking-top" style="flex:1;min-width:220px"></div>
+  </div>
+
+  <div class="tcard">
+    <div class="thead2">
+      <span class="tti">Detalle de facturación</span>
+    </div>
+    <div class="twrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Razón Social</th><th>CUIT</th><th>Tipo</th>
+          <th>Neto</th><th>Sucursal</th><th>Mes</th>
+        </tr></thead>
+        <tbody id="t-facmp"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="facmp-status" style="text-align:center;padding:30px;color:#888;font-size:13px">
+    Para cargar datos de Facturación +Pagos, configurá la URL del Apps Script en el código (API_URL_FAC).
+  </div>
+</div>
+

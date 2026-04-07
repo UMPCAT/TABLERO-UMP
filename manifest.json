@@ -1,0 +1,28 @@
+{
+  "name": "Tablero UMP · NOA Oeste · BNA",
+  "short_name": "UMP NOA",
+  "description": "Tablero de Medios de Pago · Unidad UMP Zonal NOA Oeste · Banco Nación Argentina",
+  "start_url": "/TABLERO-UMP/",
+  "scope": "/TABLERO-UMP/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#002056",
+  "theme_color": "#002056",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%23002056' rx='32'/><text y='130' x='50%' font-size='110' text-anchor='middle' font-family='Arial'>🏦</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%23002056' rx='80'/><text y='350' x='50%' font-size='300' text-anchor='middle' font-family='Arial'>🏦</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "screenshots": []
+}

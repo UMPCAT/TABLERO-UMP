@@ -1,7 +1,6 @@
-// Service Worker — UMP NOA Oeste (VERSIÓN ESTABLE GITHUB PAGES)
-const CACHE_NAME = 'ump-noa-v5';
+// Service Worker — UMP NOA Oeste (FINAL ESTABLE)
+const CACHE_NAME = 'ump-noa-v6';
 
-// Archivos base
 const ASSETS = [
   './',
   './index.html',
@@ -22,9 +21,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-      )
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
@@ -36,7 +33,7 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(event.request.url);
 
-  // 🔴 Apps Script SIEMPRE red (evita datos viejos)
+  // 🔴 Apps Script SIEMPRE desde red
   if (url.hostname.includes('script.google.com')) {
     event.respondWith(
       fetch(event.request).catch(() =>

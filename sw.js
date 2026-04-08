@@ -1,5 +1,5 @@
 // Service Worker — Tablero UMP NOA Oeste
-const CACHE_NAME = 'ump-noa-v2';
+const CACHE_NAME = 'ump-noa-v3';
 const OFFLINE_URL = '/TABLERO-UMP/';
 
 const ASSETS = [

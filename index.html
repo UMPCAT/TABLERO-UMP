@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23002056'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>B</text></svg>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="manifest.json">
@@ -4123,8 +4125,18 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 <script>
 if('serviceWorker' in navigator){
+  // Limpiar SW viejos que sirven HTML en caché
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(r=>{
+      if(r.scope && r.scope.includes('TABLERO-UMP')){
+        r.unregister().then(()=>console.log('[SW] Viejo desregistrado'));
+      }
+    });
+  });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js',{scope:'./'}).then(r=>console.log('[SW]',r.scope)).catch(e=>console.warn('[SW]',e));
+    navigator.serviceWorker.register('./sw.js',{scope:'./'})
+      .then(r=>console.log('[SW] Registrado:',r.scope))
+      .catch(e=>console.warn('[SW] Error:',e));
   });
 }
 </script>

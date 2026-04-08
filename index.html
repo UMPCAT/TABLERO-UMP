@@ -309,33 +309,13 @@ th{background:var(--bna-marino)}
 .metric.cy .mval{color:var(--bna-cyan)}
 .metric.vio{border-top-color:var(--bna-violeta)}
 .metric.vio .mval{color:var(--bna-violeta)}
-
-/* MENU PRINCIPAL Y NAVEGACION */
-.quicknav{position:sticky;top:0;z-index:150;display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);padding:10px 20px;border-bottom:1px solid #d8e5ef}
-.qbtn{border:none;background:#fff;color:var(--bna-marino);padding:8px 14px;border-radius:999px;font-weight:800;font-size:12px;box-shadow:0 8px 18px rgba(0,32,86,.08);cursor:pointer;font-family:inherit}
-.qbtn.primary{background:linear-gradient(135deg,#007094,#00ADDB);color:#fff}
-.qbtn:disabled{opacity:.45;cursor:not-allowed}
-.home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:16px}
-.home-card{background:linear-gradient(180deg,#fff 0%,#f9fcfd 100%);border:1px solid #d7e5ee;border-radius:22px;box-shadow:0 14px 28px rgba(0,32,86,.08);padding:18px;display:flex;flex-direction:column;gap:10px;min-height:180px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
-.home-card:hover{transform:translateY(-2px);box-shadow:0 18px 34px rgba(0,32,86,.12)}
-.home-ico{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;background:#e8f7fa;color:#f07b2f}
-.home-title{font-size:18px;font-weight:800;color:var(--bna-marino)}
-.home-sub{font-size:12px;line-height:1.45;color:#48627e}
-.home-tag{margin-top:auto;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#007094}
-.section-tools{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin:-4px 0 12px 0;flex-wrap:wrap}
-.section-tools .qbtn{padding:7px 12px;font-size:11px}
-.page-home-hero{background:linear-gradient(135deg,#eef8fb 0%,#dff2f7 38%,#f8fbfd 100%);border:1px solid #cfe4ec;border-radius:24px;padding:22px;box-shadow:0 16px 34px rgba(0,32,86,.08)}
-.page-home-hero h2{font-size:28px;line-height:1.15;color:#002056;margin-bottom:8px}
-.page-home-hero p{font-size:13px;color:#4a6080;max-width:760px}
-@media(max-width:768px){.quicknav{padding:8px 10px;gap:6px;overflow:auto}.home-grid{grid-template-columns:1fr}.page-home-hero h2{font-size:22px}}
-
 </style>
 </head>
 <body>
 
 <div id="loader" class="loader">
   <div class="spin"></div>
-  <p id="loader-txt" style="margin-bottom:8px">Cargando +Pagos Nación…</p>
+  <p id="loader-txt" style="margin-bottom:8px">BIENVENIDOS MEDIOS DE PAGO ZONAL NOA OESTE BNA</p>
   <p style="font-size:10px;opacity:.5">El resto carga en segundo plano</p>
 </div>
 
@@ -360,27 +340,21 @@ th{background:var(--bna-marino)}
 </div>
 
 <div class="nav">
-  <div class="ntab" data-page="home" onclick="goHome()">☰ Menú</div>
   <div class="ntab active" onclick="go('com',this)">+Pagos Nación</div>
-  <div class="ntab" data-page="tc" onclick="go('tc',this)">💳 TC Individuos</div>
-  <div class="ntab" data-page="ceg" onclick="go('ceg',this)">Comercios General</div>
-  <div class="ntab" data-page="fac" onclick="go('fac',this)">Facturación</div>
-  <div class="ntab" data-page="facmp" onclick="go('facmp',this)">💳 Fac. +Pagos</div>
-  <div class="ntab" data-page="marc" onclick="go('marc',this)">Marcatón</div>
-  <div class="ntab" data-page="sn" onclick="go('sn',this)">SN / AE</div>
-  <div class="ntab" data-page="viaja" onclick="go('viaja',this)">✈ Viaja+</div>
-  <div class="ntab" data-page="pyme" onclick="go('pyme',this)">PyMENación</div>
-  <div class="ntab" data-page="agro" onclick="go('agro',this)">AgroNación</div>
-  <div class="ntab" data-page="corp" onclick="go('corp',this)">Corporativa</div>
-  <div class="ntab" data-page="bna" onclick="go('bna',this)">BNA Conecta</div>
-  <div class="ntab highlight" data-page="cliente" onclick="go('cliente',this)">🔍 Cliente</div>
-  <div class="ntab" data-page="oport" onclick="go('oport',this)">📊 Oportunidades</div>
-  <div class="ntab" data-page="metas" onclick="go('metas',this)">🎯 Metas</div>
-</div>
-<div class="quicknav" id="quicknav">
-  <button class="qbtn" id="nav-back" onclick="navBack()">← Atrás</button>
-  <button class="qbtn primary" onclick="goHome()">⌂ Menú principal</button>
-  <button class="qbtn" id="nav-forward" onclick="navForward()">Adelante →</button>
+  <div class="ntab" onclick="go('tc',this)">💳 TC Individuos</div>
+  <div class="ntab" onclick="go('ceg',this)">Comercios General</div>
+  <div class="ntab" onclick="go('fac',this)">Facturación</div>
+  <div class="ntab" onclick="go('facmp',this)">💳 Fac. +Pagos</div>
+  <div class="ntab" onclick="go('marc',this)">Marcatón</div>
+  <div class="ntab" onclick="go('sn',this)">SN / AE</div>
+  <div class="ntab" onclick="go('viaja',this)">✈ Viaja+</div>
+  <div class="ntab" onclick="go('pyme',this)">PyMENación</div>
+  <div class="ntab" onclick="go('agro',this)">AgroNación</div>
+  <div class="ntab" onclick="go('corp',this)">Corporativa</div>
+  <div class="ntab" onclick="go('bna',this)">BNA Conecta</div>
+  <div class="ntab highlight" onclick="go('cliente',this)">🔍 Cliente</div>
+  <div class="ntab" onclick="go('oport',this)">📊 Oportunidades</div>
+  <div class="ntab" onclick="go('metas',this)">🎯 Metas</div>
 </div>
 
 <!-- DRILL-DOWN -->
@@ -395,27 +369,6 @@ th{background:var(--bna-marino)}
   </div>
   <div class="ddbody">
     <table style="width:100%;border-collapse:collapse"><thead id="dd-thead"></thead><tbody id="dd-tbody"></tbody></table>
-  </div>
-</div>
-
-
-<!-- ═══ MENU PRINCIPAL ═══ -->
-<div class="page active" id="page-home">
-  <div class="page-home-hero">
-    <h2>Bienvenidos · Medios de Pago Zonal NOA Oeste · BNA</h2>
-    <p>Panel ejecutivo con acceso rápido por sección. Usá el menú con iconos, las teclas <strong>Atrás</strong> y <strong>Adelante</strong>, o entrá directamente por <strong>Buscar CUIT</strong> para ver datos cruzados del cliente.</p>
-    <div class="cliente-search-big" style="max-width:640px;margin:16px 0 0 0"><input type="text" id="home-cuit-input" placeholder="CUIT o razón social…" onkeydown="if(event.key==='Enter')searchClienteHome()"><button onclick="searchClienteHome()">Buscar CUIT</button></div>
-  </div>
-  <div class="home-grid">
-    <div class="home-card" onclick="go('cliente')"><div class="home-ico">🔎</div><div class="home-title">Buscar CUIT</div><div class="home-sub">Primera opción de acceso. Consulta unificada por CUIT o razón social con cruce de bases.</div><div class="home-tag">Inicio recomendado</div></div>
-    <div class="home-card" onclick="go('com')"><div class="home-ico">🏪</div><div class="home-title">+Pagos Nación</div><div class="home-sub">Comercios, actividad, churn, onboarding y filtro por fecha de alta.</div><div class="home-tag">Adquirencia</div></div>
-    <div class="home-card" onclick="go('tc')"><div class="home-ico">💳</div><div class="home-title">TC Individuos</div><div class="home-sub">Tarjetas, activación, consumo y evolución por mes y sucursal.</div><div class="home-tag">Emisión</div></div>
-    <div class="home-card" onclick="go('ceg')"><div class="home-ico">🧾</div><div class="home-title">Comercios General</div><div class="home-sub">Base general de comercios y seguimiento comercial ampliado.</div><div class="home-tag">Base comercial</div></div>
-    <div class="home-card" onclick="go('fac')"><div class="home-ico">📈</div><div class="home-title">Facturación</div><div class="home-sub">Datos del archivo Tablero UMP con visión por sucursal y ranking.</div><div class="home-tag">Tablero UMP</div></div>
-    <div class="home-card" onclick="go('facmp')"><div class="home-ico">📲</div><div class="home-title">Facturación +Pagos</div><div class="home-sub">Esquema dinámico por meses desde el archivo Facturación +Pagos.</div><div class="home-tag">Archivo externo</div></div>
-    <div class="home-card" onclick="go('viaja')"><div class="home-ico">✈️</div><div class="home-title">Viaja+</div><div class="home-sub">Promociones y comercios asociados de VIAJA+ desde Tablero UMP.</div><div class="home-tag">Promociones</div></div>
-    <div class="home-card" onclick="go('bna')"><div class="home-ico">🤝</div><div class="home-title">BNA Conecta</div><div class="home-sub">Compradores, vendedores y total de facturación consolidada.</div><div class="home-tag">Marketplace</div></div>
-    <div class="home-card" onclick="go('metas')"><div class="home-ico">🎯</div><div class="home-title">Metas trimestrales</div><div class="home-sub">Seguimiento trimestral de cuentas por resumen y acreditación por ventas.</div><div class="home-tag">Gestión</div></div>
   </div>
 </div>
 
@@ -461,7 +414,7 @@ th{background:var(--bna-marino)}
 </div>
 
 <!-- ═══ +PAGOS NACIÓN ═══ -->
-<div class="page" id="page-com">
+<div class="page active" id="page-com">
   <div class="banner"><div><div class="ban-t">Comercios +Pagos Nación</div><div class="ban-s">Estado de actividad · adquirencia · contactos</div></div><div><div class="ban-n" id="com-total">—</div><div class="ban-nl">comercios</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -523,6 +476,10 @@ th{background:var(--bna-marino)}
     <select id="f-ceg-prod" onchange="applyFilterCEG()"><option value="">Todos</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Actividad:</span>
     <select id="f-ceg-act" onchange="applyFilterCEG()"><option value="">Todas</option></select>
+    <span class="fbar-lbl" style="margin-left:6px">📅 Alta desde:</span>
+    <input type="date" id="f-ceg-fecha-desde" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:5px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
+    <span class="fbar-lbl">hasta:</span>
+    <input type="date" id="f-ceg-fecha-hasta" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:5px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
     <button class="fbar-reset" onclick="resetFilterCEG()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-ceg">—</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCEG()">⬇ Exportar</button>
@@ -575,12 +532,12 @@ th{background:var(--bna-marino)}
 </div>
 
 <!-- ═══ FACTURACIÓN ═══ -->
-<div class="page"  <!-- Ranking FAC -->
+<div class="page" id="page-fac">
+  <!-- Ranking FAC -->
   <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
     <div id="fac-ranking-suc" style="flex:1;min-width:220px"></div>
     <div id="fac-ranking-top" style="flex:1;min-width:220px"></div>
   </div>
- id="page-fac">
   <div class="banner"><div><div class="ban-t">Facturación de Comercios</div><div class="ban-s">Enero 2026 vs Febrero 2026</div></div><div><div class="ban-n" id="fac-total">—</div><div class="ban-nl">facturación feb (B$)</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -786,10 +743,10 @@ th{background:var(--bna-marino)}
   </div>
 </div>
 
-<!-- ═══ VIAJA+ ═══ -->
+<!-- ═══ PYMENACIÓN ═══ -->
 <div class="page" id="page-viaja">
   <div class="banner">
-    <div><div class="ban-t">Viaja+</div><div class="ban-s">Promociones vigentes · categorías · rubros · sucursales</div></div>
+    <div><div class="ban-t">Semana Nación / AE</div><div class="ban-s">Promociones vigentes · categorías · rubros · sucursales</div></div>
     <div><div class="ban-n" id="viaja-total">—</div><div class="ban-nl">adheridos</div></div>
   </div>
 
@@ -797,28 +754,28 @@ th{background:var(--bna-marino)}
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-viaja-suc" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
-    <select id="f-viaja-cat" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
+    <select id="f-sn-cat" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
-    <select id="f-viaja-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
+    <select id="f-sn-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
     <button class="fbar-reset" onclick="resetFilters_VIAJA()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-viaja">—</span>
   </div>
 
   <div class="cuit-bar">
     <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
-    <input type="text" id="rs-viaja" placeholder="Nombre de comercio..." style="flex:2"
-      oninput="buscarPromo('viaja',this.value)"
-      onkeydown="if(event.key==='Enter')buscarPromo('viaja',this.value)">
-    <input type="text" id="cuit-viaja" placeholder="Por CUIT..." maxlength="20"
-      oninput="buscarPromo('viaja',document.getElementById('cuit-viaja').value,true)">
-    <button onclick="buscarPromo('viaja',document.getElementById('rs-viaja').value||document.getElementById('cuit-viaja').value)">🔍</button>
-    <button class="clear-btn" onclick="limpiarPromo('viaja')">✕</button>
-    <span id="rs-result-viaja" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
+    <input type="text" id="rs-sn" placeholder="Nombre de comercio..." style="flex:2"
+      oninput="buscarPromo('sn',this.value)"
+      onkeydown="if(event.key==='Enter')buscarPromo('sn',this.value)">
+    <input type="text" id="cuit-sn" placeholder="Por CUIT..." maxlength="20"
+      oninput="buscarPromo('sn',document.getElementById('cuit-sn').value,true)">
+    <button onclick="buscarPromo('sn',document.getElementById('rs-sn').value||document.getElementById('cuit-sn').value)">🔍</button>
+    <button class="clear-btn" onclick="limpiarPromo('sn')">✕</button>
+    <span id="rs-result-sn" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   </div>
 
   <div class="metrics">
-    <div class="metric az"><div class="mlbl">Adheridos Viaja+</div><div class="mval" id="viaja-k1">—</div><div class="msub">altas vigentes</div></div>
-    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="viaja-k2">—</div><div class="msub" id="viaja-k2s">—</div></div>
+    <div class="metric az"><div class="mlbl">Adheridos SN/AE</div><div class="mval" id="viaja-k1">—</div><div class="msub">altas vigentes</div></div>
+    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="viaja-k2">—</div><div class="msub" id="sn-k2s">—</div></div>
     <div class="metric dr"><div class="mlbl">+Pagos / MAS PAGOS</div><div class="mval" id="viaja-k3">—</div><div class="msub">adquirente</div></div>
     <div class="metric rj"><div class="mlbl">FISERV / PRISMA</div><div class="mval" id="viaja-k4">—</div><div class="msub">otros adquirentes</div></div>
   </div>
@@ -853,7 +810,7 @@ th{background:var(--bna-marino)}
   <div class="tcard">
     <div class="thead2">
       <span class="ttit">Detalle por sucursal · clic para ver comercios</span>
-      <button class="action-btn btn-exp" onclick="exportPromo('viaja')">⬇ Exportar</button>
+      <button class="action-btn btn-exp" onclick="exportPromo('sn')">⬇ Exportar</button>
     </div>
     <div class="twrap"><table><thead><tr>
       <th>#</th><th>Sucursal</th><th>Total</th><th>+Pagos</th><th>FISERV</th><th>PRISMA</th><th>BNA+</th><th>Top Categoría</th><th>Top Rubro</th><th>Vol.</th>
@@ -1899,17 +1856,7 @@ function rMARC(rows){ initPromo('marc',rows); }
 function rSN(rows){ initPromo('sn',rows); }
 
 
-function rVIAJA(rows){
-  DD.viaja = rows || [];
-  const sucs=[...new Set((rows||[]).map(r=>r['SUCURSAL']).filter(Boolean))].sort();
-  poblarSel('f-viaja-suc', sucs);
-  const cats=[...new Set((rows||[]).map(r=>r['NOMBRE DE LA PROMOCION']||'').filter(Boolean))].sort();
-  poblarSel('f-viaja-cat', cats);
-  const rubs=[...new Set((rows||[]).map(r=>r['RUBRO']||'').filter(Boolean))].sort();
-  poblarSel('f-viaja-rub', rubs);
-  renderVIAJA(rows||[]);
-  const fc=document.getElementById('fc-viaja'); if(fc) fc.textContent=(rows||[]).length.toLocaleString('es-AR')+' adheridos';
-}
+function rVIAJA(rows){ DD.viaja = rows || []; renderVIAJA(rows || []); }
 
 
 // ── RENDER PYME ──
@@ -2070,8 +2017,7 @@ function renderBNA(rows){
   const sm={};rows.forEach(x=>{const s=x['SUCURSAL']||'';if(!s)return;if(!sm[s])sm[s]={t:0,c:0,v:0};sm[s].t++;if(x['TIPO CLIENTE']==='Comprador')sm[s].c++;else sm[s].v++;});
   const sa=Object.entries(sm).sort((a,b)=>b[1].t-a[1].t);
   document.getElementById('bna-total').textContent=n(T);
-  const totalFact = rows.reduce((a,r)=>a+parseMonto(r['COMPRAS 2026'])+parseMonto(r['VENTAS 2026']),0);
-  document.getElementById('bna-k1').textContent= totalFact>=1e9 ? '$'+(totalFact/1e9).toFixed(2)+'B' : totalFact>=1e6 ? '$'+(totalFact/1e6).toFixed(0)+'M' : '$'+n(Math.round(totalFact));
+  document.getElementById('bna-k1').textContent=n(T);
   document.getElementById('bna-k2').textContent=n(co);document.getElementById('bna-k2s').textContent=pct(co,T);
   document.getElementById('bna-k3').textContent=n(ve);document.getElementById('bna-k3s').textContent=pct(ve,T);
   document.getElementById('bna-k4').textContent=n(sa.length);
@@ -2194,7 +2140,6 @@ const CUIT_CFG = {
   agro: { getData:()=>DD.agro||[], cuitCol:'CUIT', renderFn: renderAGRO, tableId:'t-agro' },
   corp: { getData:()=>DD.corp||[], cuitCol:'Cuenta', renderFn: renderCORP, tableId:'t-corp' },
   bna:  { getData:()=>DD.bna||[], cuitCol:'CUIT', renderFn: renderBNA, tableId:'t-bna' },
-  viaja:{ getData:()=>DD.viaja||[], cuitCol:'CUIT', renderFn: renderVIAJA, tableId:'t-viaja' },
 };
 
 function buscarCUIT(tab, val) {
@@ -2499,7 +2444,7 @@ function setErr(msg){const d=document.getElementById('sdot-main'),t=document.get
 // ══════════════════════════════════════════
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mRNyAaAoLS2jwA5SHqwcluHAZMtro6hthuojh6t6SCX6C4FQ/exec';
-const API_URL_FAC = ''; // ← PEGAR ACA la URL del Apps Script del archivo FACTURACION MAS PAGOS
+const API_URL_FAC = 'https://script.google.com/macros/s/AKfycbzvOEsIxKbn__9hcn8iwIyAEwQWcONA1eCT8t-uhsrNO7WtRFZHnocYAkjjo3j4CGb4cg/exec';
 let TC_DATA={records:[],meses:[],sucs:[]};
 
 const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "viaja": "VIAJA+", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
@@ -2547,7 +2492,7 @@ async function loadAll(force=false) {
   const now = new Date().toLocaleString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   document.getElementById('hfecha').textContent = 'Actualizado: ' + now;
   document.getElementById('loader').classList.remove('hidden');
-  document.getElementById('loader-txt').textContent = 'BIENVENIDOS · MEDIOS DE PAGO ZONAL NOA OESTE · BNA';
+  document.getElementById('loader-txt').textContent = 'Conectando con Google Sheets…';
 
   // Tareas en orden de prioridad
   const TASKS = [
@@ -2625,45 +2570,18 @@ async function loadAll(force=false) {
 
 // Botón actualizar → fuerza recarga
 // ── NAV ──
-function __rerenderPage(id){
-  try{
-    if(id==='com' && typeof renderCOM==='function') renderCOM(getFilteredCOM());
-    else if(id==='ceg' && typeof renderCEG==='function') renderCEG((DD.ceg||[]));
-    else if(id==='fac' && typeof applyFilterFAC==='function') applyFilterFAC();
-    else if(id==='tc' && typeof renderTCResumen==='function') renderTCResumen();
-    else if(id==='bna' && typeof applyFilterBNA==='function') applyFilterBNA();
-    else if(id==='metas' && typeof renderMetas==='function') renderMetas();
-    else if(id==='facmp' && typeof applyFilterFACMP==='function') applyFilterFACMP();
-    else if(id==='viaja' && typeof applyFilter_VIAJA==='function') applyFilter_VIAJA();
-  }catch(err){ console.warn('[NAV] rerender', id, err); }
-}
-let NAV_STACK=['home'];
-let NAV_POS=0;
-function updateQuickNav(){
-  const back=document.getElementById('nav-back'), fwd=document.getElementById('nav-forward');
-  if(back) back.disabled = NAV_POS<=0;
-  if(fwd) fwd.disabled = NAV_POS>=NAV_STACK.length-1;
-}
-function setActivePage(id, push=true){
-  const page=document.getElementById('page-'+id);
-  if(!page){ console.warn('[NAV] página inexistente:', id); return; }
+function go(id, el) {
+  const page = document.getElementById('page-' + id);
+  if(!page){
+    console.warn('[NAV] página inexistente:', id);
+    return;
+  }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   page.classList.add('active');
-  const tab=document.querySelector('.ntab[data-page="'+id+'"]');
-  if(tab) tab.classList.add('active');
-  if(push){
-    const curr=NAV_STACK[NAV_POS];
-    if(curr!==id){ NAV_STACK = NAV_STACK.slice(0, NAV_POS+1); NAV_STACK.push(id); NAV_POS = NAV_STACK.length-1; }
-  }
-  updateQuickNav();
-  __rerenderPage(id);
-  window.scrollTo({top:0,behavior:'smooth'});
+  if(el && el.classList) el.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
-function go(id, el){ setActivePage(id, true); }
-function goHome(){ setActivePage('home', true); }
-function navBack(){ if(NAV_POS>0){ NAV_POS--; setActivePage(NAV_STACK[NAV_POS], false); } }
-function navForward(){ if(NAV_POS<NAV_STACK.length-1){ NAV_POS++; setActivePage(NAV_STACK[NAV_POS], false); } }
 
 // ── INICIO ──
 
@@ -3824,6 +3742,65 @@ function fmtMesLabel(m){
   return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:'';
 }
 
+
+function getTCRows(){
+  const mes = document.getElementById('f-tc-mes')?.value || '';
+  const suc = document.getElementById('f-tc-suc')?.value || '';
+  return (TC_DATA.records || []).filter(r => {
+    if (mes && r.mes !== mes) return false;
+    if (suc && r.suc !== suc) return false;
+    return true;
+  });
+}
+
+function initTC(){
+  poblarSel('f-tc-mes', TC_DATA.meses || []);
+  poblarSel('f-tc-suc', TC_DATA.sucs || []);
+  renderTC();
+}
+
+function applyFilterTC(){
+  renderTC();
+}
+
+function renderTC(){
+  const rows = getTCRows();
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+  const nf = v => Number(v || 0).toLocaleString('es-AR');
+  const mm = v => (Number(v || 0) / 1000).toLocaleString('es-AR', {maximumFractionDigits:1, minimumFractionDigits:1});
+  const sum = key => rows.reduce((a, r) => a + (Number(r[key]) || 0), 0);
+
+  if (!rows.length) {
+    ['tc-k1','tc-k2','tc-k3','tc-k4','tc-k5','tc-k6','tc-k8'].forEach(id => set(id, '0'));
+    set('tc-k7', '0.0%');
+    if (typeof renderTCResumen === 'function') renderTCResumen();
+    return;
+  }
+
+  const consumo = sum('consumo') || sum('consumo_total');
+  const trx     = sum('tx') || sum('transacciones');
+  const act     = sum('ctas_act');
+  const altas   = sum('altas') || sum('altas_nuevas');
+  const resumen = sum('ctas_res');
+  const hab     = sum('ctas_hab');
+  const adic    = sum('adic_mc') + sum('adic_visa');
+  const activ   = hab > 0 ? ((act / hab) * 100).toFixed(1) + '%' : '—';
+
+  set('tc-k1', mm(consumo));
+  set('tc-k2', nf(trx));
+  set('tc-k3', nf(act));
+  set('tc-k4', nf(altas));
+  set('tc-k5', nf(resumen));
+  set('tc-k6', nf(hab));
+  set('tc-k7', activ);
+  set('tc-k8', nf(adic));
+
+  if (typeof renderTCResumen === 'function') renderTCResumen();
+}
+
 function rTC(rawRows){
   console.log('[TC] rTC llamada con',(rawRows||[]).length,'filas');
   if(!rawRows||!rawRows.length){console.warn('[TC] Sin datos');return;}
@@ -3908,13 +3885,8 @@ function renderVIAJA(rows){
   const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   setEl('viaja-total',nf(T));
   setEl('viaja-k1',nf(T));
-  const bna=(rows||[]).filter(x=>(x['ACEPTA BNA+:']||'').toUpperCase().startsWith('S')).length;
-  const mp=(rows||[]).filter(x=>/MAS.?PAG/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
-  const otros=(rows||[]).filter(x=>/(FISERV|PRISMA)/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
-  setEl('viaja-k2',nf(bna));
-  setEl('viaja-k3',nf(mp));
-  setEl('viaja-k4',nf(otros));
-  setEl('viaja-k2s', T?((bna/T*100).toFixed(1)+'% acepta BNA+'):'—');
+  setEl('viaja-k2',nf(alta));
+  setEl('viaja-k3',nf(T-alta));
 
   // Tabla
   const tEl=document.getElementById('t-viaja');
@@ -3932,43 +3904,8 @@ function renderVIAJA(rows){
       '</tr>';
   }).join('');
 }
-
-function attachSectionTools(){
-  document.querySelectorAll('.page').forEach(pg=>{
-    if(pg.id==='page-home') return;
-    if(pg.querySelector('.section-tools')) return;
-    const box=document.createElement('div');
-    box.className='section-tools';
-    box.innerHTML='<button class="qbtn" onclick="navBack()">← Atrás</button><button class="qbtn primary" onclick="goHome()">⌂ Volver al menú</button><button class="qbtn" onclick="navForward()">Adelante →</button>';
-    pg.insertBefore(box, pg.firstChild);
-  });
-}
-function searchClienteHome(){
-  go('cliente');
-  const src=document.getElementById('home-cuit-input');
-  const dst=document.getElementById('cuit-cliente-input');
-  if(src && dst){ dst.value=src.value.trim(); if(typeof buscarCliente==='function') buscarCliente(); }
-}
-function applyFilter_VIAJA(){
-  const suc=document.getElementById('f-viaja-suc')?.value||'';
-  const cat=document.getElementById('f-viaja-cat')?.value||'';
-  const rub=document.getElementById('f-viaja-rub')?.value||'';
-  const rows=(DD.viaja||[]).filter(r=>{
-    if(suc && (r['SUCURSAL']||'')!==suc) return false;
-    if(cat && (r['NOMBRE DE LA PROMOCION']||'')!==cat) return false;
-    if(rub && ((r['RUBRO']||'')!==rub)) return false;
-    return true;
-  });
-  renderVIAJA(rows);
-  const fc=document.getElementById('fc-viaja'); if(fc) fc.textContent = rows.length.toLocaleString('es-AR')+' adheridos';
-}
-function resetFilters_VIAJA(){ ['f-viaja-suc','f-viaja-cat','f-viaja-rub'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value='';}); applyFilter_VIAJA(); }
-
 // ══ ARRANQUE ══
 window.addEventListener('DOMContentLoaded', () => {
-  attachSectionTools();
-  updateQuickNav();
-  setActivePage('home', false);
   const btn = document.querySelector('.sbtn');
   if(btn) btn.onclick = () => loadAll(true);
   if(typeof loadFACMP==='function' && typeof API_URL_FAC!=='undefined' && API_URL_FAC) loadFACMP();
@@ -3980,10 +3917,10 @@ window.addEventListener('DOMContentLoaded', () => {
 <div id="page-metas" class="page">
   <div class="banner">
     <div>
-      <div class="ban-t">🎯 Cumplimiento de Metas Trimestrales · NOA Oeste</div>
-      <div class="ban-s">Meta trimestral · Cuentas con Resumen TC y Acreditaciones Comercios (FISERV/Payway)</div>
+      <div class="ban-t">🎯 Cumplimiento de Metas · NOA Oeste</div>
+      <div class="ban-s">Cuentas con Resumen TC · Acreditaciones Comercios (FISERV/Payway)</div>
     </div>
-    <div><div class="ban-n" id="metas-mes-lbl" style="font-size:14px">—</div><div class="ban-nl">trimestre</div></div>
+    <div><div class="ban-n" id="metas-mes-lbl" style="font-size:14px">—</div><div class="ban-nl">período</div></div>
   </div>
 
   <div class="fbar">
@@ -4000,7 +3937,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <option value="res">Solo C/Resumen TC</option>
       <option value="acred">Solo Acreditaciones</option>
     </select>
-    <span class="fbar-count" id="fc-metas" style="margin-left:auto">Meta trimestral</span>
+    <span class="fbar-count" id="fc-metas" style="margin-left:auto">—</span>
   </div>
 
   <!-- KPIs globales -->
@@ -4105,7 +4042,7 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div id="facmp-status" style="text-align:center;padding:30px;color:#888;font-size:13px">
-    Para cargar datos de Facturación +Pagos, pegá la URL del Apps Script del archivo externo en la constante API_URL_FAC.
+    Cargando datos de Facturación +Pagos…
   </div>
 </div>
 

@@ -309,14 +309,55 @@ th{background:var(--bna-marino)}
 .metric.cy .mval{color:var(--bna-cyan)}
 .metric.vio{border-top-color:var(--bna-violeta)}
 .metric.vio .mval{color:var(--bna-violeta)}
+
+/* Splash y look app BNA */
+body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
+.loader{background:
+ radial-gradient(circle at 20% 20%, rgba(101,201,216,.20) 0 10%, transparent 11%),
+ radial-gradient(circle at 78% 28%, rgba(246,149,90,.14) 0 8%, transparent 9%),
+ radial-gradient(circle at 68% 78%, rgba(0,112,148,.12) 0 12%, transparent 13%),
+ linear-gradient(135deg,#002056 0%,#003a73 44%,#007094 100%);} 
+.loader::before{content:'';position:absolute;inset:0;background:
+ linear-gradient(140deg,rgba(255,255,255,.08),transparent 38%),
+ linear-gradient(320deg,rgba(255,255,255,.06),transparent 42%);pointer-events:none}
+.loader p:first-of-type{font-size:18px;font-weight:800;line-height:1.35;letter-spacing:.02em;max-width:680px;text-align:center;padding:0 20px}
+.spin{width:72px;height:72px;border-width:5px;box-shadow:0 0 0 10px rgba(255,255,255,.06)}
+.banner,.card,.metric,.tcard,.fbar,.sbar,.cliente-search-box,.cuit-bar{border-radius:18px}
+.card,.metric,.tcard,.fbar,.sbar,.cliente-search-box,.cuit-bar{box-shadow:0 10px 28px rgba(0,32,86,.08);border-color:#d9e7f0}
+.ctit,.ttit,.mlbl{letter-spacing:.09em}
+.ban-t{font-size:15px}.ban-s{font-size:12px}.ban-n{font-size:28px}
+.action-btn,.sbtn,.fbar-reset,.cuit-bar button,.cliente-search-big button{border-radius:999px}
+#page-facmp .banner{background:linear-gradient(135deg,#e8f7fa 0%,#d7eef4 45%,#f7fbfc 100%);border:1px solid #cfe5ed;box-shadow:0 12px 28px rgba(0,112,148,.10)}
+#page-facmp .ban-t{color:#005980}#page-facmp .ban-s{color:#3f6683}#page-facmp .ban-n{color:#f07b2f}
+#page-facmp .metric{background:linear-gradient(180deg,#ffffff 0%,#f9fcfd 100%)}
+#page-facmp .card{background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)}
+#page-facmp .ctit::before,#page-facmp .ttit::before{background:#f07b2f}
+#page-facmp .fbar{background:linear-gradient(180deg,#fff 0%,#f8fbfd 100%)}
+#page-facmp .pill.p-az{background:#e8f7fa;color:#006d93;border-color:#bfe2ea}
+#page-facmp .metric .mval{letter-spacing:-1.2px}
+
+
+/* MENU PRINCIPAL */
+.menu-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.menu-card{background:linear-gradient(180deg,#fff 0%,#f8fbfd 100%);border:1px solid #d9e7f0;border-radius:18px;padding:18px;box-shadow:0 10px 28px rgba(0,32,86,.08);cursor:pointer;transition:.18s transform,.18s box-shadow}
+.menu-card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(0,32,86,.14)}
+.menu-ico{font-size:28px;margin-bottom:10px}
+.menu-tit{font-size:14px;font-weight:800;color:var(--bna-marino);margin-bottom:4px}
+.menu-sub{font-size:11px;color:var(--txt2);line-height:1.35}
+.navtools{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-bottom:12px;flex-wrap:wrap}
+.navbtn{background:#fff;border:1px solid var(--brd);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--txt);cursor:pointer;font-family:inherit}
+.navbtn.pri{background:var(--bna-cyan);color:var(--bna-marino);border-color:transparent}
+.navbtn:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:900px){.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style>
 </head>
 <body>
 
 <div id="loader" class="loader">
   <div class="spin"></div>
-  <p id="loader-txt" style="margin-bottom:8px">BIENVENIDOS MEDIOS DE PAGO ZONAL NOA OESTE BNA</p>
-  <p style="font-size:10px;opacity:.5">El resto carga en segundo plano</p>
+  <p id="loader-txt" style="margin-bottom:8px">BIENVENIDO · MEDIOS DE PAGO ZONAL NOA OESTE · BNA</p>
+  <p style="font-size:10px;opacity:.72;max-width:420px;text-align:center">Aguarde un instante · preparando tablero, promociones y facturación</p>
 </div>
 
 <div class="topbar"></div>
@@ -340,21 +381,22 @@ th{background:var(--bna-marino)}
 </div>
 
 <div class="nav">
-  <div class="ntab active" onclick="go('com',this)">+Pagos Nación</div>
-  <div class="ntab" onclick="go('tc',this)">💳 TC Individuos</div>
-  <div class="ntab" onclick="go('ceg',this)">Comercios General</div>
-  <div class="ntab" onclick="go('fac',this)">Facturación</div>
-  <div class="ntab" onclick="go('facmp',this)">💳 Fac. +Pagos</div>
-  <div class="ntab" onclick="go('marc',this)">Marcatón</div>
-  <div class="ntab" onclick="go('sn',this)">SN / AE</div>
-  <div class="ntab" onclick="go('viaja',this)">✈ Viaja+</div>
-  <div class="ntab" onclick="go('pyme',this)">PyMENación</div>
-  <div class="ntab" onclick="go('agro',this)">AgroNación</div>
-  <div class="ntab" onclick="go('corp',this)">Corporativa</div>
-  <div class="ntab" onclick="go('bna',this)">BNA Conecta</div>
-  <div class="ntab highlight" onclick="go('cliente',this)">🔍 Cliente</div>
-  <div class="ntab" onclick="go('oport',this)">📊 Oportunidades</div>
-  <div class="ntab" onclick="go('metas',this)">🎯 Metas</div>
+  <div class="ntab active" data-go="menu" onclick="go('menu',this)">☰ Menú</div>
+  <div class="ntab" data-go="com" onclick="go('com',this)">+Pagos Nación</div>
+  <div class="ntab" data-go="tc" onclick="go('tc',this)">💳 TC Individuos</div>
+  <div class="ntab" data-go="ceg" onclick="go('ceg',this)">Comercios General</div>
+  <div class="ntab" data-go="fac" onclick="go('fac',this)">Facturación</div>
+  <div class="ntab" data-go="facmp" onclick="go('facmp',this)">💳 Fac. +Pagos</div>
+  <div class="ntab" data-go="marc" onclick="go('marc',this)">Marcatón</div>
+  <div class="ntab" data-go="sn" onclick="go('sn',this)">SN / AE</div>
+  <div class="ntab" data-go="viaja" onclick="go('viaja',this)">✈ Viaja+</div>
+  <div class="ntab" data-go="pyme" onclick="go('pyme',this)">PyMENación</div>
+  <div class="ntab" data-go="agro" onclick="go('agro',this)">AgroNación</div>
+  <div class="ntab" data-go="corp" onclick="go('corp',this)">Corporativa</div>
+  <div class="ntab" data-go="bna" onclick="go('bna',this)">BNA Conecta</div>
+  <div class="ntab highlight" data-go="cliente" onclick="go('cliente',this)">🔍 Cliente</div>
+  <div class="ntab" data-go="oport" onclick="go('oport',this)">📊 Oportunidades</div>
+  <div class="ntab" data-go="metas" onclick="go('metas',this)">🎯 Metas</div>
 </div>
 
 <!-- DRILL-DOWN -->
@@ -372,8 +414,31 @@ th{background:var(--bna-marino)}
   </div>
 </div>
 
+
+<!-- ═══ MENU PRINCIPAL ═══ -->
+<div class="page active" id="page-menu">
+  <div class="banner celeste">
+    <div>
+      <div class="ban-t">Menú principal · Medios de Pago Zonal NOA Oeste</div>
+      <div class="ban-s">Ingresá por sección, navegá rápido y volvé al menú cuando lo necesites</div>
+    </div>
+    <div><div class="ban-n">BNA</div><div class="ban-nl">tablero integral</div></div>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-card" onclick="go('cliente',this)"><div class="menu-ico">🔎</div><div class="menu-tit">Buscar CUIT</div><div class="menu-sub">Primera opción · consulta unificada por CUIT y razón social.</div></div>
+    <div class="menu-card" onclick="go('com',this)"><div class="menu-ico">🏪</div><div class="menu-tit">+Pagos Nación</div><div class="menu-sub">Actividad, altas, onboarding, rubros y contactos.</div></div>
+    <div class="menu-card" onclick="go('tc',this)"><div class="menu-ico">💳</div><div class="menu-tit">TC Individuos</div><div class="menu-sub">Consumo, transacciones, activación, cuentas con resumen y altas.</div></div>
+    <div class="menu-card" onclick="go('ceg',this)"><div class="menu-ico">🏬</div><div class="menu-tit">Comercios General</div><div class="menu-sub">Base general con filtro por fecha de alta, actividad y producto.</div></div>
+    <div class="menu-card" onclick="go('fac',this)"><div class="menu-ico">📈</div><div class="menu-tit">Facturación</div><div class="menu-sub">Datos desde TABLERO UMP con evolución y ranking por sucursal.</div></div>
+    <div class="menu-card" onclick="go('facmp',this)"><div class="menu-ico">🧾</div><div class="menu-tit">Facturación +Pagos</div><div class="menu-sub">Archivo externo dinámico por meses vía Apps Script.</div></div>
+    <div class="menu-card" onclick="go('viaja',this)"><div class="menu-ico">✈️</div><div class="menu-tit">Viaja+</div><div class="menu-sub">Una promo, distintos rubros y sucursales, con detalle ordenado.</div></div>
+    <div class="menu-card" onclick="go('metas',this)"><div class="menu-ico">🎯</div><div class="menu-tit">Metas</div><div class="menu-sub">Seguimiento trimestral de cuentas por resumen y acreditación.</div></div>
+  </div>
+</div>
+
 <!-- ═══ OPORTUNIDADES ═══ -->
 <div class="page" id="page-oport">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
     <div><div class="ban-t">⭐ Panel de Oportunidades</div><div class="ban-s">Priorización semanal · acción directa · semáforo por sucursal</div></div>
     <div><div class="ban-n" id="op-churn-count">—</div><div class="ban-nl">comercios a recuperar</div></div>
@@ -414,7 +479,8 @@ th{background:var(--bna-marino)}
 </div>
 
 <!-- ═══ +PAGOS NACIÓN ═══ -->
-<div class="page active" id="page-com">
+<div class="page" id="page-com">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner"><div><div class="ban-t">Comercios +Pagos Nación</div><div class="ban-s">Estado de actividad · adquirencia · contactos</div></div><div><div class="ban-n" id="com-total">—</div><div class="ban-nl">comercios</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -461,6 +527,7 @@ th{background:var(--bna-marino)}
 
 <!-- ═══ COMERCIOS EN GENERAL (FISERV/PAYWAY) ═══ -->
 <div class="page" id="page-ceg">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
     <div>
       <div class="ban-t">Comercios en General · FISERV / Payway</div>
@@ -477,9 +544,9 @@ th{background:var(--bna-marino)}
     <span class="fbar-lbl" style="margin-left:6px">Actividad:</span>
     <select id="f-ceg-act" onchange="applyFilterCEG()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">📅 Alta desde:</span>
-    <input type="date" id="f-ceg-fecha-desde" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:5px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
+    <input type="date" id="f-ceg-fecha-desde" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
     <span class="fbar-lbl">hasta:</span>
-    <input type="date" id="f-ceg-fecha-hasta" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:5px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
+    <input type="date" id="f-ceg-fecha-hasta" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
     <button class="fbar-reset" onclick="resetFilterCEG()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-ceg">—</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCEG()">⬇ Exportar</button>
@@ -533,6 +600,7 @@ th{background:var(--bna-marino)}
 
 <!-- ═══ FACTURACIÓN ═══ -->
 <div class="page" id="page-fac">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <!-- Ranking FAC -->
   <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
     <div id="fac-ranking-suc" style="flex:1;min-width:220px"></div>
@@ -595,6 +663,7 @@ th{background:var(--bna-marino)}
 
 <!-- ═══ MARCATÓN ═══ -->
 <div class="page" id="page-marc">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
     <div><div class="ban-t">Marcatón</div><div class="ban-s">Comercios adheridos · categorías · rubros · sucursales</div></div>
     <div><div class="ban-n" id="marc-total">—</div><div class="ban-nl">adheridos</div></div>
@@ -663,15 +732,16 @@ th{background:var(--bna-marino)}
       <button class="action-btn btn-exp" onclick="exportPromo('marc')">⬇ Exportar</button>
     </div>
     <div class="twrap"><table><thead><tr>
-      <th>#</th><th>Sucursal</th><th>Total</th><th>+Pagos</th><th>FISERV</th><th>PRISMA</th><th>BNA+</th><th>Top Categoría</th><th>Top Rubro</th><th>Vol.</th>
+      <th>#</th><th>Sucursal</th><th>Locales</th><th>+Pagos</th><th>Fiserv</th><th>Prisma</th><th>BNA+</th><th>Rubro líder</th><th>Vol.</th>
     </tr></thead><tbody id="t-marc"></tbody></table></div>
   </div>
 </div>
 
 <!-- ═══ SEMANA NACIÓN / AE ═══ -->
 <div class="page" id="page-sn">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
-    <div><div class="ban-t">Semana Nación / AE</div><div class="ban-s">Promociones vigentes · categorías · rubros · sucursales</div></div>
+    <div><div class="ban-t">Viaja+</div><div class="ban-s">Promo única · análisis por rubro, sucursal y adquirente</div></div>
     <div><div class="ban-n" id="sn-total">—</div><div class="ban-nl">adheridos</div></div>
   </div>
 
@@ -679,23 +749,23 @@ th{background:var(--bna-marino)}
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-sn-suc" onchange="applyFilter_SN()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
-    <select id="f-sn-cat" onchange="applyFilter_SN()"><option value="">Todas</option></select>
+    <select id="f-viaja-cat" onchange="applyFilter_SN()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
-    <select id="f-sn-rub" onchange="applyFilter_SN()"><option value="">Todos</option></select>
+    <select id="f-viaja-rub" onchange="applyFilter_SN()"><option value="">Todos</option></select>
     <button class="fbar-reset" onclick="resetFilters_SN()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-sn">—</span>
   </div>
 
   <div class="cuit-bar">
     <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
-    <input type="text" id="rs-sn" placeholder="Nombre de comercio..." style="flex:2"
-      oninput="buscarPromo('sn',this.value)"
-      onkeydown="if(event.key==='Enter')buscarPromo('sn',this.value)">
-    <input type="text" id="cuit-sn" placeholder="Por CUIT..." maxlength="20"
-      oninput="buscarPromo('sn',document.getElementById('cuit-sn').value,true)">
-    <button onclick="buscarPromo('sn',document.getElementById('rs-sn').value||document.getElementById('cuit-sn').value)">🔍</button>
-    <button class="clear-btn" onclick="limpiarPromo('sn')">✕</button>
-    <span id="rs-result-sn" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
+    <input type="text" id="rs-viaja" placeholder="Nombre de comercio..." style="flex:2"
+      oninput="buscarPromo('viaja',this.value)"
+      onkeydown="if(event.key==='Enter')buscarPromo('viaja',this.value)">
+    <input type="text" id="cuit-viaja" placeholder="Por CUIT..." maxlength="20"
+      oninput="buscarPromo('viaja',document.getElementById('cuit-viaja').value,true)">
+    <button onclick="buscarPromo('sn',document.getElementById('rs-viaja').value||document.getElementById('cuit-viaja').value)">🔍</button>
+    <button class="clear-btn" onclick="limpiarPromo('viaja')">✕</button>
+    <span id="rs-result-viaja" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   </div>
 
   <div class="metrics">
@@ -735,7 +805,7 @@ th{background:var(--bna-marino)}
   <div class="tcard">
     <div class="thead2">
       <span class="ttit">Detalle por sucursal · clic para ver comercios</span>
-      <button class="action-btn btn-exp" onclick="exportPromo('sn')">⬇ Exportar</button>
+      <button class="action-btn btn-exp" onclick="exportPromo('viaja')">⬇ Exportar</button>
     </div>
     <div class="twrap"><table><thead><tr>
       <th>#</th><th>Sucursal</th><th>Total</th><th>+Pagos</th><th>FISERV</th><th>PRISMA</th><th>BNA+</th><th>Top Categoría</th><th>Top Rubro</th><th>Vol.</th>
@@ -743,10 +813,11 @@ th{background:var(--bna-marino)}
   </div>
 </div>
 
-<!-- ═══ PYMENACIÓN ═══ -->
+<!-- ═══ VIAJA+ ═══ -->
 <div class="page" id="page-viaja">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
-    <div><div class="ban-t">Semana Nación / AE</div><div class="ban-s">Promociones vigentes · categorías · rubros · sucursales</div></div>
+    <div><div class="ban-t">Viaja+</div><div class="ban-s">Promo única · análisis por rubro, sucursal y adquirente</div></div>
     <div><div class="ban-n" id="viaja-total">—</div><div class="ban-nl">adheridos</div></div>
   </div>
 
@@ -754,23 +825,23 @@ th{background:var(--bna-marino)}
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-viaja-suc" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
-    <select id="f-sn-cat" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
+    <select id="f-viaja-cat" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
-    <select id="f-sn-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
+    <select id="f-viaja-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
     <button class="fbar-reset" onclick="resetFilters_VIAJA()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-viaja">—</span>
   </div>
 
   <div class="cuit-bar">
     <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
-    <input type="text" id="rs-sn" placeholder="Nombre de comercio..." style="flex:2"
-      oninput="buscarPromo('sn',this.value)"
-      onkeydown="if(event.key==='Enter')buscarPromo('sn',this.value)">
-    <input type="text" id="cuit-sn" placeholder="Por CUIT..." maxlength="20"
-      oninput="buscarPromo('sn',document.getElementById('cuit-sn').value,true)">
-    <button onclick="buscarPromo('sn',document.getElementById('rs-sn').value||document.getElementById('cuit-sn').value)">🔍</button>
-    <button class="clear-btn" onclick="limpiarPromo('sn')">✕</button>
-    <span id="rs-result-sn" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
+    <input type="text" id="rs-viaja" placeholder="Nombre de comercio..." style="flex:2"
+      oninput="buscarPromo('viaja',this.value)"
+      onkeydown="if(event.key==='Enter')buscarPromo('viaja',this.value)">
+    <input type="text" id="cuit-viaja" placeholder="Por CUIT..." maxlength="20"
+      oninput="buscarPromo('viaja',document.getElementById('cuit-viaja').value,true)">
+    <button onclick="buscarPromo('sn',document.getElementById('rs-viaja').value||document.getElementById('cuit-viaja').value)">🔍</button>
+    <button class="clear-btn" onclick="limpiarPromo('viaja')">✕</button>
+    <span id="rs-result-viaja" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   </div>
 
   <div class="metrics">
@@ -866,6 +937,7 @@ id="page-pyme">
 
 <!-- ═══ AGRONACIÓN ═══ -->
 <div class="page" id="page-agro">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner"><div><div class="ban-t">AgroNación</div><div class="ban-s">Tarjeta agropecuaria</div></div><div><div class="ban-n" id="agro-total">—</div><div class="ban-nl">cuentas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -911,6 +983,7 @@ id="page-pyme">
 
 <!-- ═══ CORPORATIVA ═══ -->
 <div class="page" id="page-corp">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner"><div><div class="ban-t">TC Corporativa</div><div class="ban-s">Tarjeta corporativa · cartera NOA Oeste</div></div><div><div class="ban-n" id="corp-total">—</div><div class="ban-nl">cuentas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -941,6 +1014,7 @@ id="page-pyme">
 
 <!-- ═══ BNA CONECTA ═══ -->
 <div class="page" id="page-bna">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner"><div><div class="ban-t">BNA Conecta</div><div class="ban-s">Compradores y vendedores</div></div><div><div class="ban-n" id="bna-total">—</div><div class="ban-nl">empresas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
@@ -985,6 +1059,7 @@ id="page-pyme">
 
 <!-- ═══ TC INDIVIDUOS ═══ -->
 <div class="page" id="page-tc">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
     <div><div class="ban-t">💳 TC Individuos · NOA Oeste</div>
     <div class="ban-s">Consumo MC + VISA · Cuentas · Activación · Altas · Adicionales</div></div>
@@ -1084,6 +1159,7 @@ id="page-pyme">
 
 <!-- ═══ CLIENTE ═══ -->
 <div class="page" id="page-cliente">
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
     <div><div class="ban-t">🔍 Monitor de Cliente</div><div class="ban-s">Ingresá un CUIT para ver todos sus productos de medios de pago</div></div>
     <div><div class="ban-n">CUIT</div><div class="ban-nl">buscador unificado</div></div>
@@ -1759,24 +1835,26 @@ function renderPromo(pid, rows){
 // ── FILTROS PROMOCIONES ──
 function getFilteredPromo(pid){
   const src = DD[pid+'_noa'] || DD[pid] || [];
-  const suc = document.getElementById('f-'+pid+'-suc').value;
-  const cat = document.getElementById('f-'+pid+'-cat').value;
-  const rub = document.getElementById('f-'+pid+'-rub').value;
+  const suc = document.getElementById('f-'+pid+'-suc')?.value || '';
+  const cat = document.getElementById('f-'+pid+'-cat')?.value || '';
+  const rub = document.getElementById('f-'+pid+'-rub')?.value || '';
   return src.filter(r=>{
     if(suc && nSuc(r['SUCURSAL'])!==suc) return false;
-    if(cat && r['NOMBRE DE LA PROMOCION']!==cat) return false;
+    if(cat && (r['NOMBRE DE LA PROMOCION']||'')!==cat) return false;
     if(rub && normRubro(r['RUBRO'])!==rub) return false;
     return true;
   });
 }
 function applyFilter_MARC(){ const rows=getFilteredPromo('marc'); renderPromo('marc',rows); document.getElementById('fc-marc').textContent=n(rows.length)+' adheridos'; }
 function applyFilter_SN(){ const rows=getFilteredPromo('sn'); renderPromo('sn',rows); document.getElementById('fc-sn').textContent=n(rows.length)+' adheridos'; }
-function resetFilters_MARC(){ ['f-marc-suc','f-marc-cat','f-marc-rub'].forEach(id=>document.getElementById(id).value=''); applyFilter_MARC(); }
-function resetFilters_SN(){ ['f-sn-suc','f-sn-cat','f-sn-rub'].forEach(id=>document.getElementById(id).value=''); applyFilter_SN(); }
+function applyFilter_VIAJA(){ const rows=getFilteredPromo('viaja'); renderVIAJA(rows); document.getElementById('fc-viaja').textContent=n(rows.length)+' adheridos'; }
+function resetFilters_MARC(){ ['f-marc-suc','f-marc-cat','f-marc-rub'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';}); applyFilter_MARC(); }
+function resetFilters_SN(){ ['f-sn-suc','f-sn-cat','f-sn-rub'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';}); applyFilter_SN(); }
+function resetFilters_VIAJA(){ ['f-viaja-suc','f-viaja-cat','f-viaja-rub'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';}); applyFilter_VIAJA(); }
 
 // ── DRILL-DOWN PROMOCIONES ──
 function ddPromoSuc(pid, suc){
-  const rows=(DD[pid+'_noa']||DD[pid]||[]).filter(r=>nSuc(r['SUCURSAL'])===suc);
+  const rows=getFilteredPromo(pid).filter(r=>nSuc(r['SUCURSAL'])===suc);
   const hdrs=['Comercio','CUIT','Localidad','Categoría','Rubro','Adquirente','BNA+','Alta/Baja','Tel.','Mail','WhatsApp','Email'];
   const data=rows.map(r=>[
     r['NOMBRE DEL COMERCIO'],r['CUIT'],r['LOCALIDAD']||'—',
@@ -1787,7 +1865,7 @@ function ddPromoSuc(pid, suc){
     btnWSP(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),
     btnMail(r['MAIL'])
   ]);
-  openDD((pid==='marc'?'Marcatón':'SN/AE')+': '+suc, rows.length+' comercios adheridos', hdrs, data, rows);
+  openDD((pid==='marc'?'Marcatón':pid==='viaja'?'Viaja+':'SN/AE')+': '+suc, rows.length+' comercios adheridos', hdrs, data, rows);
 }
 
 function ddPromoCategoria(pid, cat){
@@ -1835,7 +1913,7 @@ function buscarPromo(pid, val, esCUIT=false){
       r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['ACEPTA BNA+:']||'—',
       btnWSP(r['TELEFONO'],r['NOMBRE DEL COMERCIO']),btnMail(r['MAIL'])
     ]);
-    openDD((pid==='marc'?'Marcatón':'SN/AE')+' · búsqueda: "'+val+'"',rows.length+' resultados',hdrs,data,rows);
+    openDD((pid==='marc'?'Marcatón':pid==='viaja'?'Viaja+':'SN/AE')+' · búsqueda: "'+val+'"',rows.length+' resultados',hdrs,data,rows);
   }
 }
 function limpiarPromo(pid){
@@ -1856,7 +1934,8 @@ function rMARC(rows){ initPromo('marc',rows); }
 function rSN(rows){ initPromo('sn',rows); }
 
 
-function rVIAJA(rows){ DD.viaja = rows || []; renderVIAJA(rows || []); }
+// ── RENDER VIAJA+ / SN-AE ──
+function rVIAJA(rows){ initPromo('sn',rows); }
 
 
 // ── RENDER PYME ──
@@ -2570,18 +2649,26 @@ async function loadAll(force=false) {
 
 // Botón actualizar → fuerza recarga
 // ── NAV ──
-function go(id, el) {
-  const page = document.getElementById('page-' + id);
-  if(!page){
-    console.warn('[NAV] página inexistente:', id);
-    return;
-  }
+const NAV_ORDER=['menu','cliente','com','tc','ceg','fac','facmp','marc','sn','viaja','pyme','agro','corp','bna','oport','metas'];
+let NAV_CURRENT='menu';
+let NAV_STACK=['menu'];
+let NAV_POS=0;
+function go(id, el, push=true) {
+  const page=document.getElementById('page-'+id);
+  if(!page){ console.warn('[NAV] página inexistente:', id); return; }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   page.classList.add('active');
-  if(el && el.classList) el.classList.add('active');
-  window.scrollTo({top:0, behavior:'smooth'});
+  const tab=document.querySelector('.ntab[data-go="'+id+'"]'); if(tab) tab.classList.add('active');
+  NAV_CURRENT=id;
+  if(push){ NAV_STACK = NAV_STACK.slice(0,NAV_POS+1); NAV_STACK.push(id); NAV_POS = NAV_STACK.length-1; }
+  syncNavBtns();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
+function syncNavBtns(){ document.querySelectorAll('.navbtn').forEach(btn=>{ if(btn.textContent.includes('Atrás')) btn.disabled = NAV_POS<=0; if(btn.textContent.includes('Adelante')) btn.disabled = NAV_POS>=NAV_STACK.length-1; }); }
+function navPrev(){ if(NAV_POS>0){ NAV_POS--; go(NAV_STACK[NAV_POS], null, false);} }
+function navNext(){ if(NAV_POS < NAV_STACK.length-1){ NAV_POS++; go(NAV_STACK[NAV_POS], null, false);} }
+
 
 // ── INICIO ──
 
@@ -3742,65 +3829,52 @@ function fmtMesLabel(m){
   return p.length>=2?ms[parseInt(p[1])-1]+' '+p[0]:'';
 }
 
-
 function getTCRows(){
-  const mes = document.getElementById('f-tc-mes')?.value || '';
-  const suc = document.getElementById('f-tc-suc')?.value || '';
-  return (TC_DATA.records || []).filter(r => {
-    if (mes && r.mes !== mes) return false;
-    if (suc && r.suc !== suc) return false;
-    return true;
-  });
+  const mes=document.getElementById('f-tc-mes')?.value||'';
+  const suc=document.getElementById('f-tc-suc')?.value||'';
+  return (TC_DATA.records||[]).filter(r=>(!mes||r.mes===mes)&&(!suc||r.suc===suc));
 }
-
 function initTC(){
-  poblarSel('f-tc-mes', TC_DATA.meses || []);
-  poblarSel('f-tc-suc', TC_DATA.sucs || []);
+  poblarSel('f-tc-mes', TC_DATA.meses||[]);
+  poblarSel('f-tc-suc', TC_DATA.sucs||[]);
+  const selMes=document.getElementById('f-tc-mes'); if(selMes && !selMes.value) selMes.value=TC_DATA.meses[TC_DATA.meses.length-1]||'';
   renderTC();
 }
-
-function applyFilterTC(){
-  renderTC();
-}
-
+function applyFilterTC(){ renderTC(); }
 function renderTC(){
-  const rows = getTCRows();
-  const set = (id, val) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val;
-  };
-  const nf = v => Number(v || 0).toLocaleString('es-AR');
-  const mm = v => (Number(v || 0) / 1000).toLocaleString('es-AR', {maximumFractionDigits:1, minimumFractionDigits:1});
-  const sum = key => rows.reduce((a, r) => a + (Number(r[key]) || 0), 0);
-
-  if (!rows.length) {
-    ['tc-k1','tc-k2','tc-k3','tc-k4','tc-k5','tc-k6','tc-k8'].forEach(id => set(id, '0'));
-    set('tc-k7', '0.0%');
-    if (typeof renderTCResumen === 'function') renderTCResumen();
-    return;
-  }
-
-  const consumo = sum('consumo') || sum('consumo_total');
-  const trx     = sum('tx') || sum('transacciones');
-  const act     = sum('ctas_act');
-  const altas   = sum('altas') || sum('altas_nuevas');
-  const resumen = sum('ctas_res');
-  const hab     = sum('ctas_hab');
-  const adic    = sum('adic_mc') + sum('adic_visa');
-  const activ   = hab > 0 ? ((act / hab) * 100).toFixed(1) + '%' : '—';
-
-  set('tc-k1', mm(consumo));
-  set('tc-k2', nf(trx));
-  set('tc-k3', nf(act));
-  set('tc-k4', nf(altas));
-  set('tc-k5', nf(resumen));
-  set('tc-k6', nf(hab));
-  set('tc-k7', activ);
-  set('tc-k8', nf(adic));
-
-  if (typeof renderTCResumen === 'function') renderTCResumen();
+  const rows=getTCRows();
+  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.textContent=val;};
+  const nf=v=>Number(v||0).toLocaleString('es-AR');
+  const nfm=v=>Number(v||0).toLocaleString('es-AR',{maximumFractionDigits:1,minimumFractionDigits:1});
+  const sum=k=>rows.reduce((a,r)=>a+(Number(r[k])||0),0);
+  set('tc-k1', nfm(sum('consumo')));
+  set('tc-k2', nf(sum('tx')));
+  set('tc-k3', nf(sum('ctas_act')));
+  set('tc-k4', nf(sum('altas')));
+  set('tc-k5', nf(sum('ctas_res')));
+  set('tc-k6', nf(sum('ctas_hab')));
+  const hab=sum('ctas_hab'), act=sum('ctas_act');
+  set('tc-k7', hab>0?((act/hab)*100).toFixed(1)+'%':'0.0%');
+  set('tc-k8', nf(sum('adic_mc')+sum('adic_visa')));
+  const meses=(TC_DATA.meses||[]).filter(m=>m.startsWith('2026-'));
+  const mesActual=document.getElementById('f-tc-mes')?.value || (TC_DATA.meses||[]).slice(-1)[0] || '';
+  const actuales=(TC_DATA.records||[]).filter(r=>r.mes===mesActual);
+  set('tc-acum-meses', meses.map(fmtMesLabel).join(' · '));
+  set('tc-acum-consumo', nfm(meses.reduce((a,m)=>a+TC_DATA.records.filter(r=>r.mes===m).reduce((x,r)=>x+r.consumo,0),0)));
+  set('tc-acum-tx', nf(meses.reduce((a,m)=>a+TC_DATA.records.filter(r=>r.mes===m).reduce((x,r)=>x+r.tx,0),0)));
+  set('tc-acum-altas', nf(meses.reduce((a,m)=>a+TC_DATA.records.filter(r=>r.mes===m).reduce((x,r)=>x+r.altas,0),0)));
+  const habAct=actuales.reduce((a,r)=>a+r.ctas_hab,0), ctasAct=actuales.reduce((a,r)=>a+r.ctas_act,0);
+  set('tc-acum-ctas', nf(ctasAct));
+  set('tc-acum-activ', habAct>0?((ctasAct/habAct)*100).toFixed(1)+'%':'0.0%');
+  const porSuc={}; rows.forEach(r=>{ if(!porSuc[r.suc]) porSuc[r.suc]={mc:0,visa:0,cons:0,activ:0,hab:0,tx:0,res:0,altas:0,adic:0,tarj:0}; porSuc[r.suc].mc+=r.consumo_mc; porSuc[r.suc].visa+=r.consumo_visa; porSuc[r.suc].cons+=r.consumo; porSuc[r.suc].hab+=r.ctas_hab; porSuc[r.suc].activ+=r.ctas_act; porSuc[r.suc].tx+=r.tx; porSuc[r.suc].res+=r.ctas_res; porSuc[r.suc].altas+=r.altas; porSuc[r.suc].adic+=r.adic_mc+r.adic_visa; porSuc[r.suc].tarj+=r.tarjetas; });
+  const sa=Object.entries(porSuc).sort((a,b)=>b[1].cons-a[1].cons);
+  const tt=document.getElementById('t-tc'); if(tt) tt.innerHTML=sa.map(([s,v],i)=>`<tr><td class="rk">${i+1}</td><td style="font-weight:700">${s}</td><td>${nfm(v.cons)}</td><td>${nfm(v.mc)}</td><td>${nfm(v.visa)}</td><td>${nf(v.tx)}</td><td>${nf(v.hab)}</td><td>${nf(v.res)}</td><td>${nf(v.hab)}</td><td>${nf(v.activ)}</td><td>${v.hab>0?((v.activ/v.hab)*100).toFixed(1)+'%':'0.0%'}</td><td>${nf(v.altas)}</td><td>${nf(v.adic)}</td><td>${nf(v.tarj)}</td></tr>`).join('');
+  mk('c-tc-cons',{type:'bar',data:{labels:sa.map(x=>x[0]),datasets:[{label:'Mastercard',data:sa.map(x=>x[1].mc),backgroundColor:'#002056'},{label:'VISA',data:sa.map(x=>x[1].visa),backgroundColor:'#F6955A'}]},options:{responsive:true,maintainAspectRatio:false}});
+  const evoLabs=TC_DATA.meses||[]; mk('c-tc-evo',{type:'line',data:{labels:evoLabs.map(fmtMesLabel),datasets:[{label:'Consumo zonal',data:evoLabs.map(m=>TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo,0)),borderColor:'#007094',backgroundColor:'rgba(0,112,148,.15)',fill:true,tension:.3}]},options:{responsive:true,maintainAspectRatio:false}});
+  mk('c-tc-marca',{type:'doughnut',data:{labels:['Mastercard','VISA'],datasets:[{data:[sum('consumo_mc'),sum('consumo_visa')],backgroundColor:['#002056','#F6955A'],borderWidth:0}]},options:PIE});
+  mk('c-tc-activ',{type:'bar',data:{labels:sa.map(x=>x[0]),datasets:[{label:'Activación %',data:sa.map(x=>x[1].hab>0?((x[1].activ/x[1].hab)*100):0),backgroundColor:'#4EBFA4',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  if(typeof renderTCResumen==='function') renderTCResumen();
 }
-
 function rTC(rawRows){
   console.log('[TC] rTC llamada con',(rawRows||[]).length,'filas');
   if(!rawRows||!rawRows.length){console.warn('[TC] Sin datos');return;}
@@ -3878,31 +3952,37 @@ function expTC(){
 
 
 function renderVIAJA(rows){
-  if(!rows) rows=DD.viaja||[];
+  if(!rows) rows=getFilteredPromo('viaja');
   const T=rows.length;
-  const alta=rows.filter(x=>(x['ALTA / BAJA']||'').trim().toUpperCase()==='ALTA').length;
+  const bn=rows.filter(x=>(x['ACEPTA BNA+:']||'').toUpperCase().trim().startsWith('S')).length;
+  const mp=rows.filter(x=>/MAS.?PAG/i.test(x['ADQUIRENTE - PRISMA \/ FISERV \/ MAS PAGOS']||'')).length;
+  const fi=rows.filter(x=>/FISERV/i.test(x['ADQUIRENTE - PRISMA \/ FISERV \/ MAS PAGOS']||'')).length;
+  const pr=rows.filter(x=>/PRISMA/i.test(x['ADQUIRENTE - PRISMA \/ FISERV \/ MAS PAGOS']||'')).length;
   const nf=v=>Number(v||0).toLocaleString('es-AR');
-  const setEl=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  setEl('viaja-total',nf(T));
-  setEl('viaja-k1',nf(T));
-  setEl('viaja-k2',nf(alta));
-  setEl('viaja-k3',nf(T-alta));
-
-  // Tabla
-  const tEl=document.getElementById('t-viaja');
-  if(!tEl) return;
-  tEl.innerHTML=rows.slice(0,300).map((r,i)=>{
-    const act=(r['ALTA / BAJA']||'').trim().toUpperCase()==='ALTA';
-    return '<tr class="crow">'+
-      '<td class="rk">'+(i+1)+'</td>'+
-      '<td style="font-weight:600">'+(r['NOMBRE DEL COMERCIO']||r['NOMBRE DE LA PROMOCION']||'')+'</td>'+
-      '<td style="font-size:10px">'+(r['CUIT']||'')+'</td>'+
-      '<td style="font-size:10px">'+(r['SUCURSAL']||'')+'</td>'+
-      '<td style="font-size:10px">'+(r['RUBRO']||r['SUBRUBRO']||'')+'</td>'+
-      '<td><span class="pill '+(act?'p-act':'p-chu')+'">'+(r['ALTA / BAJA']||'')+'</span></td>'+
-      '<td style="font-size:9px">'+(r['LOCALIDAD']||'')+'</td>'+
-      '</tr>';
-  }).join('');
+  const setEl=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=v;};
+  setEl('viaja-total', nf(T)); setEl('viaja-k1', nf(T)); setEl('viaja-k2', nf(bn)); setEl('viaja-k3', nf(mp)); setEl('viaja-k4', nf(fi+pr));
+  const sucMap={}, rubMap={};
+  rows.forEach(r=>{ const s=nSuc(r['SUCURSAL'])||'—'; sucMap[s]=(sucMap[s]||0)+1; const rb=normRubro(r['RUBRO'])||'—'; rubMap[rb]=(rubMap[rb]||0)+1; });
+  const topSuc=Object.entries(sucMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const topRub=Object.entries(rubMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  mk('c-viaja-suc',{type:'bar',data:{labels:topSuc.map(x=>x[0]),datasets:[{data:topSuc.map(x=>x[1]),backgroundColor:'#7CA9DA',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}},onClick:(e,el)=>{if(el.length) ddPromoSuc('viaja', topSuc[el[0].index][0]);}}});
+  mk('c-viaja-rub',{type:'bar',data:{labels:topRub.map(x=>x[0]),datasets:[{data:topRub.map(x=>x[1]),backgroundColor:'#007094',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#002056'}}}}});
+  mk('c-viaja-adq',{type:'doughnut',data:{labels:['+Pagos','Fiserv','Prisma'],datasets:[{data:[mp,fi,pr],backgroundColor:['#002056','#00ADDB','#4EBFA4'],borderWidth:0}]},options:PIE});
+  mk('c-viaja-cat',{type:'bar',data:{labels:['Locales','BNA+','+Pagos','Fiserv/Prisma'],datasets:[{data:[T,bn,mp,fi+pr],backgroundColor:['#002056','#4EBFA4','#007094','#F6955A'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+  const tEl=document.getElementById('t-viaja'); if(!tEl) return;
+  const det={};
+  rows.forEach(r=>{
+    const s=nSuc(r['SUCURSAL'])||'—';
+    if(!det[s]) det[s]={t:0,mp:0,fi:0,pr:0,bn:0,rubs:{}};
+    det[s].t++;
+    if(/MAS.?PAG/i.test(r['ADQUIRENTE - PRISMA \/ FISERV \/ MAS PAGOS']||'')) det[s].mp++;
+    if(/FISERV/i.test(r['ADQUIRENTE - PRISMA \/ FISERV \/ MAS PAGOS']||'')) det[s].fi++;
+    if(/PRISMA/i.test(r['ADQUIRENTE - PRISMA \/ FISERV \/ MAS PAGOS']||'')) det[s].pr++;
+    if((r['ACEPTA BNA+:']||'').toUpperCase().trim().startsWith('S')) det[s].bn++;
+    const rb=normRubro(r['RUBRO'])||'—'; det[s].rubs[rb]=(det[s].rubs[rb]||0)+1;
+  });
+  const arr=Object.entries(det).sort((a,b)=>b[1].t-a[1].t); const mx=arr[0]?arr[0][1].t:1;
+  tEl.innerHTML=arr.map(([nm,v],i)=>{ const top=Object.entries(v.rubs).sort((a,b)=>b[1]-a[1])[0]; return `<tr class="crow" data-nm="${nm}" onclick="ddPromoSuc('viaja',this.dataset.nm)"><td class="rk">${i+1}</td><td style="font-weight:700">${nm}</td><td>${nf(v.t)}</td><td><span class="pill p-az">${v.mp}</span></td><td>${v.fi}</td><td>${v.pr}</td><td>${v.bn}</td><td style="font-size:10px">${top?top[0]:'—'}</td><td><span class="bm" style="width:${Math.round(v.t/mx*60)}px"></span></td></tr>`; }).join('');
 }
 // ══ ARRANQUE ══
 window.addEventListener('DOMContentLoaded', () => {
@@ -3990,6 +4070,7 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+
 <div id="page-facmp" class="page">
   <div class="banner">
     <div>
@@ -4042,7 +4123,7 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div id="facmp-status" style="text-align:center;padding:30px;color:#888;font-size:13px">
-    Cargando datos de Facturación +Pagos…
+    Cargando datos dinámicos de Facturación +Pagos…
   </div>
 </div>
 

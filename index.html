@@ -1131,7 +1131,8 @@ id="page-pyme">
 
   <div id="cliente-resultado"></div>
 </div>
-<script>
+<script><script>
+
 
 
 
@@ -1670,6 +1671,7 @@ const NOA_SUCS_SET = new Set(['SFV CATAMARCA', 'F.MAMERTO ESQUIU', 'VILLA DOLORE
 
 
 function initPromo(pid, rows, noa_only=true){
+  if(!pid||!rows||!Array.isArray(rows)) return; // guard: no llamar sin argumentos
   DD[pid]=rows;
   // Filtrar a NOA Oeste si corresponde
   // Mostrar todos los registros sin filtrar — el usuario filtra por sucursal
@@ -4112,15 +4114,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.sbtn');
   if(btn) btn.onclick = () => loadAll(true);
 
-  // Iniciar promo si existe
-  if(typeof initPromo === 'function') initPromo();
-
   // Cargar Facturación +Pagos (Sheet separado)
   if(typeof loadFACMP === 'function' && API_URL_FAC) loadFACMP();
 
   // Cargar todos los datos principales
   loadAll();
 });
+
 
 </script>
 <script>

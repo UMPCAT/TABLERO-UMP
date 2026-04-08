@@ -1736,7 +1736,12 @@ function initPromo(pid, rows, noa_only=true){
 }
 
 function renderPromo(pid, rows){
-  const cp = pid==='marc' ? 'c-marc' : 'c-sn';
+  const cpMap = {
+  marc: 'c-marc',
+  sn: 'c-sn',
+  viaja: 'c-viaja'
+};
+const cp = cpMap[pid] || 'c-sn';
   const al = rows.filter(x=>(x['ALTA / BAJA']||'').toUpperCase().trim().startsWith('ALT')).length;
   const bn = rows.filter(x=>(x['ACEPTA BNA+:']||'').toUpperCase().trim().startsWith('S')).length;
   const mp = rows.filter(x=>/MAS.?PAG/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
@@ -1935,8 +1940,7 @@ function rSN(rows){ initPromo('sn',rows); }
 
 
 // ── RENDER VIAJA+ / SN-AE ──
-function rVIAJA(rows){ initPromo('sn',rows); }
-
+function rVIAJA(rows){ initPromo('viaja', rows); }
 
 // ── RENDER PYME ──
 function rPYME(rows){

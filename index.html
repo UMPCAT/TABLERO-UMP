@@ -1131,7 +1131,9 @@ id="page-pyme">
 
   <div id="cliente-resultado"></div>
 </div>
+<script><script>
 <script>
+
 
 
 
@@ -1888,7 +1890,20 @@ function rMARC(rows){ initPromo('marc',rows); }
 function rSN(rows){ initPromo('sn',rows); }
 
 
-// ── RENDER PYME ──function rVIAJA(rows){ initPromo('sn',rows); }
+// ── RENDER PYME ──function rVIAJA(rows){
+  DD.viaja=rows;
+  const sucs=[...new Set(rows.map(r=>r['SUCURSAL']).filter(Boolean))].sort();
+  poblarSel('f-viaja-suc',sucs);
+  const rubros=[...new Set(rows.map(r=>normRubro(r['RUBRO'])).filter(Boolean))].sort();
+  poblarSel('f-viaja-rubro',rubros);
+  const promos=[...new Set(rows.map(r=>r['NOMBRE DE LA PROMOCION']||'').filter(Boolean))].sort();
+  poblarSel('f-viaja-promo',promos);
+  renderVIAJA(rows);
+  const fc=document.getElementById('fc-viaja');
+  if(fc) fc.textContent=n(rows.length)+' comercios';
+  const tot=document.getElementById('viaja-total');
+  if(tot) tot.textContent=n(rows.length);
+}
 
 
 // ── RENDER PYME ──
@@ -2533,7 +2548,7 @@ async function loadAll(force=false) {
     ['fac',  rFAC],
     ['marc', rMARC],
     ['sn',   rSN],
-    ['viaja', rVIAJA],
+    ['viaja', (rows)=>rVIAJA(rows)],
     ['pyme', rPYME],
     ['agro', rAGRO],
     ['corp', rCORP],
@@ -4122,6 +4137,8 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
 </script>
 <script>
 if('serviceWorker' in navigator){
@@ -4275,4 +4292,3 @@ if('serviceWorker' in navigator){
     Para cargar datos de Facturación +Pagos, configurá la URL del Apps Script en el código (API_URL_FAC).
   </div>
 </div>
-

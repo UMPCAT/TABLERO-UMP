@@ -1243,6 +1243,9 @@ id="page-pyme">
 
 
 
+
+
+
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -1979,7 +1982,7 @@ function rSN(rows){ initPromo('sn',rows); }
 
 
 // ── RENDER VIAJA+ / SN-AE ──
-function rVIAJA(rows){ initPromo('sn',rows); }
+function rVIAJA(rows){ initPromo('viaja',rows); }
 
 
 // ── RENDER PYME ──
@@ -2319,6 +2322,11 @@ function limpiarCUIT(tab) {
 function buscarCliente() {
   const inputVal = (document.getElementById('cuit-cliente-input').value||'').trim();
   const el = document.getElementById('cliente-resultado');
+
+  if(!(DD.com||[]).length){
+    el.innerHTML='<div class="not-found" style="color:#F6955A">Datos cargando, esperá unos segundos e intentá nuevamente.</div>';
+    return;
+  }
 
   if(!inputVal || inputVal.length < 3) {
     el.innerHTML='<div class="not-found">Ingresá un CUIT (mínimo 8 dígitos) o razón social (mínimo 3 letras)</div>';
@@ -2708,6 +2716,11 @@ function go(id, el, push=true) {
   if(push){ NAV_STACK = NAV_STACK.slice(0,NAV_POS+1); NAV_STACK.push(id); NAV_POS = NAV_STACK.length-1; }
   syncNavBtns();
   window.scrollTo({top:0,behavior:'smooth'});
+  // Si navegan a CEG antes de que cargue, esperar y reintentar
+  if(id==='ceg' && !(DD.ceg||[]).length){
+    const banner=document.querySelector('#page-ceg .ban-t');
+    if(banner) banner.textContent='Comercios en General · cargando…';
+  }
 }
 function syncNavBtns(){ document.querySelectorAll('.navbtn').forEach(btn=>{ if(btn.textContent.includes('Atrás')) btn.disabled = NAV_POS<=0; if(btn.textContent.includes('Adelante')) btn.disabled = NAV_POS>=NAV_STACK.length-1; }); }
 function navPrev(){ if(NAV_POS>0){ NAV_POS--; go(NAV_STACK[NAV_POS], null, false);} }
@@ -3755,7 +3768,8 @@ function renderMetas(){
   tcRows.forEach(r => { resReal[normSuc(r.suc)] = r.ctas_res || 0; });
 
   // ── Acreditaciones: acumulado trimestral real ──
-  const acredTrim = getAcredTrimestre(mesStr);
+  const mesStrAcred = (mesStr === '2025-12') ? '2026-01' : mesStr;
+  const acredTrim = getAcredTrimestre(mesStrAcred);
   const acredReal = acredTrim.porSuc;
   const mesesConDatos = acredTrim.mesesConDatos;
   const facTieneDatos = mesesConDatos > 0;
@@ -3769,7 +3783,7 @@ function renderMetas(){
     const pctRes   = metaRes ? Math.round(realRes/metaRes*100) : null;
 
     // Acreditaciones — meta TRIMESTRAL completa, real = acumulado trimestre
-    const acredObj  = getMetaAcred(suc, mesStr);
+    const acredObj  = getMetaAcred(suc, mesStrAcred);
     const metaAcred = acredObj ? acredObj.meta : null;
     const metaLabel = acredObj ? acredObj.q+' '+acredObj.label : '';
     const realAcred = acredReal[suc] || 0;
@@ -3925,9 +3939,21 @@ function getTCRows(){
   return (TC_DATA.records||[]).filter(r=>(!mes||r.mes===mes)&&(!suc||r.suc===suc));
 }
 function initTC(){
-  poblarSel('f-tc-mes', TC_DATA.meses||[]);
+  // Poblar mes con labels legibles 'Ene 2026' en vez de '2026-01'
+  const selMes = document.getElementById('f-tc-mes');
+  if(selMes){
+    while(selMes.options.length > 1) selMes.remove(1);
+    (TC_DATA.meses||[]).slice().reverse().forEach(m => {
+      const o = document.createElement('option');
+      o.value = m;
+      o.textContent = fmtMesLabel(m);
+      selMes.appendChild(o);
+    });
+    // Seleccionar el mes más reciente por defecto
+    if(!selMes.value && TC_DATA.meses.length)
+      selMes.value = TC_DATA.meses[TC_DATA.meses.length-1];
+  }
   poblarSel('f-tc-suc', TC_DATA.sucs||[]);
-  const selMes=document.getElementById('f-tc-mes'); if(selMes && !selMes.value) selMes.value=TC_DATA.meses[TC_DATA.meses.length-1]||'';
   renderTC();
 }
 function applyFilterTC(){ renderTC(); }
@@ -3958,7 +3984,7 @@ function renderTC(){
   set('tc-acum-activ', habAct>0?((ctasAct/habAct)*100).toFixed(1)+'%':'0.0%');
   const porSuc={}; rows.forEach(r=>{ if(!porSuc[r.suc]) porSuc[r.suc]={mc:0,visa:0,cons:0,activ:0,hab:0,tx:0,res:0,altas:0,adic:0,tarj:0}; porSuc[r.suc].mc+=r.consumo_mc; porSuc[r.suc].visa+=r.consumo_visa; porSuc[r.suc].cons+=r.consumo; porSuc[r.suc].hab+=r.ctas_hab; porSuc[r.suc].activ+=r.ctas_act; porSuc[r.suc].tx+=r.tx; porSuc[r.suc].res+=r.ctas_res; porSuc[r.suc].altas+=r.altas; porSuc[r.suc].adic+=r.adic_mc+r.adic_visa; porSuc[r.suc].tarj+=r.tarjetas; });
   const sa=Object.entries(porSuc).sort((a,b)=>b[1].cons-a[1].cons);
-  const tt=document.getElementById('t-tc'); if(tt) tt.innerHTML=sa.map(([s,v],i)=>`<tr><td class="rk">${i+1}</td><td style="font-weight:700">${s}</td><td>${nfm(v.cons)}</td><td>${nfm(v.mc)}</td><td>${nfm(v.visa)}</td><td>${nf(v.tx)}</td><td>${nf(v.hab)}</td><td>${nf(v.res)}</td><td>${nf(v.hab)}</td><td>${nf(v.activ)}</td><td>${v.hab>0?((v.activ/v.hab)*100).toFixed(1)+'%':'0.0%'}</td><td>${nf(v.altas)}</td><td>${nf(v.adic)}</td><td>${nf(v.tarj)}</td></tr>`).join('');
+  const tt=document.getElementById('t-tc'); if(tt) tt.innerHTML=sa.map(([s,v],i)=>`<tr><td class="rk">${i+1}</td><td style="font-weight:700">${s}</td><td>${nfm(v.cons)}</td><td>${nfm(v.mc)}</td><td>${nfm(v.visa)}</td><td>${nf(v.tx)}</td><td>${nf(v.hab)}</td><td>${nf(v.res)}</td><td>${nf(v.activ)}</td><td>${nf(v.activ)}</td><td>${v.hab>0?((v.activ/v.hab)*100).toFixed(1)+'%':'0.0%'}</td><td>${nf(v.altas)}</td><td>${nf(v.adic)}</td><td>${nf(v.tarj)}</td></tr>`).join('');
   mk('c-tc-cons',{type:'bar',data:{labels:sa.map(x=>x[0]),datasets:[{label:'Mastercard',data:sa.map(x=>x[1].mc),backgroundColor:'#002056'},{label:'VISA',data:sa.map(x=>x[1].visa),backgroundColor:'#F6955A'}]},options:{responsive:true,maintainAspectRatio:false}});
   const evoLabs=TC_DATA.meses||[]; mk('c-tc-evo',{type:'line',data:{labels:evoLabs.map(fmtMesLabel),datasets:[{label:'Consumo zonal',data:evoLabs.map(m=>TC_DATA.records.filter(r=>r.mes===m).reduce((a,r)=>a+r.consumo,0)),borderColor:'#007094',backgroundColor:'rgba(0,112,148,.15)',fill:true,tension:.3}]},options:{responsive:true,maintainAspectRatio:false}});
   mk('c-tc-marca',{type:'doughnut',data:{labels:['Mastercard','VISA'],datasets:[{data:[sum('consumo_mc'),sum('consumo_visa')],backgroundColor:['#002056','#F6955A'],borderWidth:0}]},options:PIE});
@@ -4081,6 +4107,9 @@ window.addEventListener('DOMContentLoaded', () => {
   if(typeof loadFACMP==='function' && typeof API_URL_FAC!=='undefined' && API_URL_FAC) loadFACMP();
   loadAll();
 });
+
+
+
 
 
 

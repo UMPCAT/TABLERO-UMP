@@ -185,8 +185,8 @@ tr:last-child td{border-bottom:none}
 /* DRILL-DOWN PANEL */
 .ddoverlay{position:fixed;inset:0;background:rgba(0,30,80,.5);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}
 .ddoverlay.open{opacity:1;pointer-events:all}
-.ddpanel{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;z-index:201;max-height:82vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .25s ease}
-.ddpanel.open{transform:translateY(0)}
+.ddpanel{position:fixed;top:50%;left:50%;transform:translate(-50%,-60%);background:#fff;border-radius:16px;z-index:201;width:min(96vw,820px);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,32,86,.35);transition:opacity .25s,transform .25s;opacity:0;pointer-events:none}
+.ddpanel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
 .ddhead{padding:12px 16px 10px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--bna-marino);border-radius:16px 16px 0 0}
 .ddtitle{color:#fff;font-size:13px;font-weight:800}
 .ddsub{color:rgba(255,255,255,.6);font-size:11px;margin-top:1px}
@@ -448,6 +448,7 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
   <div class="ddhead">
     <div><div class="ddtitle" id="dd-title">Detalle</div><div class="ddsub" id="dd-sub"></div></div>
     <div class="ddactions">
+      <button class="navbtn" onclick="closeDD()" style="margin-right:4px">← Volver</button>
       <button class="action-btn btn-exp" id="dd-export-btn" onclick="exportDD()" style="display:none">⬇ Exportar CSV</button>
       <button class="ddclose" onclick="closeDD()">✕</button>
     </div>
@@ -706,229 +707,109 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
 
 <!-- ═══ MARCATÓN ═══ -->
 <div class="page" id="page-marc">
-  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner">
-    <div><div class="ban-t">Marcatón</div><div class="ban-s">Comercios adheridos · categorías · rubros · sucursales</div></div>
-    <div><div class="ban-n" id="marc-total">—</div><div class="ban-nl">adheridos</div></div>
-  </div>
-
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">&#8592; Atr&aacute;s</button><button class="navbtn pri" onclick="go('menu')">&#8962; Men&uacute; principal</button><button class="navbtn" onclick="navNext()">Adelante &#8594;</button></div>
+  <div class="banner"><div><div class="ban-t">Marcaton Marcaton</div><div class="ban-s">Comercios adheridos - analisis por rubro y sucursal</div></div><div><div class="ban-n" id="marc-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-marc-suc" onchange="applyFilter_MARC()"><option value="">Todas</option></select>
-    <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
+    <span class="fbar-lbl" style="margin-left:6px">Categor&iacute;a:</span>
     <select id="f-marc-cat" onchange="applyFilter_MARC()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
     <select id="f-marc-rub" onchange="applyFilter_MARC()"><option value="">Todos</option></select>
-    <button class="fbar-reset" onclick="resetFilters_MARC()">✕ Limpiar</button>
-    <span class="fbar-count" id="fc-marc">—</span>
+    <button class="fbar-reset" onclick="resetFilters_MARC()">&#10005; Limpiar</button>
+    <span class="fbar-count" id="fc-marc">&#8212;</span>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('marc')">&#8595; Exportar</button>
   </div>
-
-  <div class="cuit-bar">
-    <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
-    <input type="text" id="rs-marc" placeholder="Nombre de comercio..." style="flex:2"
-      oninput="buscarPromo('marc',this.value)"
-      onkeydown="if(event.key==='Enter')buscarPromo('marc',this.value)">
-    <input type="text" id="cuit-marc" placeholder="Por CUIT..." maxlength="20"
-      oninput="buscarPromo('marc',document.getElementById('cuit-marc').value,true)">
-    <button onclick="buscarPromo('marc',document.getElementById('rs-marc').value||document.getElementById('cuit-marc').value)">🔍</button>
-    <button class="clear-btn" onclick="limpiarPromo('marc')">✕</button>
-    <span id="rs-result-marc" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
-  </div>
-
   <div class="metrics">
-    <div class="metric az"><div class="mlbl">Adheridos Marcatón</div><div class="mval" id="marc-k1">—</div><div class="msub">altas vigentes</div></div>
-    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="marc-k2">—</div><div class="msub" id="marc-k2s">—</div></div>
-    <div class="metric dr"><div class="mlbl">+Pagos / MAS PAGOS</div><div class="mval" id="marc-k3">—</div><div class="msub">adquirente</div></div>
-    <div class="metric rj"><div class="mlbl">FISERV / PRISMA</div><div class="mval" id="marc-k4">—</div><div class="msub">otros adquirentes</div></div>
+    <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="marc-k1">&#8212;</div></div>
+    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="marc-k2">&#8212;</div><div class="msub" id="marc-k2s"></div></div>
+    <div class="metric az"><div class="mlbl">+Pagos</div><div class="mval" id="marc-k3">&#8212;</div></div>
+    <div class="metric az"><div class="mlbl">Fiserv/Prisma</div><div class="mval" id="marc-k4">&#8212;</div></div>
   </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Por categoría · clic para ver comercios</div>
-      <div class="cw" style="height:240px"><canvas id="c-marc-cat"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Top rubros · clic para ver comercios</div>
-      <div class="cw" style="height:240px"><canvas id="c-marc-rub"></canvas></div>
-    </div>
+  <div class="grid2">
+    <div class="card"><div class="ctit">Por categor&iacute;a</div><div class="cw" style="height:180px"><canvas id="c-marc-cat"></canvas></div></div>
+    <div class="card"><div class="ctit">Por rubro</div><div class="cw" style="height:180px"><canvas id="c-marc-rub"></canvas></div></div>
+    <div class="card"><div class="ctit">Adquirente</div><div class="cw" style="height:180px"><canvas id="c-marc-adq"></canvas></div></div>
+    <div class="card"><div class="ctit">Por sucursal</div><div class="cw" style="height:180px"><canvas id="c-marc-suc"></canvas></div></div>
   </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Por adquirente</div>
-      <div class="leg">
-        <span class="li"><span class="ld" style="background:#002056"></span>+Pagos/MAS PAGOS</span>
-        <span class="li"><span class="ld" style="background:#00ADDB"></span>FISERV</span>
-        <span class="li"><span class="ld" style="background:#4EBFA4"></span>PRISMA</span>
-      </div>
-      <div class="cw" style="height:180px"><canvas id="c-marc-adq"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Top sucursales · clic para ver comercios</div>
-      <div class="cw" style="height:180px"><canvas id="c-marc-suc"></canvas></div>
-    </div>
-  </div>
-
   <div class="tcard">
-    <div class="thead2">
-      <span class="ttit">Detalle por sucursal · clic para ver comercios</span>
-      <button class="action-btn btn-exp" onclick="exportPromo('marc')">⬇ Exportar</button>
-    </div>
-    <div class="twrap"><table><thead><tr>
-      <th>#</th><th>Sucursal</th><th>Locales</th><th>+Pagos</th><th>Fiserv</th><th>Prisma</th><th>BNA+</th><th>Rubro líder</th><th>Vol.</th>
-    </tr></thead><tbody id="t-marc"></tbody></table></div>
+    <div class="thead2"><span class="tti">Detalle por sucursal</span></div>
+    <div class="twrap"><table>
+      <thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>BNA+</th><th>+Pagos</th><th>Cat. principal</th><th>Rubro</th></tr></thead>
+      <tbody id="t-marc"></tbody>
+    </table></div>
   </div>
 </div>
 
 <!-- ═══ SEMANA NACIÓN / AE ═══ -->
 <div class="page" id="page-sn">
-  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner">
-    <div><div class="ban-t">Viaja+</div><div class="ban-s">Promo única · análisis por rubro, sucursal y adquirente</div></div>
-    <div><div class="ban-n" id="sn-total">—</div><div class="ban-nl">adheridos</div></div>
-  </div>
-
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">&#8592; Atr&aacute;s</button><button class="navbtn pri" onclick="go('menu')">&#8962; Men&uacute; principal</button><button class="navbtn" onclick="navNext()">Adelante &#8594;</button></div>
+  <div class="banner"><div><div class="ban-t">SN SN / AE</div><div class="ban-s">Semanario Nacion y Adelantos Extraordinarios</div></div><div><div class="ban-n" id="sn-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-sn-suc" onchange="applyFilter_SN()"><option value="">Todas</option></select>
-    <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
-    <select id="f-viaja-cat" onchange="applyFilter_SN()"><option value="">Todas</option></select>
+    <span class="fbar-lbl" style="margin-left:6px">Categor&iacute;a:</span>
+    <select id="f-sn-cat" onchange="applyFilter_SN()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
-    <select id="f-viaja-rub" onchange="applyFilter_SN()"><option value="">Todos</option></select>
-    <button class="fbar-reset" onclick="resetFilters_SN()">✕ Limpiar</button>
-    <span class="fbar-count" id="fc-sn">—</span>
+    <select id="f-sn-rub" onchange="applyFilter_SN()"><option value="">Todos</option></select>
+    <button class="fbar-reset" onclick="resetFilters_SN()">&#10005; Limpiar</button>
+    <span class="fbar-count" id="fc-sn">&#8212;</span>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('sn')">&#8595; Exportar</button>
   </div>
-
-  <div class="cuit-bar">
-    <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
-    <input type="text" id="rs-viaja" placeholder="Nombre de comercio..." style="flex:2"
-      oninput="buscarPromo('viaja',this.value)"
-      onkeydown="if(event.key==='Enter')buscarPromo('viaja',this.value)">
-    <input type="text" id="cuit-viaja" placeholder="Por CUIT..." maxlength="20"
-      oninput="buscarPromo('viaja',document.getElementById('cuit-viaja').value,true)">
-    <button onclick="buscarPromo('sn',document.getElementById('rs-viaja').value||document.getElementById('cuit-viaja').value)">🔍</button>
-    <button class="clear-btn" onclick="limpiarPromo('viaja')">✕</button>
-    <span id="rs-result-viaja" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
-  </div>
-
   <div class="metrics">
-    <div class="metric az"><div class="mlbl">Adheridos SN/AE</div><div class="mval" id="sn-k1">—</div><div class="msub">altas vigentes</div></div>
-    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="sn-k2">—</div><div class="msub" id="sn-k2s">—</div></div>
-    <div class="metric dr"><div class="mlbl">+Pagos / MAS PAGOS</div><div class="mval" id="sn-k3">—</div><div class="msub">adquirente</div></div>
-    <div class="metric rj"><div class="mlbl">FISERV / PRISMA</div><div class="mval" id="sn-k4">—</div><div class="msub">otros adquirentes</div></div>
+    <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="sn-k1">&#8212;</div></div>
+    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="sn-k2">&#8212;</div><div class="msub" id="sn-k2s"></div></div>
+    <div class="metric az"><div class="mlbl">+Pagos</div><div class="mval" id="sn-k3">&#8212;</div></div>
+    <div class="metric az"><div class="mlbl">Fiserv/Prisma</div><div class="mval" id="sn-k4">&#8212;</div></div>
   </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Por categoría · clic para ver comercios</div>
-      <div class="cw" style="height:240px"><canvas id="c-sn-cat"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Top rubros · clic para ver comercios</div>
-      <div class="cw" style="height:240px"><canvas id="c-sn-rub"></canvas></div>
-    </div>
+  <div class="grid2">
+    <div class="card"><div class="ctit">Por categor&iacute;a</div><div class="cw" style="height:180px"><canvas id="c-sn-cat"></canvas></div></div>
+    <div class="card"><div class="ctit">Por rubro</div><div class="cw" style="height:180px"><canvas id="c-sn-rub"></canvas></div></div>
+    <div class="card"><div class="ctit">Adquirente</div><div class="cw" style="height:180px"><canvas id="c-sn-adq"></canvas></div></div>
+    <div class="card"><div class="ctit">Por sucursal</div><div class="cw" style="height:180px"><canvas id="c-sn-suc"></canvas></div></div>
   </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Por adquirente</div>
-      <div class="leg">
-        <span class="li"><span class="ld" style="background:#002056"></span>+Pagos/MAS PAGOS</span>
-        <span class="li"><span class="ld" style="background:#00ADDB"></span>FISERV</span>
-        <span class="li"><span class="ld" style="background:#4EBFA4"></span>PRISMA</span>
-      </div>
-      <div class="cw" style="height:180px"><canvas id="c-sn-adq"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Top sucursales · clic para ver comercios</div>
-      <div class="cw" style="height:180px"><canvas id="c-sn-suc"></canvas></div>
-    </div>
-  </div>
-
   <div class="tcard">
-    <div class="thead2">
-      <span class="ttit">Detalle por sucursal · clic para ver comercios</span>
-      <button class="action-btn btn-exp" onclick="exportPromo('viaja')">⬇ Exportar</button>
-    </div>
-    <div class="twrap"><table><thead><tr>
-      <th>#</th><th>Sucursal</th><th>Total</th><th>+Pagos</th><th>FISERV</th><th>PRISMA</th><th>BNA+</th><th>Top Categoría</th><th>Top Rubro</th><th>Vol.</th>
-    </tr></thead><tbody id="t-sn"></tbody></table></div>
+    <div class="thead2"><span class="tti">Detalle por sucursal</span></div>
+    <div class="twrap"><table>
+      <thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>BNA+</th><th>+Pagos</th><th>Cat. principal</th><th>Rubro</th></tr></thead>
+      <tbody id="t-sn"></tbody>
+    </table></div>
   </div>
 </div>
 
 <!-- ═══ VIAJA+ ═══ -->
 <div class="page" id="page-viaja">
-  <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner">
-    <div><div class="ban-t">Viaja+</div><div class="ban-s">Promo única · análisis por rubro, sucursal y adquirente</div></div>
-    <div><div class="ban-n" id="viaja-total">—</div><div class="ban-nl">adheridos</div></div>
-  </div>
-
+  <div class="navtools"><button class="navbtn" onclick="navPrev()">&#8592; Atr&aacute;s</button><button class="navbtn pri" onclick="go('menu')">&#8962; Men&uacute; principal</button><button class="navbtn" onclick="navNext()">Adelante &#8594;</button></div>
+  <div class="banner"><div><div class="ban-t">Viaja+ Viaja+</div><div class="ban-s">Agencias de turismo - Programa Viaja+ 3CSI</div></div><div><div class="ban-n" id="viaja-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-viaja-suc" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
-    <span class="fbar-lbl" style="margin-left:6px">Categoría:</span>
+    <span class="fbar-lbl" style="margin-left:6px">Categor&iacute;a:</span>
     <select id="f-viaja-cat" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Rubro:</span>
     <select id="f-viaja-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
-    <button class="fbar-reset" onclick="resetFilters_VIAJA()">✕ Limpiar</button>
-    <span class="fbar-count" id="fc-viaja">—</span>
+    <button class="fbar-reset" onclick="resetFilters_VIAJA()">&#10005; Limpiar</button>
+    <span class="fbar-count" id="fc-viaja">&#8212;</span>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('viaja')">&#8595; Exportar</button>
   </div>
-
-  <div class="cuit-bar">
-    <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
-    <input type="text" id="rs-viaja" placeholder="Nombre de comercio..." style="flex:2"
-      oninput="buscarPromo('viaja',this.value)"
-      onkeydown="if(event.key==='Enter')buscarPromo('viaja',this.value)">
-    <input type="text" id="cuit-viaja" placeholder="Por CUIT..." maxlength="20"
-      oninput="buscarPromo('viaja',document.getElementById('cuit-viaja').value,true)">
-    <button onclick="buscarPromo('sn',document.getElementById('rs-viaja').value||document.getElementById('cuit-viaja').value)">🔍</button>
-    <button class="clear-btn" onclick="limpiarPromo('viaja')">✕</button>
-    <span id="rs-result-viaja" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
-  </div>
-
   <div class="metrics">
-    <div class="metric az"><div class="mlbl">Adheridos SN/AE</div><div class="mval" id="viaja-k1">—</div><div class="msub">altas vigentes</div></div>
-    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="viaja-k2">—</div><div class="msub" id="sn-k2s">—</div></div>
-    <div class="metric dr"><div class="mlbl">+Pagos / MAS PAGOS</div><div class="mval" id="viaja-k3">—</div><div class="msub">adquirente</div></div>
-    <div class="metric rj"><div class="mlbl">FISERV / PRISMA</div><div class="mval" id="viaja-k4">—</div><div class="msub">otros adquirentes</div></div>
+    <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="viaja-k1">&#8212;</div></div>
+    <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="viaja-k2">&#8212;</div><div class="msub" id="viaja-k2s"></div></div>
+    <div class="metric az"><div class="mlbl">+Pagos</div><div class="mval" id="viaja-k3">&#8212;</div></div>
+    <div class="metric az"><div class="mlbl">Fiserv/Prisma</div><div class="mval" id="viaja-k4">&#8212;</div></div>
   </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Por categoría · clic para ver comercios</div>
-      <div class="cw" style="height:240px"><canvas id="c-viaja-cat"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Top rubros · clic para ver comercios</div>
-      <div class="cw" style="height:240px"><canvas id="c-viaja-rub"></canvas></div>
-    </div>
+  <div class="grid2">
+    <div class="card"><div class="ctit">Por categor&iacute;a</div><div class="cw" style="height:180px"><canvas id="c-viaja-cat"></canvas></div></div>
+    <div class="card"><div class="ctit">Por rubro</div><div class="cw" style="height:180px"><canvas id="c-viaja-rub"></canvas></div></div>
+    <div class="card"><div class="ctit">Adquirente</div><div class="cw" style="height:180px"><canvas id="c-viaja-adq"></canvas></div></div>
+    <div class="card"><div class="ctit">Por sucursal</div><div class="cw" style="height:180px"><canvas id="c-viaja-suc"></canvas></div></div>
   </div>
-
-  <div class="g2" style="margin-bottom:12px">
-    <div class="card">
-      <div class="ctit">Por adquirente</div>
-      <div class="leg">
-        <span class="li"><span class="ld" style="background:#002056"></span>+Pagos/MAS PAGOS</span>
-        <span class="li"><span class="ld" style="background:#00ADDB"></span>FISERV</span>
-        <span class="li"><span class="ld" style="background:#4EBFA4"></span>PRISMA</span>
-      </div>
-      <div class="cw" style="height:180px"><canvas id="c-viaja-adq"></canvas></div>
-    </div>
-    <div class="card">
-      <div class="ctit">Top sucursales · clic para ver comercios</div>
-      <div class="cw" style="height:180px"><canvas id="c-viaja-suc"></canvas></div>
-    </div>
-  </div>
-
   <div class="tcard">
-    <div class="thead2">
-      <span class="ttit">Detalle por sucursal · clic para ver comercios</span>
-      <button class="action-btn btn-exp" onclick="exportPromo('sn')">⬇ Exportar</button>
-    </div>
-    <div class="twrap"><table><thead><tr>
-      <th>#</th><th>Sucursal</th><th>Total</th><th>+Pagos</th><th>FISERV</th><th>PRISMA</th><th>BNA+</th><th>Top Categoría</th><th>Top Rubro</th><th>Vol.</th>
-    </tr></thead><tbody id="t-viaja"></tbody></table></div>
+    <div class="thead2"><span class="tti">Detalle por sucursal</span></div>
+    <div class="twrap"><table>
+      <thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>BNA+</th><th>+Pagos</th><th>Cat. principal</th><th>Rubro</th></tr></thead>
+      <tbody id="t-viaja"></tbody>
+    </table></div>
   </div>
 </div>
 
@@ -1222,6 +1103,8 @@ id="page-pyme">
 </div>
 
 <script>
+
+
 
 
 
@@ -1783,7 +1666,7 @@ function initPromo(pid, rows, noa_only=true){
 }
 
 function renderPromo(pid, rows){
-  const cp = pid==='marc' ? 'c-marc' : 'c-sn';
+  const cp = 'c-'+pid;
   const al = rows.filter(x=>(x['ALTA / BAJA']||'').toUpperCase().trim().startsWith('ALT')).length;
   const bn = rows.filter(x=>(x['ACEPTA BNA+:']||'').toUpperCase().trim().startsWith('S')).length;
   const mp = rows.filter(x=>/MAS.?PAG/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
@@ -3882,13 +3765,7 @@ function renderMetas(){
         indexAxis:'y',responsive:true,maintainAspectRatio:false,
         plugins:{
           legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},
-          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},
-          annotation:{
-            annotations:{
-              meta100:{type:'line',xMin:100,xMax:100,borderColor:'rgba(0,32,86,.4)',borderWidth:1.5,borderDash:[4,3],
-                label:{content:'Meta 100%',enabled:true,position:'start',font:{size:8},color:'#002056'}}
-            }
-          }
+          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}
         },
         scales:{
           x:{min:0,max:Math.max(120,Math.max(...dataRes,...dataAcred)+10),
@@ -3955,6 +3832,7 @@ function initTC(){
   }
   poblarSel('f-tc-suc', TC_DATA.sucs||[]);
   renderTC();
+  if(typeof renderMetas==='function') setTimeout(renderMetas,200);
 }
 function applyFilterTC(){ renderTC(); }
 function renderTC(){
@@ -4107,6 +3985,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if(typeof loadFACMP==='function' && typeof API_URL_FAC!=='undefined' && API_URL_FAC) loadFACMP();
   loadAll();
 });
+
+
 
 
 

@@ -81,7 +81,7 @@ body{font-family:'Barlow','Segoe UI',sans-serif;background:#eef2f9;color:var(--t
 .page.active{display:block}
 
 /* LOADER */
-.loader{position:fixed;inset:0;background:rgba(0,30,80,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;color:#fff}
+.loader{position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#0077B6 0%,#005F99 40%,#003F6B 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 .spin{width:38px;height:38px;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .8s linear infinite;margin-bottom:12px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loader p{font-size:12px;opacity:.7}
@@ -350,24 +350,57 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
 .navbtn:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:900px){.menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+
+/* ── Loader BNA+ animado ── */
+.loader::before{content:'';position:absolute;top:-60%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 50% 30%,rgba(255,255,255,.08) 0%,transparent 60%);pointer-events:none}
+.ld-circle{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#00ADDB,#0077B6);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 0 rgba(0,173,219,.5);animation:ldPulse 2s ease-in-out infinite;margin-bottom:20px}
+.ld-circle span{font-size:36px;animation:ldBounce 2s ease-in-out infinite}
+@keyframes ldPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,173,219,.5)}50%{box-shadow:0 0 0 18px rgba(0,173,219,0)}}
+@keyframes ldBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.ld-badge{background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 14px;margin-bottom:6px;backdrop-filter:blur(4px)}
+.ld-badge span{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.12em;text-transform:uppercase}
+.ld-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:.04em;text-transform:uppercase;text-align:center;line-height:1.1;margin-bottom:4px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
+.ld-subtitle{font-family:'Barlow',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;text-align:center;margin-bottom:2px}
+.ld-slogan{font-family:'Barlow',sans-serif;font-size:13px;font-weight:400;color:rgba(255,255,255,.55);text-align:center;font-style:italic;margin-bottom:24px}
+.ld-dots{display:flex;gap:8px;margin-bottom:14px}
+.ld-dot{width:8px;height:8px;border-radius:50%;background:#00ADDB;animation:ldDot 1.4s ease-in-out infinite}
+.ld-dot:nth-child(1){animation-delay:0s;background:#fff}
+.ld-dot:nth-child(2){animation-delay:.2s;background:#D4AC87}
+.ld-dot:nth-child(3){animation-delay:.4s;background:#00ADDB}
+@keyframes ldDot{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1.1);opacity:1}}
+.ld-msg{font-family:'Barlow',sans-serif;font-size:11px;color:rgba(255,255,255,.5);text-align:center;min-height:16px;transition:opacity .4s;letter-spacing:.03em}
+.ld-wave{position:absolute;bottom:0;left:0;width:100%;overflow:hidden;line-height:0;opacity:.15}
+.spin{display:none}
+
 </style>
 </head>
 <body>
 
 <div id="loader" class="loader">
-  <div class="spin"></div>
-
-  <p id="loader-txt" style="margin-bottom:8px">
-    BIENVENIDOS MEDIOS DE PAGO NOA OESTE
-  </p>
-
-  <p style="font-size:12px;font-weight:500">
-    BANCO DE LA NACION ARGENTINA
-  </p>
-
-  <p style="font-size:10px;opacity:.75;margin-top:6px">
-    AGUARDE UN INSTANTE
-  </p>
+  <!-- Ola decorativa fondo -->
+  <div class="ld-wave">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="width:100%;height:80px">
+      <path d="M0,60 C300,100 900,20 1200,60 L1200,120 L0,120 Z" fill="white"/>
+    </svg>
+  </div>
+  <!-- Ícono animado -->
+  <div class="ld-circle"><span>🏦</span></div>
+  <!-- Badge institución -->
+  <div class="ld-badge"><span>Banco de la Nación Argentina</span></div>
+  <!-- Título -->
+  <div class="ld-title">Medios de Pago</div>
+  <div class="ld-subtitle">Zonal NOA Oeste</div>
+  <div class="ld-slogan">Todo es más fácil.</div>
+  <!-- Dots animados -->
+  <div class="ld-dots">
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+    <div class="ld-dot"></div>
+  </div>
+  <!-- Mensaje dinámico -->
+  <div class="ld-msg" id="loader-txt">Bienvenido · cargando datos, aguardá un instante…</div>
+  <!-- spin oculto para compatibilidad con el JS existente -->
+  <div class="spin" style="display:none"></div>
 </div>
 
 <div class="topbar"></div>
@@ -1209,6 +1242,7 @@ id="page-pyme">
 
 
 
+
 // eliminado
 
 const SH={com:'COMERCIOS MAS PAGOS',fac:'FACTURACION',marc:'MARCATON',sn:'SN AE',pyme:'PYMENACION',agro:'AGRONACION',corp:'CORPORATIVA CREDITO',bna:'BNA CONECTA'};
@@ -1746,12 +1780,7 @@ function initPromo(pid, rows, noa_only=true){
 }
 
 function renderPromo(pid, rows){
-  const cpMap = {
-  marc: 'c-marc',
-  sn: 'c-sn',
-  viaja: 'c-viaja'
-};
-const cp = cpMap[pid] || 'c-sn';
+  const cp = pid==='marc' ? 'c-marc' : 'c-sn';
   const al = rows.filter(x=>(x['ALTA / BAJA']||'').toUpperCase().trim().startsWith('ALT')).length;
   const bn = rows.filter(x=>(x['ACEPTA BNA+:']||'').toUpperCase().trim().startsWith('S')).length;
   const mp = rows.filter(x=>/MAS.?PAG/i.test(x['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'')).length;
@@ -1950,7 +1979,8 @@ function rSN(rows){ initPromo('sn',rows); }
 
 
 // ── RENDER VIAJA+ / SN-AE ──
-function rVIAJA(rows){ initPromo('viaja', rows); }
+function rVIAJA(rows){ initPromo('sn',rows); }
+
 
 // ── RENDER PYME ──
 function rPYME(rows){
@@ -3637,16 +3667,61 @@ function getMetaRes(suc, mesStr){
 
 // Obtener meta de acreditaciones según el mes (prorrateada al mes dentro del trimestre)
 function getMetaAcred(suc, mesStr){
+  // Devuelve la META TRIMESTRAL COMPLETA (fija, no dividir por 3)
   const m = META_ACRED[suc]; if(!m) return null;
   const [yy, mm] = mesStr.split('-').map(Number);
-  // Q1=1-3, Q2=4-6, Q3=7-9, Q4=10-12
-  // La meta trimestral dividida por 3 = meta mensual
-  let qVal = null;
-  if(mm>=1&&mm<=3)  qVal=m.q1;
-  else if(mm>=4&&mm<=6)  qVal=m.q2;
-  else if(mm>=7&&mm<=9)  qVal=m.q3;
-  else if(mm>=10&&mm<=12) qVal=m.q4;
-  return qVal ? Math.round(qVal/3) : null;
+  if(mm>=1 &&mm<=3 ) return {meta:m.q1, q:'Q1', label:'Ene–Mar', mesesQ:[1,2,3]};
+  if(mm>=4 &&mm<=6 ) return {meta:m.q2, q:'Q2', label:'Abr–Jun', mesesQ:[4,5,6]};
+  if(mm>=7 &&mm<=9 ) return {meta:m.q3, q:'Q3', label:'Jul–Sep', mesesQ:[7,8,9]};
+  if(mm>=10&&mm<=12) return {meta:m.q4, q:'Q4', label:'Oct–Dic', mesesQ:[10,11,12]};
+  return null;
+}
+
+// Acumula acreditaciones reales del trimestre (todos los meses con datos hasta mesStr)
+function getAcredTrimestre(mesStr){
+  const facRows = DD.fac || [];
+  if(!facRows.length) return {porSuc:{}, mesesConDatos:0};
+  // Mapa de columna por mes numérico
+  const colPorMes = {
+    1:'Total  ENERO 26', 2:'Total  FEBRERO 26', 3:'Total  MARZO 26',
+    4:'Total  ABRIL 26',  5:'Total  MAYO 26',    6:'Total  JUNIO 26',
+    7:'Total  JULIO 26',  8:'Total  AGOSTO 26',  9:'Total  SEPTIEMBRE 26',
+   10:'Total  OCTUBRE 26',11:'Total  NOVIEMBRE 26',12:'Total  DICIEMBRE 26',
+  };
+  const p$ = v => {
+    let s=(v||'0').toString().replace(/[$\s]/g,'').trim();
+    if(!s||s==='—'||s==='-') return 0;
+    const hD=s.includes('.'), hC=s.includes(',');
+    if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}
+    else if(!hD&&hC){s=s.replace(',','.');}
+    return parseFloat(s)||0;
+  };
+  const [yy,mm]=mesStr.split('-').map(Number);
+  // Determinar qué meses del trimestre tienen datos en la hoja FAC
+  let mesQ1,mesQ2;
+  if(mm>=1 &&mm<=3 ){mesQ1=1; mesQ2=mm;}
+  else if(mm>=4&&mm<=6 ){mesQ1=4; mesQ2=mm;}
+  else if(mm>=7&&mm<=9 ){mesQ1=7; mesQ2=mm;}
+  else{mesQ1=10;mesQ2=mm;}
+  // Solo meses que tienen columna en el Sheet
+  const mesesARang=[];
+  for(let m2=mesQ1;m2<=mesQ2;m2++){
+    const col=colPorMes[m2];
+    if(!col) continue;
+    // Verificar que al menos un registro tiene dato en esa columna
+    const tieneDatos=facRows.some(r=>p$(r[col])>0);
+    if(tieneDatos) mesesARang.push(m2);
+  }
+  const porSuc={};
+  facRows.forEach(r=>{
+    const suc=normSuc(r['Sucursal']||''); if(!suc) return;
+    if(!porSuc[suc]) porSuc[suc]=0;
+    mesesARang.forEach(m2=>{
+      const col=colPorMes[m2];
+      if(col) porSuc[suc]+=p$(r[col]||'0');
+    });
+  });
+  return {porSuc, mesesConDatos:mesesARang.length, mesesQ1, mesesQ2};
 }
 
 // ── Render principal de Metas ──
@@ -3666,44 +3741,41 @@ function renderMetas(){
   const el = document.getElementById('metas-mes-lbl');
   if(el) el.textContent = mesLabel;
 
-  // ── Obtener datos reales de C/Resumen del TC ──
-  const tcRows = (TC_DATA.records||[]).filter(r => r.mes === mesStr);
-  const resReal = {}; // {SUC_NORMALIZADA: valor}
+  // ── C/Resumen: stock del período seleccionado ──
+  // Si el selector tiene un mes → usar ese mes
+  // Fallback: último mes disponible en TC_DATA
+  const todosLosMeses = TC_DATA.meses || [];
+  const mesParaRes = mesStr && todosLosMeses.includes(mesStr)
+    ? mesStr
+    : (todosLosMeses.length ? todosLosMeses[todosLosMeses.length-1] : null);
+  const tcRows = mesParaRes
+    ? (TC_DATA.records||[]).filter(r => r.mes === mesParaRes)
+    : [];
+  const resReal = {};
   tcRows.forEach(r => { resReal[normSuc(r.suc)] = r.ctas_res || 0; });
 
-  // ── Obtener datos reales de Acreditaciones de FAC ──
-  const facRows = DD.fac || [];
-  const p$ = v => parseFloat((v||'0').toString().replace(/[$\.]/g,'').replace(',','.'))||0;
-  // FAC tiene Total ENERO 26, Total FEBRERO 26 — detectar columna del mes
-  const mesColMap = {
-    '2026-01':'Total  ENERO 26', '2026-02':'Total  FEBRERO 26',
-    '2026-03':'Total  MARZO 26', '2026-04':'Total  ABRIL 26',
-  };
-  const facCol = mesColMap[mesStr];
-  const acredReal = {};
-  if(facCol){
-    facRows.forEach(r => {
-      const suc = normSuc(r['Sucursal']||'');
-      if(!acredReal[suc]) acredReal[suc] = 0;
-      acredReal[suc] += p$(r[facCol]);
-    });
-  } else {
-    // Si no hay columna para ese mes, aviso
-    console.warn('[METAS] Sin columna FAC para mes:', mesStr);
-  }
+  // ── Acreditaciones: acumulado trimestral real ──
+  const acredTrim = getAcredTrimestre(mesStr);
+  const acredReal = acredTrim.porSuc;
+  const mesesConDatos = acredTrim.mesesConDatos;
+  const facTieneDatos = mesesConDatos > 0;
 
   // ── Construir filas por sucursal ──
   const sucs = Object.keys(META_RES);
   const rows = sucs.map(suc => {
-    const metaRes   = getMetaRes(suc, mesStr);
-    const realRes   = resReal[suc] || 0;
-    const pctRes    = metaRes ? Math.round(realRes/metaRes*100) : null;
+    // C/Resumen — meta = hito trimestral interpolado, real = stock actual
+    const metaRes  = getMetaRes(suc, mesParaRes || mesStr);
+    const realRes  = resReal[suc] || 0;
+    const pctRes   = metaRes ? Math.round(realRes/metaRes*100) : null;
 
-    const metaAcred = getMetaAcred(suc, mesStr);
+    // Acreditaciones — meta TRIMESTRAL completa, real = acumulado trimestre
+    const acredObj  = getMetaAcred(suc, mesStr);
+    const metaAcred = acredObj ? acredObj.meta : null;
+    const metaLabel = acredObj ? acredObj.q+' '+acredObj.label : '';
     const realAcred = acredReal[suc] || 0;
-    const pctAcred  = metaAcred ? Math.round(realAcred/metaAcred*100) : null;
+    const pctAcred  = (metaAcred && facTieneDatos) ? Math.round(realAcred/metaAcred*100) : null;
 
-    return { suc, metaRes, realRes, pctRes, metaAcred, realAcred, pctAcred };
+    return { suc, metaRes, realRes, pctRes, metaAcred, metaLabel, realAcred, pctAcred, mesesConDatos };
   });
 
   // ── KPIs globales ──
@@ -3724,9 +3796,13 @@ function renderMetas(){
   document.getElementById('metas-k1-pill').style.borderLeft='3px solid '+pctColor(pctGlbRes);
 
   set('metas-k2-real', fmtB(totRealAcred));
-  set('metas-k2-meta', 'meta: '+fmtB(totMetaAcred));
-  set('metas-k2-pct',  facCol ? pctGlbAcred+'%' : 'Sin datos');
-  set('metas-k2-dif',  facCol ? fmtB(totRealAcred-totMetaAcred) : 'Agregá columna en FAC');
+  const acredObj0 = getMetaAcred(Object.keys(META_ACRED)[0], mesStr);
+  const trimLabel = acredObj0 ? acredObj0.q+' ('+acredObj0.label+')' : 'trimestre';
+  set('metas-k2-meta', 'meta '+trimLabel+': '+fmtB(totMetaAcred));
+  set('metas-k2-pct',  facTieneDatos ? pctGlbAcred+'%' : 'Sin datos FAC');
+  set('metas-k2-dif',  facTieneDatos
+    ? fmtB(totRealAcred-totMetaAcred)+' · '+mesesConDatos+' mes'+(mesesConDatos!==1?'es':'')+ ' acumulados'
+    : 'Cargá los datos de Facturación');
   setC('metas-k2-pct', pctColor(pctGlbAcred));
   document.getElementById('metas-k2-pill').style.borderLeft='3px solid '+pctColor(pctGlbAcred);
 
@@ -3742,7 +3818,7 @@ function renderMetas(){
   if(thead) thead.innerHTML = `<tr>
     <th>#</th><th>Sucursal</th>
     ${showRes?`<th>C/Resumen real</th><th>Meta</th><th style="min-width:80px">% Cumpl.</th>`:''}
-    ${showAcred?`<th>Acred. real</th><th>Meta mensual</th><th style="min-width:80px">% Cumpl.</th>`:''}
+    ${showAcred?`<th>Acred. real (acum.)</th><th>Meta trimestral</th><th style="min-width:80px">% Cumpl. trim.</th>`:''}
   </tr>`;
 
   document.getElementById('t-metas').innerHTML = sorted.map((r,i) => {
@@ -3763,8 +3839,8 @@ function renderMetas(){
         <td>${r.pctRes!=null?`<span style="font-weight:800;color:${crColor}">${pctEmoji(r.pctRes)} ${r.pctRes}%</span>${barRes}<div style="font-size:9px;color:${crColor}">${difRes!=null?(difRes>=0?'+':'')+n(difRes):''}</div>`:'—'}</td>`:''}
       ${showAcred?`
         <td style="font-weight:700">${r.realAcred>0?fmtB(r.realAcred):'—'}</td>
-        <td style="color:var(--txt2);font-size:11px">${r.metaAcred?fmtB(r.metaAcred):'—'}</td>
-        <td>${r.pctAcred!=null?`<span style="font-weight:800;color:${acColor}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${barAcred}<div style="font-size:9px;color:${acColor}">${difAcred!=null?(difAcred>=0?'+':'')+fmtB(difAcred):''}</div>`:facCol?'Sin datos':'—'}</td>`:''}
+        <td style="color:var(--txt2);font-size:11px">${r.metaAcred?fmtB(r.metaAcred)+'<br><span style=\'font-size:8px;color:#888\'>('+r.metaLabel+')</span>':'—'}</td>
+        <td>${r.pctAcred!=null?`<span style="font-weight:800;color:${acColor}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${barAcred}<div style="font-size:9px;color:${acColor}">${difAcred!=null?(difAcred>=0?'+':'')+fmtB(difAcred):''}</div><div style="font-size:8px;color:#888">${r.mesesConDatos} mes${r.mesesConDatos!==1?'es':''} acum.</div>`:facTieneDatos?'Sin datos':'—'}</td>`:''}
     </tr>`;
   }).join('');
 
@@ -4006,13 +4082,15 @@ window.addEventListener('DOMContentLoaded', () => {
   loadAll();
 });
 
+
+
 </script>
 
 <div id="page-metas" class="page">
   <div class="banner">
     <div>
       <div class="ban-t">🎯 Cumplimiento de Metas · NOA Oeste</div>
-      <div class="ban-s">Cuentas con Resumen TC · Acreditaciones Comercios (FISERV/Payway)</div>
+      <div class="ban-s">C/Resumen TC (stock período) · Acreditaciones acumuladas vs META TRIMESTRAL fija</div>
     </div>
     <div><div class="ban-n" id="metas-mes-lbl" style="font-size:14px">—</div><div class="ban-nl">período</div></div>
   </div>

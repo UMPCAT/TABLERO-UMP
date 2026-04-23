@@ -372,6 +372,118 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
 .ld-wave{position:absolute;bottom:0;left:0;width:100%;overflow:hidden;line-height:0;opacity:.15}
 .spin{display:none}
 
+
+/* ══ SIDEBAR VERTICAL ══ */
+body{display:flex;min-height:100vh;background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
+.sidebar{
+  position:fixed;top:0;left:0;width:220px;height:100vh;
+  background:linear-gradient(180deg,#001840 0%,#002056 50%,#003362 100%);
+  z-index:120;transition:width .25s ease;overflow:hidden;
+  box-shadow:4px 0 20px rgba(0,0,0,.3);
+  display:flex;flex-direction:column;flex-shrink:0;
+}
+.sidebar.collapsed{width:52px}
+.sidebar-inner{display:flex;flex-direction:column;height:100%;overflow:hidden}
+.sidebar-brand{
+  display:flex;align-items:center;gap:10px;padding:14px 12px 10px;
+  border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;
+  background:rgba(0,0,0,.15);
+}
+.sidebar-brand-logo{
+  width:34px;height:34px;background:#fff;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;color:#002056;flex-shrink:0;
+}
+.sidebar-brand-text{overflow:hidden;transition:opacity .2s,max-width .25s;max-width:160px}
+.sidebar-brand-title{font-size:12px;font-weight:800;color:#fff;white-space:nowrap}
+.sidebar-brand-sub{font-size:9px;color:rgba(255,255,255,.5);white-space:nowrap;letter-spacing:.04em}
+.sidebar.collapsed .sidebar-brand-text{opacity:0;max-width:0}
+.sidebar-toggle{
+  display:flex;align-items:center;justify-content:flex-end;
+  padding:8px 12px;cursor:pointer;color:rgba(255,255,255,.35);
+  font-size:10px;transition:color .2s;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  flex-shrink:0;
+}
+.sidebar-toggle:hover{color:rgba(255,255,255,.8)}
+.sidebar.collapsed .sidebar-toggle{justify-content:center}
+.sidebar-nav{overflow-y:auto;overflow-x:hidden;flex:1;padding:6px 0 24px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.sidebar-nav::-webkit-scrollbar{width:3px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:2px}
+.snav-section{
+  font-size:9px;font-weight:800;letter-spacing:.12em;color:rgba(255,255,255,.25);
+  text-transform:uppercase;padding:10px 14px 3px;white-space:nowrap;overflow:hidden;
+  transition:all .2s;
+}
+.sidebar.collapsed .snav-section{opacity:0;height:2px;padding:1px 0;overflow:hidden}
+.ntab{
+  display:flex;align-items:center;gap:9px;padding:9px 14px;
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.55);cursor:pointer;
+  border-left:3px solid transparent;white-space:nowrap;
+  transition:all .15s;margin:1px 0;
+}
+.ntab:hover{color:rgba(255,255,255,.95);background:rgba(255,255,255,.07);border-left-color:rgba(0,173,219,.4)}
+.ntab.active{color:#fff;border-left-color:var(--bna-cyan);background:rgba(0,173,219,.12);font-weight:700}
+.stab-ico{font-size:14px;flex-shrink:0;width:18px;text-align:center}
+.stab-lbl{overflow:hidden;text-overflow:ellipsis;transition:opacity .2s,max-width .25s;max-width:180px}
+.sidebar.collapsed .stab-lbl{opacity:0;max-width:0}
+.sidebar.collapsed .ntab{justify-content:center;padding:10px 0}
+/* main content */
+.main-content{margin-left:220px;transition:margin-left .25s ease;flex:1;min-width:0}
+.sidebar.collapsed ~ .main-content,.body-wrap.collapsed .main-content{margin-left:52px}
+.body-wrap{display:flex;min-height:100vh;width:100%}
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{width:52px}
+  .sidebar .stab-lbl{opacity:0;max-width:0}
+  .sidebar .snav-section{opacity:0;height:2px;padding:1px 0}
+  .sidebar .ntab{justify-content:center;padding:10px 0}
+  .sidebar .sidebar-brand-text{opacity:0;max-width:0}
+  .main-content{margin-left:52px}
+  .sidebar.expanded{width:220px}
+  .sidebar.expanded .stab-lbl{opacity:1;max-width:180px}
+  .sidebar.expanded .snav-section{opacity:1;height:auto;padding:10px 14px 3px}
+  .sidebar.expanded .ntab{justify-content:flex-start;padding:9px 14px}
+  .sidebar.expanded .sidebar-brand-text{opacity:1;max-width:160px}
+}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,1fr)}.g2,.g3{grid-template-columns:1fr}}
+
+/* ══ CUIT SEARCH ENHANCED ══ */
+.cuit-search-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.cuit-search-row input{
+  flex:1;min-width:140px;font-size:12px;font-family:inherit;
+  padding:7px 11px;border:1.5px solid var(--brd);border-radius:var(--r);color:var(--txt);
+  background:#fff;transition:border-color .15s;
+}
+.cuit-search-row input:focus{outline:none;border-color:var(--bna-cyan);box-shadow:0 0 0 2px rgba(0,173,219,.1)}
+.cuit-search-row button{
+  background:var(--bna-azul);color:#fff;border:none;border-radius:var(--r);
+  padding:7px 13px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap
+}
+.cuit-search-row button:hover{background:var(--bna-marino)}
+.cuit-search-row .clear-btn{background:none;border:1px solid var(--brd);color:var(--txt2)}
+.cuit-match-badge{
+  background:var(--dor);color:var(--az);font-size:10px;font-weight:800;
+  padding:2px 8px;border-radius:20px;display:inline-block;
+}
+tr.cuit-row-match td{background:#fef8ea !important;border-left:3px solid var(--bna-dorado) !important}
+
+/* ══ CONSUMO CARDS in PYME/AGRO/CORP/BNA ══ */
+.consumo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+@media(max-width:768px){.consumo-grid{grid-template-columns:1fr 1fr}}
+.consumo-card{
+  background:#fff;border-radius:var(--rl);padding:12px 14px;
+  border:1px solid var(--brd);box-shadow:var(--sh);
+  border-top:3px solid var(--bna-azul);
+}
+.consumo-card.verde{border-top-color:var(--bna-verde)}
+.consumo-card.naranja{border-top-color:var(--bna-naranja)}
+.consumo-card.dorado{border-top-color:var(--bna-dorado)}
+.consumo-card.violeta{border-top-color:var(--bna-violeta)}
+.cc-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);margin-bottom:4px}
+.cc-val{font-size:20px;font-weight:800;color:var(--bna-marino);line-height:1.1;letter-spacing:-0.5px}
+.cc-sub{font-size:10px;color:var(--txt2);margin-top:3px}
+
 </style>
 </head>
 <body>
@@ -403,6 +515,51 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
   <div class="spin" style="display:none"></div>
 </div>
 
+
+<div class="body-wrap" id="body-wrap">
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-logo">B</div>
+      <div class="sidebar-brand-text">
+        <div class="sidebar-brand-title">UMP NOA Oeste</div>
+        <div class="sidebar-brand-sub">BNA · Medios de Pago</div>
+      </div>
+    </div>
+    <div class="sidebar-toggle" onclick="toggleSidebar()">
+      <span id="sidebar-arrow">◀</span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-section">PRINCIPAL</div>
+      <div class="ntab active" data-go="menu" onclick="go('menu',this)"><span class="stab-ico">🏠</span><span class="stab-lbl">Inicio</span></div>
+      <div class="ntab" data-go="cliente" onclick="go('cliente',this)"><span class="stab-ico">🔍</span><span class="stab-lbl">Buscar CUIT</span></div>
+
+      <div class="snav-section">PAGOS DIGITALES</div>
+      <div class="ntab" data-go="com" onclick="go('com',this)"><span class="stab-ico">💳</span><span class="stab-lbl">+Pagos Nación</span></div>
+      <div class="ntab" data-go="tc" onclick="go('tc',this)"><span class="stab-ico">🃏</span><span class="stab-lbl">TC Individuos</span></div>
+      <div class="ntab" data-go="ceg" onclick="go('ceg',this)"><span class="stab-ico">🏪</span><span class="stab-lbl">Comercios General</span></div>
+
+      <div class="snav-section">FACTURACIÓN</div>
+      <div class="ntab" data-go="fac" onclick="go('fac',this)"><span class="stab-ico">📄</span><span class="stab-lbl">Procesadoras</span></div>
+      <div class="ntab" data-go="facmp" onclick="go('facmp',this)"><span class="stab-ico">📊</span><span class="stab-lbl">Facturación +Pagos</span></div>
+
+      <div class="snav-section">PROGRAMAS</div>
+      <div class="ntab" data-go="marc" onclick="go('marc',this)"><span class="stab-ico">🏷️</span><span class="stab-lbl">Marcatón</span></div>
+      <div class="ntab" data-go="sn" onclick="go('sn',this)"><span class="stab-ico">📅</span><span class="stab-lbl">Semana A/E</span></div>
+      <div class="ntab" data-go="viaja" onclick="go('viaja',this)"><span class="stab-ico">✈</span><span class="stab-lbl">Viaja+</span></div>
+
+      <div class="snav-section">CORPORATIVO</div>
+      <div class="ntab" data-go="pyme" onclick="go('pyme',this)"><span class="stab-ico">🏢</span><span class="stab-lbl">PyMENación</span></div>
+      <div class="ntab" data-go="agro" onclick="go('agro',this)"><span class="stab-ico">🌾</span><span class="stab-lbl">AgroNación</span></div>
+      <div class="ntab" data-go="corp" onclick="go('corp',this)"><span class="stab-ico">🏦</span><span class="stab-lbl">Corporativa</span></div>
+      <div class="ntab" data-go="bna" onclick="go('bna',this)"><span class="stab-ico">🔗</span><span class="stab-lbl">BNA Conecta</span></div>
+
+      <div class="snav-section">GESTIÓN</div>
+      <div class="ntab" data-go="metas" onclick="go('metas',this)"><span class="stab-ico">🎯</span><span class="stab-lbl">Metas 2026</span></div>
+    </nav>
+  </div>
+</div>
+<div class="main-content" id="main-content">
 <div class="topbar"></div>
 <div class="header">
   <div class="hbrand">
@@ -421,25 +578,6 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
       <div class="hbadge">USO INTERNO</div>
     </div>
   </div>
-</div>
-
-<div class="nav">
-  <div class="ntab active" data-go="menu" onclick="go('menu',this)">☰ Menú</div>
-  <div class="ntab" data-go="com" onclick="go('com',this)">+Pagos Nación</div>
-  <div class="ntab" data-go="tc" onclick="go('tc',this)">💳 TC Individuos</div>
-  <div class="ntab" data-go="ceg" onclick="go('ceg',this)">Comercios General</div>
-  <div class="ntab" data-go="fac" onclick="go('fac',this)">Facturación</div>
-  <div class="ntab" data-go="facmp" onclick="go('facmp',this)">💳 Fac. +Pagos</div>
-  <div class="ntab" data-go="marc" onclick="go('marc',this)">Marcatón</div>
-  <div class="ntab" data-go="sn" onclick="go('sn',this)">SN / AE</div>
-  <div class="ntab" data-go="viaja" onclick="go('viaja',this)">✈ Viaja+</div>
-  <div class="ntab" data-go="pyme" onclick="go('pyme',this)">PyMENación</div>
-  <div class="ntab" data-go="agro" onclick="go('agro',this)">AgroNación</div>
-  <div class="ntab" data-go="corp" onclick="go('corp',this)">Corporativa</div>
-  <div class="ntab" data-go="bna" onclick="go('bna',this)">BNA Conecta</div>
-  <div class="ntab highlight" data-go="cliente" onclick="go('cliente',this)">🔍 Cliente</div>
-  <div class="ntab" data-go="oport" onclick="go('oport',this)">📊 Oportunidades</div>
-  <div class="ntab" data-go="metas" onclick="go('metas',this)">🎯 Metas</div>
 </div>
 
 <!-- DRILL-DOWN -->
@@ -720,6 +858,14 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
     <span class="fbar-count" id="fc-marc">&#8212;</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('marc')">&#8595; Exportar</button>
   </div>
+  <div class="cuit-bar" id="marc-cuit-bar">
+    <span class="fbar-lbl">🔍 Buscar:</span>
+    <input type="text" id="marc-cuit-input" placeholder="CUIT o Razón Social..." onkeydown="if(event.key==='Enter')buscarEnTabla('marc')">
+    <input type="text" id="marc-rs-input" placeholder="Nombre comercio..." onkeydown="if(event.key==='Enter')buscarEnTabla('marc')">
+    <button onclick="buscarEnTabla('marc')">Buscar</button>
+    <button class="clear-btn" onclick="limpiarBusqueda('marc')">✕</button>
+    <span id="marc-cuit-result" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
+  </div>
   <div class="metrics">
     <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="marc-k1">&#8212;</div></div>
     <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="marc-k2">&#8212;</div><div class="msub" id="marc-k2s"></div></div>
@@ -756,6 +902,14 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
     <span class="fbar-count" id="fc-sn">&#8212;</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('sn')">&#8595; Exportar</button>
   </div>
+  <div class="cuit-bar">
+    <span class="fbar-lbl">🔍 Buscar:</span>
+    <input type="text" id="sn-cuit-input" placeholder="CUIT o Razón Social..." onkeydown="if(event.key='Enter')buscarEnTabla('sn')">
+    <input type="text" id="sn-rs-input" placeholder="Nombre comercio..." onkeydown="if(event.key='Enter')buscarEnTabla('sn')">
+    <button onclick="buscarEnTabla('sn')">Buscar</button>
+    <button class="clear-btn" onclick="limpiarBusqueda('sn')">✕</button>
+    <span id="sn-cuit-result" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
+  </div>
   <div class="metrics">
     <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="sn-k1">&#8212;</div></div>
     <div class="metric vd"><div class="mlbl">Acepta BNA+</div><div class="mval" id="sn-k2">&#8212;</div><div class="msub" id="sn-k2s"></div></div>
@@ -791,6 +945,14 @@ body{background:linear-gradient(180deg,#edf6fa 0%,#f6f9fc 42%,#eef3f9 100%)}
     <button class="fbar-reset" onclick="resetFilters_VIAJA()">&#10005; Limpiar</button>
     <span class="fbar-count" id="fc-viaja">&#8212;</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('viaja')">&#8595; Exportar</button>
+  </div>
+  <div class="cuit-bar">
+    <span class="fbar-lbl">🔍 Buscar:</span>
+    <input type="text" id="viaja-cuit-input" placeholder="CUIT o Razón Social..." onkeydown="if(event.key==='Enter')buscarEnTabla('viaja')">
+    <input type="text" id="viaja-rs-input" placeholder="Nombre comercio..." onkeydown="if(event.key==='Enter')buscarEnTabla('viaja')">
+    <button onclick="buscarEnTabla('viaja')">Buscar</button>
+    <button class="clear-btn" onclick="limpiarBusqueda('viaja')">✕</button>
+    <span id="viaja-cuit-result" style="font-size:11px;color:var(--txt2);font-weight:600"></span>
   </div>
   <div class="metrics">
     <div class="metric az"><div class="mlbl">Total</div><div class="mval" id="viaja-k1">&#8212;</div></div>
@@ -856,7 +1018,56 @@ id="page-pyme">
 </div>
     <!-- Ranking Top5 / Alerta5 -->
   <div id="pyme-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
-<div class="tcard" id="tcard-pyme"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-pyme"></tbody></table></div></div>
+<!-- Consumo PYME -->
+<div class="consumo-grid" id="pyme-consumo-grid">
+  <div class="consumo-card verde">
+    <div class="cc-lbl">Consumo Acum. 2026</div>
+    <div class="cc-val" id="pyme-consumo-2026">—</div>
+    <div class="cc-sub">Total facturado</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Consumo 2025</div>
+    <div class="cc-val" id="pyme-consumo-2025">—</div>
+    <div class="cc-sub">Año anterior</div>
+  </div>
+  <div class="consumo-card naranja">
+    <div class="cc-lbl">% Crecimiento</div>
+    <div class="cc-val" id="pyme-consumo-crec">—</div>
+    <div class="cc-sub">vs 2025</div>
+  </div>
+  <div class="consumo-card dorado">
+    <div class="cc-lbl">Límite Total Zonal</div>
+    <div class="cc-val" id="pyme-consumo-lim">—</div>
+    <div class="cc-sub">Límite asignado</div>
+  </div>
+  <div class="consumo-card violeta">
+    <div class="cc-lbl">% Uso Límite 2026</div>
+    <div class="cc-val" id="pyme-consumo-uso">—</div>
+    <div class="cc-sub">Utilización</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Cuentas Activas</div>
+    <div class="cc-val" id="pyme-consumo-act">—</div>
+    <div class="cc-sub">Con compras 2026</div>
+  </div>
+</div>
+<!-- Ranking + Oportunidades PYME -->
+<div class="g2" style="margin-bottom:12px">
+  <div><div id="pyme-ranking"></div></div>
+  <div id="pyme-negocios-panel" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:14px">
+    <div class="ctit">💡 Potencial de Negocio PyMENación</div>
+    <div id="pyme-negocios-content" style="font-size:11px;color:var(--txt2)">Cargando análisis...</div>
+  </div>
+</div>
+<div class="tcard" id="tcard-pyme"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span>
+  <div class="cuit-bar" style="border:none;box-shadow:none;padding:0;background:transparent;margin:0">
+    <input type="text" id="pyme-cuit-input" placeholder="Buscar CUIT..." style="font-size:11px;padding:5px 8px;border:1px solid var(--brd);border-radius:6px;width:130px" onkeydown="if(event.key==='Enter')buscarEnTablaPyme()">
+    <input type="text" id="pyme-rs-input" placeholder="Razón Social..." style="font-size:11px;padding:5px 8px;border:1px solid var(--brd);border-radius:6px;width:140px" onkeydown="if(event.key==='Enter')buscarEnTablaPyme()">
+    <button onclick="buscarEnTablaPyme()" style="font-size:10px;padding:5px 10px;background:var(--bna-azul);color:#fff;border:none;border-radius:6px;cursor:pointer">🔍</button>
+    <button onclick="limpiarBusquedaPyme()" style="font-size:10px;padding:5px 8px;background:none;border:1px solid var(--brd);border-radius:6px;cursor:pointer">✕</button>
+    <span id="pyme-cuit-result" style="font-size:10px;color:var(--txt2)"></span>
+  </div>
+</div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-pyme"></tbody></table></div></div>
 </div>
 
 <!-- ═══ AGRONACIÓN ═══ -->
@@ -902,7 +1113,56 @@ id="page-pyme">
 </div>
     <!-- Ranking Top5 / Alerta5 -->
   <div id="agro-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
-<div class="tcard" id="tcard-agro"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-agro"></tbody></table></div></div>
+<!-- Consumo AGRO -->
+<div class="consumo-grid" id="agro-consumo-grid">
+  <div class="consumo-card verde">
+    <div class="cc-lbl">Consumo Acum. 2026</div>
+    <div class="cc-val" id="agro-consumo-2026">—</div>
+    <div class="cc-sub">Total facturado</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Consumo 2025</div>
+    <div class="cc-val" id="agro-consumo-2025">—</div>
+    <div class="cc-sub">Año anterior</div>
+  </div>
+  <div class="consumo-card naranja">
+    <div class="cc-lbl">% Crecimiento</div>
+    <div class="cc-val" id="agro-consumo-crec">—</div>
+    <div class="cc-sub">vs 2025</div>
+  </div>
+  <div class="consumo-card dorado">
+    <div class="cc-lbl">Límite Total Zonal</div>
+    <div class="cc-val" id="agro-consumo-lim">—</div>
+    <div class="cc-sub">Límite asignado</div>
+  </div>
+  <div class="consumo-card violeta">
+    <div class="cc-lbl">% Uso Límite 2026</div>
+    <div class="cc-val" id="agro-consumo-uso">—</div>
+    <div class="cc-sub">Utilización</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Cuentas con Compras</div>
+    <div class="cc-val" id="agro-consumo-act">—</div>
+    <div class="cc-sub">Con actividad 2026</div>
+  </div>
+</div>
+<!-- Ranking + Oportunidades AGRO -->
+<div class="g2" style="margin-bottom:12px">
+  <div><div id="agro-ranking"></div></div>
+  <div id="agro-negocios-panel" style="background:#fff;border:1.5px solid var(--brd);border-radius:var(--rl);padding:14px">
+    <div class="ctit">💡 Potencial de Negocio AgroNación</div>
+    <div id="agro-negocios-content" style="font-size:11px;color:var(--txt2)">Cargando análisis...</div>
+  </div>
+</div>
+<div class="tcard" id="tcard-agro"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span>
+  <div class="cuit-bar" style="border:none;box-shadow:none;padding:0;background:transparent;margin:0">
+    <input type="text" id="agro-cuit-input" placeholder="Buscar CUIT..." style="font-size:11px;padding:5px 8px;border:1px solid var(--brd);border-radius:6px;width:130px" onkeydown="if(event.key==='Enter')buscarEnTablaAgro()">
+    <input type="text" id="agro-rs-input" placeholder="Razón Social..." style="font-size:11px;padding:5px 8px;border:1px solid var(--brd);border-radius:6px;width:140px" onkeydown="if(event.key==='Enter')buscarEnTablaAgro()">
+    <button onclick="buscarEnTablaAgro()" style="font-size:10px;padding:5px 10px;background:var(--bna-verde);color:#fff;border:none;border-radius:6px;cursor:pointer">🔍</button>
+    <button onclick="limpiarBusquedaAgro()" style="font-size:10px;padding:5px 8px;background:none;border:1px solid var(--brd);border-radius:6px;cursor:pointer">✕</button>
+    <span id="agro-cuit-result" style="font-size:10px;color:var(--txt2)"></span>
+  </div>
+</div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-agro"></tbody></table></div></div>
 </div>
 
 <!-- ═══ CORPORATIVA ═══ -->
@@ -933,6 +1193,39 @@ id="page-pyme">
 </div>
     <!-- Ranking Top5 / Alerta5 -->
   <div id="corp-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+<!-- Consumo CORP -->
+<div class="consumo-grid" id="corp-consumo-grid">
+  <div class="consumo-card verde">
+    <div class="cc-lbl">Límite Total Asignado</div>
+    <div class="cc-val" id="corp-consumo-lim">—</div>
+    <div class="cc-sub">Límite de Compra</div>
+  </div>
+  <div class="consumo-card naranja">
+    <div class="cc-lbl">Remanente Total</div>
+    <div class="cc-val" id="corp-consumo-rem">—</div>
+    <div class="cc-sub">Límite disponible</div>
+  </div>
+  <div class="consumo-card dorado">
+    <div class="cc-lbl">% Uso Límite Compra</div>
+    <div class="cc-val" id="corp-consumo-uso">—</div>
+    <div class="cc-sub">LC utilizado</div>
+  </div>
+  <div class="consumo-card violeta">
+    <div class="cc-lbl">Saldo Anterior Total</div>
+    <div class="cc-val" id="corp-consumo-sal">—</div>
+    <div class="cc-sub">Imp. Saldo Anterior</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Pagos Registrados</div>
+    <div class="cc-val" id="corp-consumo-pag">—</div>
+    <div class="cc-sub">Total pagos período</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">% Pagos/Saldo</div>
+    <div class="cc-val" id="corp-consumo-pct">—</div>
+    <div class="cc-sub">Ratio de pago</div>
+  </div>
+</div>
 <div class="tcard" id="tcard-corp"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Cuentas</th><th>Vol.</th></tr></thead><tbody id="t-corp"></tbody></table></div></div>
 </div>
 
@@ -977,6 +1270,39 @@ id="page-pyme">
 </div>
     <!-- Ranking Top5 / Alerta5 -->
   <div id="bna-ranking" style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap"></div>
+<!-- Consumo BNA CONECTA -->
+<div class="consumo-grid" id="bna-consumo-grid">
+  <div class="consumo-card verde">
+    <div class="cc-lbl">Compras 2026</div>
+    <div class="cc-val" id="bna-consumo-comp">—</div>
+    <div class="cc-sub">Total compradores</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Ventas 2026</div>
+    <div class="cc-val" id="bna-consumo-vent">—</div>
+    <div class="cc-sub">Total vendedores</div>
+  </div>
+  <div class="consumo-card dorado">
+    <div class="cc-lbl">Volumen Total</div>
+    <div class="cc-val" id="bna-consumo-total">—</div>
+    <div class="cc-sub">Compras + Ventas</div>
+  </div>
+  <div class="consumo-card naranja">
+    <div class="cc-lbl">Empresas Activas</div>
+    <div class="cc-val" id="bna-consumo-activas">—</div>
+    <div class="cc-sub">Con operaciones 2026</div>
+  </div>
+  <div class="consumo-card violeta">
+    <div class="cc-lbl">% Activación</div>
+    <div class="cc-val" id="bna-consumo-pct">—</div>
+    <div class="cc-sub">Activas / Total</div>
+  </div>
+  <div class="consumo-card">
+    <div class="cc-lbl">Sin Operaciones</div>
+    <div class="cc-val" id="bna-consumo-inact">—</div>
+    <div class="cc-sub">Potencial de activación</div>
+  </div>
+</div>
 <div class="tcard" id="tcard-bna"><div class="thead2"><span class="ttit">Por sucursal · clic para ver empresas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Compradores</th><th>Vendedores</th><th>Vol.</th></tr></thead><tbody id="t-bna"></tbody></table></div></div>
 </div>
 
@@ -2234,8 +2560,14 @@ function buscarCliente() {
   const agro = (DD.agro||[]).filter(r=> matchC(r['CUIT']) || matchN(r['Apellido']));
   const corp = (DD.corp||[]).filter(r=> matchC(r['Cuenta']) || matchC(r['CUIT']) || matchN(r['Apellido']) || matchN(r['Nombre']));
   const bna  = (DD.bna||[]).filter(r=>  matchC(r['CUIT']) || matchN(r['RAZON SOCIAL']));
+  const viaja= (DD.viaja||[]).filter(r=> matchC(r['CUIT']) || matchN(r['NOMBRE DEL COMERCIO']));
+  const tc   = (DD.tc||[]).filter(r=>   matchC(r['CUIT']) || matchN(r['Sucursales']||''));
 
-  const total = com.length+fac.length+marc.length+sn.length+pyme.length+agro.length+corp.length+bna.length;
+  // FACMP — Facturación +Pagos
+  const facmpRows = getFACMPRows ? getFACMPRows() : [];
+  const facmp = facmpRows.filter(r=> matchC(r['CUIT']) || matchN(r['RAZONSOCIAL']||r['Razon Social']||''));
+
+  const total = com.length+fac.length+marc.length+sn.length+pyme.length+agro.length+corp.length+bna.length+facmp.length;
   if(total === 0){
     el.innerHTML='<div class="not-found">"'+inputVal+'" no encontrado en ninguna base de datos. Verificá el CUIT o probá con parte del nombre.</div>';
     return;
@@ -2310,6 +2642,17 @@ function buscarCliente() {
     secs+=sec('📋','SN / AE','Sin datos','p-gr','<div class="fsec-extra" style="font-style:italic">No figura en SN/AE</div>');
   }
 
+  // VIAJA+
+  if(viaja.length){
+    const proms=[...new Set(viaja.map(x=>x['NOMBRE DE LA PROMOCION']))].filter(Boolean).join(', ');
+    secs+=sec('✈','Viaja+','Adherido','p-act',
+      `<div class="fsec-dato">${viaja[0]['NOMBRE DEL COMERCIO']||nombre}</div>
+       <div class="fsec-extra">Rubro: ${viaja[0]['RUBRO']||'—'} · BNA+: ${viaja[0]['ACEPTA BNA+:']||'—'}</div>
+       <div class="fsec-extra">Promo: ${proms||'—'}</div>`);
+  } else {
+    secs+=sec('✈','Viaja+','Sin datos','p-gr','<div class="fsec-extra" style="font-style:italic">No figura en Viaja+</div>');
+  }
+
   // PYMENACIÓN
   if(pyme.length){
     const py=pyme[0];
@@ -2352,6 +2695,24 @@ function buscarCliente() {
        <div class="fsec-extra">Estado: ${b['ESTADO']||'—'}</div>`);
   } else {
     secs+=sec('🔗','BNA Conecta','Sin datos','p-gr','<div class="fsec-extra" style="font-style:italic">No figura en BNA Conecta</div>');
+  }
+
+  // FACTURACIÓN +PAGOS
+  if(facmp.length){
+    const pN=v=>parseFloat((v||'0').toString().replace(/[$\s.]/g,'').replace(',','.'))||0;
+    const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+    const totalFACMP=facmp.reduce((a,r)=>a+pN(r['NETO']),0);
+    const meses=[...new Set(facmp.map(r=>r['_mes']))].filter(Boolean).join(', ');
+    const porTipo={};
+    facmp.forEach(r=>{const t=r['Tipo']||'—';if(!porTipo[t])porTipo[t]=0;porTipo[t]+=pN(r['NETO']);});
+    const tipoStr=Object.entries(porTipo).map(([t,v])=>`${t}: ${fmtV(v)}`).join(' · ');
+    secs+=sec('📊','Facturación +Pagos',fmtV(totalFACMP),'p-act',
+      `<div class="fsec-dato">${facmp[0]['RAZONSOCIAL']||nombre}</div>
+       <div class="fsec-extra">Registros: ${facmp.length} · Meses: ${meses||'—'}</div>
+       <div class="fsec-extra">${tipoStr}</div>
+       <div class="fsec-extra">Sucursal: ${(facmp[0]['SUCURSAL']||'—').replace(/^\d+-/,'').trim()}</div>`);
+  } else {
+    secs+=sec('📊','Facturación +Pagos','Sin datos','p-gr','<div class="fsec-extra" style="font-style:italic">No figura en Facturación +Pagos</div>');
   }
 
   el.innerHTML=`
@@ -3325,20 +3686,28 @@ async function loadFACMP(){
 }
 
 function getFACMPRows(){
-  const mesSeleccionado = document.getElementById('f-facmp-mes')?.value || '';
-  if(mesSeleccionado){
-    return FACMP_DATA[mesSeleccionado] || [];
-  }
-  // Todos los meses
+  // Retorna TODAS las filas — el filtro por mes se aplica en applyFilterFACMP via _mes
   return FACMP_MESES.flatMap(h => FACMP_DATA[h] || []);
 }
 
 function applyFilterFACMP(){
   const suc  = document.getElementById('f-facmp-suc')?.value  || '';
+  const mes  = document.getElementById('f-facmp-mes')?.value  || '';
   const tipo = document.getElementById('f-facmp-tipo')?.value || '';
   let rows = getFACMPRows();
   if(suc)  rows = rows.filter(r => r['SUCURSAL'] === suc);
+  if(mes)  rows = rows.filter(r => (r['_mes']||'').toUpperCase().includes(mes.toUpperCase()));
   if(tipo) rows = rows.filter(r => r['Tipo']     === tipo);
+  // También aplicar búsqueda CUIT/RS si está activa
+  const q1=(document.getElementById('facmp-cuit-input')?.value||'').trim().toLowerCase().replace(/[-\s]/g,'');
+  const q2=(document.getElementById('facmp-rs-input')?.value||'').trim().toLowerCase();
+  if(q1||q2){
+    rows=rows.filter(r=>{
+      const cuit=(r['CUIT']||'').toString().replace(/[-\s]/g,'').toLowerCase();
+      const rs=(r['RAZONSOCIAL']||r['Razon Social']||'').toLowerCase();
+      return (!q1||(cuit.includes(q1)||rs.includes(q1)))&&(!q2||rs.includes(q2)||cuit.includes(q2));
+    });
+  }
   renderFACMP(rows);
 }
 
@@ -4085,10 +4454,19 @@ window.addEventListener('DOMContentLoaded', () => {
     <select id="f-facmp-suc" onchange="applyFilterFACMP()"><option value="">Todas</option></select>
     <span class="fbar-lbl" style="margin-left:6px">Mes:</span>
     <select id="f-facmp-mes" onchange="applyFilterFACMP()">
-      <option value="">Todos</option>
+      <option value="">Todos los meses</option>
       <option value="ENERO">Enero</option>
       <option value="FEBRERO">Febrero</option>
       <option value="MARZO">Marzo</option>
+      <option value="ABRIL">Abril</option>
+      <option value="MAYO">Mayo</option>
+      <option value="JUNIO">Junio</option>
+      <option value="JULIO">Julio</option>
+      <option value="AGOSTO">Agosto</option>
+      <option value="SEPTIEMBRE">Septiembre</option>
+      <option value="OCTUBRE">Octubre</option>
+      <option value="NOVIEMBRE">Noviembre</option>
+      <option value="DICIEMBRE">Diciembre</option>
     </select>
     <span class="fbar-lbl" style="margin-left:6px">Tipo:</span>
     <select id="f-facmp-tipo" onchange="applyFilterFACMP()">
@@ -4100,6 +4478,20 @@ window.addEventListener('DOMContentLoaded', () => {
     <button class="fbar-reset" onclick="resetFilterFACMP()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-facmp">—</span>
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFACMP()">⬇ Exportar</button>
+  </div>
+
+  <!-- Buscador CUIT / Razón Social FACMP -->
+  <div class="cuit-bar" id="facmp-cuit-bar">
+    <span class="fbar-lbl">🔍 Buscar en +Pagos:</span>
+    <input type="text" id="facmp-cuit-input" placeholder="CUIT (ej: 20123456789)..."
+      style="flex:1;min-width:160px"
+      onkeydown="if(event.key==='Enter')buscarEnFACMP()">
+    <input type="text" id="facmp-rs-input" placeholder="Razón Social..."
+      style="flex:1;min-width:160px"
+      onkeydown="if(event.key==='Enter')buscarEnFACMP()">
+    <button onclick="buscarEnFACMP()">Buscar</button>
+    <button class="clear-btn" onclick="limpiarBusquedaFACMP()">✕ Limpiar</button>
+    <span id="facmp-cuit-result" style="font-size:11px;color:var(--txt2);font-weight:600;white-space:nowrap"></span>
   </div>
 
   <!-- Rankings -->
@@ -4129,6 +4521,393 @@ window.addEventListener('DOMContentLoaded', () => {
 </div>
 
 
+
+// ══════════════════════════════════════════════════════
+// NUEVAS FUNCIONES: CUIT/Razón Social en tablas MARC/SN/VIAJA
+// ══════════════════════════════════════════════════════
+
+function buscarEnTabla(tipo){
+  const cuitEl = document.getElementById(tipo+'-cuit-input');
+  const rsEl   = document.getElementById(tipo+'-rs-input');
+  const resEl  = document.getElementById(tipo+'-cuit-result');
+  const q1 = (cuitEl?.value||'').trim().toLowerCase();
+  const q2 = (rsEl?.value||'').trim().toLowerCase();
+  if(!q1&&!q2){limpiarBusqueda(tipo);return;}
+
+  const tabla = document.getElementById('t-'+tipo);
+  if(!tabla) return;
+  let matches=0;
+  tabla.querySelectorAll('tr').forEach(tr=>{
+    const txt = tr.textContent.toLowerCase();
+    const match = (!q1||txt.includes(q1))&&(!q2||txt.includes(q2));
+    tr.classList.toggle('cuit-row-match', match);
+    if(match) matches++;
+    tr.style.display=(q1||q2)?(!match&&tipo!=='all'?'none':''):'';
+  });
+  if(resEl) resEl.textContent = matches>0?matches+' resultado(s)':'Sin resultados';
+}
+
+function limpiarBusqueda(tipo){
+  const cuitEl = document.getElementById(tipo+'-cuit-input');
+  const rsEl   = document.getElementById(tipo+'-rs-input');
+  const resEl  = document.getElementById(tipo+'-cuit-result');
+  if(cuitEl) cuitEl.value='';
+  if(rsEl) rsEl.value='';
+  if(resEl) resEl.textContent='';
+  const tabla = document.getElementById('t-'+tipo);
+  if(tabla) tabla.querySelectorAll('tr').forEach(tr=>{
+    tr.classList.remove('cuit-row-match');
+    tr.style.display='';
+  });
+}
+
+function buscarEnTablaPyme(){
+  const q1=(document.getElementById('pyme-cuit-input')?.value||'').trim().toLowerCase();
+  const q2=(document.getElementById('pyme-rs-input')?.value||'').trim().toLowerCase();
+  const res=document.getElementById('pyme-cuit-result');
+  if(!q1&&!q2){limpiarBusquedaPyme();return;}
+  // Buscar en DD.pyme
+  const src=DD.pyme||[];
+  const matches=src.filter(r=>{
+    const cuit=(r['CUIT']||'').toString().toLowerCase();
+    const nom=((r['Apellido']||'')+' '+(r['Nombre']||'')).toLowerCase();
+    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
+  });
+  if(res) res.textContent=matches.length+' resultado(s)';
+  // Highlight en tabla
+  const tbody=document.getElementById('t-pyme');
+  if(tbody) tbody.querySelectorAll('tr').forEach((tr,i)=>{
+    tr.classList.toggle('cuit-row-match', i<matches.length);
+    tr.style.display='';
+  });
+  if(matches.length>0){
+    openDD('PyMENación · Búsqueda',
+      matches.length+' cuentas · CUIT: '+q1,
+      ['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Sucursal','Actividad','Observaciones'],
+      matches.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',
+        `<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,
+        r['Sucursal']||'—',r['Actividad de la Pyme']||'—',r['Observaciones']||'—']),
+      matches);
+  }
+}
+function limpiarBusquedaPyme(){
+  ['pyme-cuit-input','pyme-rs-input'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const r=document.getElementById('pyme-cuit-result');if(r)r.textContent='';
+  document.getElementById('t-pyme')?.querySelectorAll('tr').forEach(tr=>tr.classList.remove('cuit-row-match'));
+}
+
+function buscarEnTablaAgro(){
+  const q1=(document.getElementById('agro-cuit-input')?.value||'').trim().toLowerCase();
+  const q2=(document.getElementById('agro-rs-input')?.value||'').trim().toLowerCase();
+  const res=document.getElementById('agro-cuit-result');
+  if(!q1&&!q2){limpiarBusquedaAgro();return;}
+  const src=DD.agro||[];
+  const matches=src.filter(r=>{
+    const cuit=(r['CUIT']||'').toString().toLowerCase();
+    const nom=((r['Apellido']||'')+' '+(r['Nombre']||'')).toLowerCase();
+    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
+  });
+  if(res) res.textContent=matches.length+' resultado(s)';
+  if(matches.length>0){
+    openDD('AgroNación · Búsqueda',
+      matches.length+' cuentas',
+      ['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Sucursal','Observaciones'],
+      matches.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',
+        `<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,
+        r['Sucursal']||'—',r['Observaciones']||'—']),
+      matches);
+  }
+}
+function limpiarBusquedaAgro(){
+  ['agro-cuit-input','agro-rs-input'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const r=document.getElementById('agro-cuit-result');if(r)r.textContent='';
+}
+
+// ══════════════════════════════════════════════════════
+// CONSUMO CARDS — actualizar datos en renderizado
+// ══════════════════════════════════════════════════════
+
+function updateConsumoCards(tipo, rows){
+  const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const pM=v=>parseMonto(v||0);
+  const setC=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+
+  if(tipo==='pyme'||tipo==='agro'){
+    const c26=rows.reduce((a,r)=>a+pM(r['Compras 2026']),0);
+    const c25=rows.reduce((a,r)=>a+pM(r['Compras 2025']),0);
+    const lim=rows.reduce((a,r)=>a+pM(r['Límite de Compra']),0);
+    const act=rows.filter(r=>pM(r['Compras 2026'])>0).length;
+    const crec=c25>0?((c26-c25)/c25*100).toFixed(1)+'%':'—';
+    const uso=lim>0?(c26/lim*100).toFixed(1)+'%':'—';
+    setC(tipo+'-consumo-2026', fmtV(c26));
+    setC(tipo+'-consumo-2025', fmtV(c25));
+    setC(tipo+'-consumo-crec', crec);
+    setC(tipo+'-consumo-lim', fmtV(lim));
+    setC(tipo+'-consumo-uso', uso);
+    setC(tipo+'-consumo-act', act.toLocaleString('es-AR'));
+    // Panel de negocio
+    generateNegociosPanel(tipo, rows);
+  }
+
+  if(tipo==='corp'){
+    const lim=rows.reduce((a,r)=>a+pM(r['Lim.Compra']),0);
+    const rem=rows.reduce((a,r)=>a+pM(r['Reman Compra']),0);
+    const sal=rows.reduce((a,r)=>a+pM(r['Imp Sal Ant']),0);
+    const pag=rows.reduce((a,r)=>a+pM(r['PAGOS']),0);
+    const uso=lim>0?((lim-rem)/lim*100).toFixed(1)+'%':'—';
+    const pct=sal>0?(pag/sal*100).toFixed(1)+'%':'—';
+    setC('corp-consumo-lim', fmtV(lim));
+    setC('corp-consumo-rem', fmtV(rem));
+    setC('corp-consumo-uso', uso);
+    setC('corp-consumo-sal', fmtV(sal));
+    setC('corp-consumo-pag', fmtV(pag));
+    setC('corp-consumo-pct', pct);
+  }
+
+  if(tipo==='bna'){
+    const comp=rows.reduce((a,r)=>a+pM(r['COMPRAS 2026']),0);
+    const vent=rows.reduce((a,r)=>a+pM(r['VENTAS 2026']),0);
+    const total=comp+vent;
+    const act=rows.filter(r=>pM(r['COMPRAS 2026'])>0||pM(r['VENTAS 2026'])>0).length;
+    const pct=rows.length>0?(act/rows.length*100).toFixed(1)+'%':'—';
+    setC('bna-consumo-comp', fmtV(comp));
+    setC('bna-consumo-vent', fmtV(vent));
+    setC('bna-consumo-total', fmtV(total));
+    setC('bna-consumo-activas', act.toLocaleString('es-AR'));
+    setC('bna-consumo-pct', pct);
+    setC('bna-consumo-inact', (rows.length-act).toLocaleString('es-AR'));
+  }
+}
+
+// Panel de potencial de negocio
+function generateNegociosPanel(tipo, rows){
+  const panelEl=document.getElementById(tipo+'-negocios-panel');
+  if(!panelEl) return;
+  const contentEl=document.getElementById(tipo+'-negocios-content');
+  if(!contentEl) return;
+
+  const pM=v=>parseMonto(v||0);
+  const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+
+  const sinActividad=rows.filter(r=>pM(r['Compras 2026'])<=0);
+  const limOcioso=sinActividad.reduce((a,r)=>a+pM(r['Límite de Compra']),0);
+  const bajouseRows=rows.filter(r=>{const lim=pM(r['Límite de Compra']);const c26=pM(r['Compras 2026']);return lim>0&&c26>0&&c26/lim<0.1;});
+  const potencial=bajouseRows.reduce((a,r)=>{const lim=pM(r['Límite de Compra']);const c26=pM(r['Compras 2026']);return a+(lim-c26);},0);
+
+  contentEl.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div style="background:var(--roj-cl);border-radius:8px;padding:10px;border:1px solid #f0c0be">
+        <div style="font-size:9px;font-weight:800;color:var(--roj);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">⚠️ Sin actividad 2026</div>
+        <div style="font-size:18px;font-weight:800;color:var(--roj)">${sinActividad.length} cuentas</div>
+        <div style="font-size:10px;color:var(--txt2)">Límite ocioso: <b>${fmtV(limOcioso)}</b></div>
+      </div>
+      <div style="background:var(--nrj-cl);border-radius:8px;padding:10px;border:1px solid #ffd59e">
+        <div style="font-size:9px;font-weight:800;color:var(--nrj);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">📈 Bajo uso (&lt;10%)</div>
+        <div style="font-size:18px;font-weight:800;color:var(--nrj)">${bajouseRows.length} cuentas</div>
+        <div style="font-size:10px;color:var(--txt2)">Potencial: <b>${fmtV(potencial)}</b></div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--txt2);background:var(--gris);border-radius:6px;padding:8px">
+      <b style="color:var(--bna-marino)">💡 Acciones recomendadas:</b>
+      <ul style="margin:4px 0 0 14px;padding:0">
+        ${sinActividad.length>0?`<li>Gestionar activación de <b>${sinActividad.length} cuentas</b> sin compras 2026</li>`:''}
+        ${bajouseRows.length>0?`<li>Potenciar uso en <b>${bajouseRows.length} cuentas</b> con uso <10% del límite</li>`:''}
+        <li>Revisar límites de cuentas con saldo pendiente</li>
+        <li>Contactar titulares con límites altos y sin actividad</li>
+      </ul>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════════════
+// PATCH: Actualizar renderPYME, renderAGRO, renderCORP, renderBNA
+// para llamar a updateConsumoCards
+// ══════════════════════════════════════════════════════
+const _origRenderPYME=renderPYME;
+renderPYME=function(rows){_origRenderPYME(rows);updateConsumoCards('pyme',rows||DD.pyme||[]);};
+const _origRenderAGRO=renderAGRO;
+renderAGRO=function(rows){_origRenderAGRO(rows);updateConsumoCards('agro',rows||DD.agro||[]);};
+const _origRenderCORP=renderCORP;
+renderCORP=function(rows){_origRenderCORP(rows);updateConsumoCards('corp',rows||DD.corp||[]);};
+const _origRenderBNA=renderBNA;
+renderBNA=function(rows){_origRenderBNA(rows);updateConsumoCards('bna',rows||DD.bna||[]);};
+
+// ══════════════════════════════════════════════════════
+// CUIT search in MARC/SN/VIAJA: show results as DD
+// ══════════════════════════════════════════════════════
+function marcSearchDD(){
+  const q1=(document.getElementById('marc-cuit-input')?.value||'').trim().toLowerCase();
+  const q2=(document.getElementById('marc-rs-input')?.value||'').trim().toLowerCase();
+  if(!q1&&!q2){limpiarBusqueda('marc');return;}
+  const src=(DD.marc||[]).filter(r=>['CATAMARCA','La Rioja','LA RIOJA'].some(p=>(r['PROVINCIA']||'').toUpperCase().includes(p.toUpperCase())));
+  const matches=src.filter(r=>{
+    const cuit=(r['CUIT']||'').toString().toLowerCase();
+    const nom=((r['NOMBRE DEL COMERCIO']||'')+' '+(r['RAZON SOCIAL']||'')).toLowerCase();
+    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
+  });
+  const res=document.getElementById('marc-cuit-result');
+  if(res) res.textContent=matches.length+' resultado(s)';
+  if(matches.length>0){
+    openDD('Marcatón · Búsqueda: '+q1+(q2?' / '+q2:''),
+      matches.length+' comercios',
+      ['Comercio','CUIT','Sucursal','Adquirente','Rubro','Alta/Baja','Acepta BNA+'],
+      matches.map(r=>[r['NOMBRE DEL COMERCIO']||'—',r['CUIT']||'—',r['SUCURSAL']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['RUBRO']||'—',
+        `<span class="pill ${(r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu'}">${r['ALTA / BAJA']||'—'}</span>`,
+        r['ACEPTA BNA+:']||'—']),
+      matches);
+  }
+}
+function snSearchDD(){
+  const q1=(document.getElementById('sn-cuit-input')?.value||'').trim().toLowerCase();
+  const q2=(document.getElementById('sn-rs-input')?.value||'').trim().toLowerCase();
+  if(!q1&&!q2){limpiarBusqueda('sn');return;}
+  const src=DD.sn||[];
+  const matches=src.filter(r=>{
+    const cuit=(r['CUIT']||'').toString().toLowerCase();
+    const nom=(r['NOMBRE DEL COMERCIO']||'').toLowerCase();
+    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
+  });
+  const res=document.getElementById('sn-cuit-result');
+  if(res) res.textContent=matches.length+' resultado(s)';
+  if(matches.length>0){
+    openDD('SN/AE · Búsqueda: '+q1+(q2?' / '+q2:''),
+      matches.length+' comercios',
+      ['Comercio','CUIT','Sucursal','Adquirente','Rubro','Alta/Baja','Acepta BNA+'],
+      matches.map(r=>[r['NOMBRE DEL COMERCIO']||'—',r['CUIT']||'—',r['SUCURSAL']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['RUBRO']||'—',
+        `<span class="pill ${(r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu'}">${r['ALTA / BAJA']||'—'}</span>`,
+        r['ACEPTA BNA+:']||'—']),
+      matches);
+  }
+}
+function viajaSearchDD(){
+  const q1=(document.getElementById('viaja-cuit-input')?.value||'').trim().toLowerCase();
+  const q2=(document.getElementById('viaja-rs-input')?.value||'').trim().toLowerCase();
+  if(!q1&&!q2){limpiarBusqueda('viaja');return;}
+  const src=DD.viaja||[];
+  const matches=src.filter(r=>{
+    const cuit=(r['CUIT']||'').toString().toLowerCase();
+    const nom=(r['NOMBRE DEL COMERCIO']||'').toLowerCase();
+    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
+  });
+  const res=document.getElementById('viaja-cuit-result');
+  if(res) res.textContent=matches.length+' resultado(s)';
+  if(matches.length>0){
+    openDD('Viaja+ · Búsqueda: '+q1+(q2?' / '+q2:''),
+      matches.length+' agencias',
+      ['Comercio','CUIT','Sucursal','Adquirente','Rubro','Acepta BNA+'],
+      matches.map(r=>[r['NOMBRE DEL COMERCIO']||'—',r['CUIT']||'—',r['SUCURSAL']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['RUBRO']||'—',r['ACEPTA BNA+:']||'—']),
+      matches);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// BUSCADOR CUIT/RS EN FACTURACIÓN +PAGOS
+// ══════════════════════════════════════════════════════
+function buscarEnFACMP(){
+  const q1=(document.getElementById('facmp-cuit-input')?.value||'').trim().toLowerCase().replace(/[-\s]/g,'');
+  const q2=(document.getElementById('facmp-rs-input')?.value||'').trim().toLowerCase();
+  const resEl=document.getElementById('facmp-cuit-result');
+
+  if(!q1&&!q2){limpiarBusquedaFACMP();return;}
+
+  // Tomar filas del mes/filtro actual
+  const base=getFACMPRows();
+  if(!base.length){
+    if(resEl) resEl.textContent='Sin datos cargados';
+    return;
+  }
+
+  const matches=base.filter(r=>{
+    const cuit=(r['CUIT']||'').toString().replace(/[-\s]/g,'').toLowerCase();
+    const rs=(r['RAZONSOCIAL']||r['Razon Social']||'').toLowerCase();
+    return (!q1||(cuit.includes(q1)||rs.includes(q1)))&&(!q2||rs.includes(q2)||cuit.includes(q2));
+  });
+
+  if(resEl) resEl.textContent=matches.length>0?matches.length+' resultado(s)':'Sin resultados';
+
+  // Resaltar en tabla
+  const tbody=document.getElementById('t-facmp');
+  if(tbody){
+    const trs=tbody.querySelectorAll('tr');
+    trs.forEach(tr=>{
+      const txt=tr.textContent.toLowerCase().replace(/[-\s]/g,'');
+      const m=(!q1||txt.includes(q1))&&(!q2||tr.textContent.toLowerCase().includes(q2));
+      tr.classList.toggle('cuit-row-match',m);
+      tr.style.display='';
+    });
+  }
+
+  // Mostrar en drill-down si hay resultados
+  if(matches.length>0){
+    const pN=v=>parseFloat((v||'0').toString().replace(/[$\s.]/g,'').replace(',','.'))||0;
+    const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+    const totalNeto=matches.reduce((a,r)=>a+pN(r['NETO']),0);
+    // Agrupar por tipo
+    const porTipo={};
+    matches.forEach(r=>{const t=r['Tipo']||'—';if(!porTipo[t])porTipo[t]=0;porTipo[t]+=pN(r['NETO']);});
+    const tipoStr=Object.entries(porTipo).map(([t,v])=>`${t}: ${fmtV(v)}`).join(' · ');
+
+    openDD(
+      'Facturación +Pagos · '+( (matches[0]||{})['RAZONSOCIAL'] || q1 || q2 ),
+      matches.length+' registro(s) · Total: '+fmtV(totalNeto),
+      ['Razón Social','CUIT','Tipo','Neto $','Sucursal','Mes'],
+      matches.map(r=>[
+        r['RAZONSOCIAL']||'—',
+        r['CUIT']||'—',
+        `<span class="pill p-az" style="font-size:9px">${r['Tipo']||'—'}</span>`,
+        '<b>$'+Math.round(pN(r['NETO'])).toLocaleString('es-AR')+'</b>',
+        (r['SUCURSAL']||'—').replace(/^\d+-/,'').trim(),
+        r['_mes']||'—'
+      ]),
+      matches
+    );
+  }
+}
+
+function limpiarBusquedaFACMP(){
+  ['facmp-cuit-input','facmp-rs-input'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  const r=document.getElementById('facmp-cuit-result');if(r)r.textContent='';
+  const tbody=document.getElementById('t-facmp');
+  if(tbody) tbody.querySelectorAll('tr').forEach(tr=>{tr.classList.remove('cuit-row-match');tr.style.display='';});
+}
+
+
+// Wire up marc/sn/viaja search buttons
+document.addEventListener('DOMContentLoaded',function(){
+  // Replace onclick="buscarEnTabla" with proper functions for marc/sn/viaja
+  const marcBtn=document.querySelector('#marc-cuit-bar button');
+  if(marcBtn) marcBtn.onclick=marcSearchDD;
+  document.querySelectorAll('[onclick*="buscarEnTabla('marc')"]').forEach(e=>e.onclick=marcSearchDD);
+  document.querySelectorAll('[onclick*="buscarEnTabla('sn')"]').forEach(e=>e.onclick=snSearchDD);
+  document.querySelectorAll('[onclick*="buscarEnTabla('viaja')"]').forEach(e=>e.onclick=viajaSearchDD);
+});
+
+// ══════════════════════════════════════════════════════
+// METAS: Agregar filtro de más meses
+// ══════════════════════════════════════════════════════
+// Agregar meses faltantes al selector de Metas
+document.addEventListener('DOMContentLoaded', function(){
+  const sel = document.getElementById('f-metas-mes');
+  if(sel){
+    const mesesFaltantes = [
+      {v:'2026-04',l:'Abr 2026'},{v:'2026-05',l:'May 2026'},
+      {v:'2026-06',l:'Jun 2026'},{v:'2026-07',l:'Jul 2026'},
+      {v:'2026-08',l:'Ago 2026'},{v:'2026-09',l:'Sep 2026'},
+      {v:'2026-10',l:'Oct 2026'},{v:'2026-11',l:'Nov 2026'},
+      {v:'2026-12',l:'Dic 2026'}
+    ];
+    mesesFaltantes.forEach(m=>{
+      if(!sel.querySelector('option[value="'+m.v+'"]')){
+        const o=document.createElement('option');
+        o.value=m.v; o.textContent=m.l;
+        sel.appendChild(o);
+      }
+    });
+  }
+});
+
+
+
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -4137,6 +4916,34 @@ if('serviceWorker' in navigator){
       .catch(e=>console.warn('[SW]',e));
   });
 }
+</script>
+
+</div><!-- end main-content -->
+</div><!-- end body-wrap -->
+
+<script>
+function toggleSidebar(){
+  var sb=document.getElementById('sidebar');
+  var bw=document.getElementById('body-wrap');
+  var arrow=document.getElementById('sidebar-arrow');
+  sb.classList.toggle('collapsed');
+  if(bw) bw.classList.toggle('collapsed');
+  arrow.textContent=sb.classList.contains('collapsed')?'▶':'◀';
+  try{localStorage.setItem('sb_collapsed',sb.classList.contains('collapsed')?'1':'0');}catch(e){}
+}
+// Restore sidebar state on load
+(function(){
+  try{
+    if(localStorage.getItem('sb_collapsed')==='1'){
+      var sb=document.getElementById('sidebar');
+      var bw=document.getElementById('body-wrap');
+      var arrow=document.getElementById('sidebar-arrow');
+      if(sb){sb.classList.add('collapsed');}
+      if(bw){bw.classList.add('collapsed');}
+      if(arrow){arrow.textContent='▶';}
+    }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>

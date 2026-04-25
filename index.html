@@ -142,12 +142,14 @@ body{
 .sidebar-nav{overflow-y:auto;overflow-x:hidden;flex:1;padding:6px 0 28px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
 .sidebar-nav::-webkit-scrollbar{width:3px}
 .sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.snav-sep{height:1px;background:rgba(255,255,255,.08);margin:6px 12px;}
 .snav-section{
   font-size:9px;font-weight:800;letter-spacing:.13em;color:rgba(255,255,255,.22);
   text-transform:uppercase;padding:10px 13px 3px;white-space:nowrap;overflow:hidden;
   transition:all .22s;
 }
-.sidebar.collapsed .snav-section{opacity:0;height:2px;padding:1px 0}
+.sidebar.collapsed .snav-sep{height:1px;background:rgba(255,255,255,.08);margin:6px 12px;}
+.snav-section{opacity:0;height:2px;padding:1px 0}
 
 .ntab{
   display:flex;align-items:center;gap:9px;padding:9px 13px;
@@ -431,13 +433,15 @@ tr:last-child td{border-bottom:none}
 @media(max-width:900px){
   .sidebar{width:52px}
   .sidebar .stab-lbl{opacity:0;max-width:0}
-  .sidebar .snav-section{opacity:0;height:2px;padding:1px 0}
+  .sidebar .snav-sep{height:1px;background:rgba(255,255,255,.08);margin:6px 12px;}
+.snav-section{opacity:0;height:2px;padding:1px 0}
   .sidebar .ntab{justify-content:center;padding:10px 0}
   .sidebar .sidebar-brand-text{opacity:0;max-width:0}
   .main-content{margin-left:52px}
   .sidebar.expanded{width:224px}
   .sidebar.expanded .stab-lbl,.sidebar.expanded .sidebar-brand-text{opacity:1;max-width:185px}
-  .sidebar.expanded .snav-section{opacity:1;height:auto;padding:10px 13px 3px}
+  .sidebar.expanded .snav-sep{height:1px;background:rgba(255,255,255,.08);margin:6px 12px;}
+.snav-section{opacity:1;height:auto;padding:10px 13px 3px}
   .sidebar.expanded .ntab{justify-content:flex-start;padding:9px 13px}
 }
 @media(max-width:768px){
@@ -461,6 +465,64 @@ tr:last-child td{border-bottom:none}
 .ddbody table th.sort-none::after{content:' ↕';opacity:.3;font-size:10px}
 th.sort-asc::after{content:' ↑';opacity:.9;font-size:9px}
 th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
+
+/* ══ NOTION-STYLE IMPROVEMENTS ══ */
+/* Progress bars with animation */
+.prog-bar-wrap{background:#e8eef5;border-radius:4px;height:8px;overflow:hidden;margin-top:4px}
+.prog-bar-fill{height:100%;border-radius:4px;transition:width .6s ease-out}
+
+/* Property-style rows (Notion-like) */
+.prop-row{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid var(--gris2)}
+.prop-row:last-child{border-bottom:none}
+.prop-lbl{font-size:11px;color:var(--txt2);font-weight:600;min-width:140px;display:flex;align-items:center;gap:5px}
+.prop-val{font-size:12px;font-weight:700;color:var(--txt)}
+
+/* Callout boxes (Notion-style) */
+.callout{
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--gris);border-radius:10px;padding:12px 14px;margin-bottom:10px;
+  border-left:4px solid var(--bna-cyan);
+}
+.callout.warn{background:#fff8ec;border-left-color:var(--nrj)}
+.callout.err{background:var(--roj-cl);border-left-color:var(--roj)}
+.callout.ok{background:var(--vrd-cl);border-left-color:var(--vrd)}
+.callout-ico{font-size:18px;flex-shrink:0;margin-top:1px}
+.callout-txt{font-size:12px;color:var(--txt);line-height:1.5}
+
+/* Stat badge */
+.stat-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--cel);color:var(--az);
+  font-size:11px;font-weight:800;padding:3px 10px;
+  border-radius:20px;border:1px solid var(--cel2);
+}
+
+/* Timeline for metas */
+.meta-timeline{display:flex;gap:0;margin:10px 0;overflow-x:auto}
+.meta-hito{
+  flex:1;min-width:80px;text-align:center;position:relative;
+  padding:6px 4px 4px;
+}
+.meta-hito::before{
+  content:'';position:absolute;top:14px;left:0;right:0;height:2px;
+  background:var(--gris2);z-index:0;
+}
+.meta-hito:first-child::before{left:50%}
+.meta-hito:last-child::before{right:50%}
+.meta-hito-dot{
+  width:14px;height:14px;border-radius:50%;background:var(--brd);
+  border:2px solid #fff;margin:0 auto 4px;position:relative;z-index:1;
+  transition:background .3s;
+}
+.meta-hito-dot.done{background:var(--vrd)}
+.meta-hito-dot.current{background:var(--bna-cyan);box-shadow:0 0 0 3px rgba(0,173,219,.2)}
+.meta-hito-dot.pending{background:var(--brd)}
+.meta-hito-lbl{font-size:9px;color:var(--txt2);white-space:nowrap}
+.meta-hito-val{font-size:8px;color:var(--txt2);font-weight:600}
+
+/* Metas page specific */
+#page-metas .banner{background:linear-gradient(135deg,#2d1b5e 0%,#5a189a 50%,#7b2d8b 100%)}
+#page-metas .fbar-lbl{color:var(--az)}
 </style>
 </head>
 <body>
@@ -502,31 +564,31 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
       <span id="sidebar-arrow">◀</span>
     </div>
     <nav class="sidebar-nav">
-      <div class="snav-section">PRINCIPAL</div>
+      <div class="snav-sep"></div>
       <div class="ntab active" data-go="menu" onclick="go('menu',this)"><span class="stab-ico">🏠</span><span class="stab-lbl">Inicio</span></div>
       <div class="ntab" data-go="cliente" onclick="go('cliente',this)"><span class="stab-ico">🔍</span><span class="stab-lbl">Buscar CUIT</span></div>
 
-      <div class="snav-section">PAGOS DIGITALES</div>
+      <div class="snav-sep"></div>
       <div class="ntab" data-go="com" onclick="go('com',this)"><span class="stab-ico">💳</span><span class="stab-lbl">+Pagos Nación</span></div>
       <div class="ntab" data-go="tc" onclick="go('tc',this)"><span class="stab-ico">🃏</span><span class="stab-lbl">TC Individuos</span></div>
       <div class="ntab" data-go="ceg" onclick="go('ceg',this)"><span class="stab-ico">🏪</span><span class="stab-lbl">Comercios General</span></div>
 
-      <div class="snav-section">FACTURACIÓN</div>
+      <div class="snav-sep"></div>
       <div class="ntab" data-go="fac" onclick="go('fac',this)"><span class="stab-ico">📄</span><span class="stab-lbl">Procesadoras</span></div>
       <div class="ntab" data-go="facmp" onclick="go('facmp',this)"><span class="stab-ico">📊</span><span class="stab-lbl">Facturación +Pagos</span></div>
 
-      <div class="snav-section">PROGRAMAS</div>
+      <div class="snav-sep"></div>
       <div class="ntab" data-go="marc" onclick="go('marc',this)"><span class="stab-ico">🏷️</span><span class="stab-lbl">Marcatón</span></div>
       <div class="ntab" data-go="sn" onclick="go('sn',this)"><span class="stab-ico">📅</span><span class="stab-lbl">Semana A/E</span></div>
       <div class="ntab" data-go="viaja" onclick="go('viaja',this)"><span class="stab-ico">✈</span><span class="stab-lbl">Viaja+</span></div>
 
-      <div class="snav-section">CORPORATIVO</div>
+      <div class="snav-sep"></div>
       <div class="ntab" data-go="pyme" onclick="go('pyme',this)"><span class="stab-ico">🏢</span><span class="stab-lbl">PyMENación</span></div>
       <div class="ntab" data-go="agro" onclick="go('agro',this)"><span class="stab-ico">🌾</span><span class="stab-lbl">AgroNación</span></div>
       <div class="ntab" data-go="corp" onclick="go('corp',this)"><span class="stab-ico">🏦</span><span class="stab-lbl">Corporativa</span></div>
       <div class="ntab" data-go="bna" onclick="go('bna',this)"><span class="stab-ico">🔗</span><span class="stab-lbl">BNA Conecta</span></div>
 
-      <div class="snav-section">GESTIÓN</div>
+      <div class="snav-sep"></div>
       <div class="ntab" data-go="metas" onclick="go('metas',this)"><span class="stab-ico">🎯</span><span class="stab-lbl">Metas 2026</span></div>
     </nav>
   </div>
@@ -1404,7 +1466,7 @@ id="page-pyme">
 
 
 <div id="page-metas" class="page">
-  <div class="banner">
+  <div class="banner" style="background:linear-gradient(135deg,#002056 0%,#1a0050 50%,#5a189a 100%)">
     <div>
       <div class="ban-t">🎯 Cumplimiento de Metas · NOA Oeste</div>
       <div class="ban-s">C/Resumen TC (stock período) · Acreditaciones acumuladas vs META TRIMESTRAL fija</div>
@@ -1419,6 +1481,15 @@ id="page-pyme">
       <option value="2026-01" selected>Ene 2026</option>
       <option value="2026-02">Feb 2026</option>
       <option value="2026-03">Mar 2026</option>
+      <option value="2026-04">Abr 2026</option>
+      <option value="2026-05">May 2026</option>
+      <option value="2026-06">Jun 2026</option>
+      <option value="2026-07">Jul 2026</option>
+      <option value="2026-08">Ago 2026</option>
+      <option value="2026-09">Sep 2026</option>
+      <option value="2026-10">Oct 2026</option>
+      <option value="2026-11">Nov 2026</option>
+      <option value="2026-12">Dic 2026</option>
     </select>
     <span class="fbar-lbl" style="margin-left:10px">Ver:</span>
     <select id="f-metas-tipo" onchange="renderMetas()">
@@ -1427,36 +1498,45 @@ id="page-pyme">
       <option value="acred">Solo Acreditaciones</option>
     </select>
     <span class="fbar-count" id="fc-metas" style="margin-left:auto">—</span>
+    <button class="fbar-reset" onclick="renderMetas()">↺ Actualizar</button>
   </div>
 
-  <!-- KPIs globales -->
-  <div class="metrics" style="margin-bottom:12px">
-    <div class="metric az">
-      <div class="mlbl">C/Resumen zonal</div>
-      <div class="mval" id="metas-k1-real">—</div>
-      <div class="msub" id="metas-k1-meta">meta: —</div>
+  <!-- KPIs globales METAS -->
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card" style="border-top:3px solid var(--vio);text-align:center;padding:18px 16px">
+      <div class="mlbl" style="margin-bottom:8px">📋 Cuentas con Resumen TC</div>
+      <div id="metas-k1-val"><div style="font-size:22px;color:#aaa">Cargando…</div></div>
     </div>
-    <div class="metric" id="metas-k1-pill" style="background:var(--gris)">
-      <div class="mlbl">% cumpl. C/Resumen</div>
-      <div class="mval" id="metas-k1-pct">—</div>
-      <div class="msub" id="metas-k1-dif">—</div>
-    </div>
-    <div class="metric az">
-      <div class="mlbl">Acreditaciones zonal</div>
-      <div class="mval" id="metas-k2-real">—</div>
-      <div class="msub" id="metas-k2-meta">meta: —</div>
-    </div>
-    <div class="metric" id="metas-k2-pill" style="background:var(--gris)">
-      <div class="mlbl">% cumpl. Acreditaciones</div>
-      <div class="mval" id="metas-k2-pct">—</div>
-      <div class="msub" id="metas-k2-dif">—</div>
+    <div class="card" style="border-top:3px solid var(--az2);text-align:center;padding:18px 16px">
+      <div class="mlbl" style="margin-bottom:8px">💰 Acreditaciones (FAC Procesadoras)</div>
+      <div id="metas-k2-val"><div style="font-size:22px;color:#aaa">Cargando…</div></div>
     </div>
   </div>
+  <div style="background:var(--gris);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:20px">🎯</span>
+    <div id="metas-cumple" style="font-size:16px;font-weight:800;color:var(--az)">—</div>
+  </div>
 
+  
+  <!-- Meta timeline Q1-Q4 -->
+  <div class="card full" style="margin-bottom:12px;padding:12px 16px">
+    <div class="ctit">📅 Hitos del año 2026</div>
+    <div class="meta-timeline">
+      <div class="meta-hito"><div class="meta-hito-dot done"></div><div class="meta-hito-lbl">Dic '25</div><div class="meta-hito-val">Base</div></div>
+      <div class="meta-hito"><div class="meta-hito-dot current" id="hito-q1"></div><div class="meta-hito-lbl">Mar '26</div><div class="meta-hito-val">Q1</div></div>
+      <div class="meta-hito"><div class="meta-hito-dot pending" id="hito-q2"></div><div class="meta-hito-lbl">Jun '26</div><div class="meta-hito-val">Q2</div></div>
+      <div class="meta-hito"><div class="meta-hito-dot pending" id="hito-q3"></div><div class="meta-hito-lbl">Sep '26</div><div class="meta-hito-val">Q3</div></div>
+      <div class="meta-hito"><div class="meta-hito-dot pending" id="hito-q4"></div><div class="meta-hito-lbl">Dic '26</div><div class="meta-hito-val">Meta fin</div></div>
+    </div>
+    <div style="font-size:10px;color:var(--txt2);margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+      <span class="stat-badge">🃏 C/Resumen: stock del período vs meta interpolada</span>
+      <span class="stat-badge" style="background:#e6f4f8;border-color:#b3d8e5">📄 Acreditaciones: acumulado FAC Procesadoras</span>
+    </div>
+  </div>
   <!-- Tabla por sucursal -->
   <div class="tcard">
     <div class="thead2">
-      <span class="tti">Cumplimiento por sucursal</span>
+      <span class="ttit">Cumplimiento por sucursal</span>
       <span id="metas-tabla-sub" style="font-size:10px;color:var(--txt2);margin-left:8px"></span>
     </div>
     <div class="twrap">
@@ -1533,6 +1613,15 @@ id="page-pyme">
     <span id="facmp-cuit-result" style="font-size:11px;color:var(--txt2);font-weight:600;white-space:nowrap"></span>
   </div>
 
+  <!-- Evolución mensual acreditaciones FACMP -->
+  <div class="card full" style="margin-bottom:12px">
+    <div class="ctit" id="facmp-evo-tit">📈 Evolución mensual de acreditaciones +Pagos</div>
+    <div class="g2" style="margin-bottom:8px">
+      <div><span class="mlbl">Total acumulado</span><div class="mval" id="facmp-evo-total" style="color:var(--az2)">—</div></div>
+      <div><span class="mlbl">Mejor mes</span><div class="mval" id="facmp-evo-mejor" style="color:var(--vrd)">—</div></div>
+    </div>
+    <div class="cw" style="height:200px"><canvas id="c-facmp-evo"></canvas></div>
+  </div>
   <!-- Rankings -->
   <div style="display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap">
     <div id="facmp-ranking-suc" style="flex:1;min-width:220px"></div>
@@ -1559,398 +1648,6 @@ id="page-pyme">
   </div>
 </div>
 
-
-
-// ══════════════════════════════════════════════════════
-// NUEVAS FUNCIONES: CUIT/Razón Social en tablas MARC/SN/VIAJA
-// ══════════════════════════════════════════════════════
-
-function buscarEnTabla(tipo){
-  const cuitEl = document.getElementById(tipo+'-cuit-input');
-  const rsEl   = document.getElementById(tipo+'-rs-input');
-  const resEl  = document.getElementById(tipo+'-cuit-result');
-  const q1 = (cuitEl?.value||'').trim().toLowerCase();
-  const q2 = (rsEl?.value||'').trim().toLowerCase();
-  if(!q1&&!q2){limpiarBusqueda(tipo);return;}
-
-  const tabla = document.getElementById('t-'+tipo);
-  if(!tabla) return;
-  let matches=0;
-  tabla.querySelectorAll('tr').forEach(tr=>{
-    const txt = tr.textContent.toLowerCase();
-    const match = (!q1||txt.includes(q1))&&(!q2||txt.includes(q2));
-    tr.classList.toggle('cuit-row-match', match);
-    if(match) matches++;
-    tr.style.display=(q1||q2)?(!match&&tipo!=='all'?'none':''):'';
-  });
-  if(resEl) resEl.textContent = matches>0?matches+' resultado(s)':'Sin resultados';
-}
-
-function limpiarBusqueda(tipo){
-  const cuitEl = document.getElementById(tipo+'-cuit-input');
-  const rsEl   = document.getElementById(tipo+'-rs-input');
-  const resEl  = document.getElementById(tipo+'-cuit-result');
-  if(cuitEl) cuitEl.value='';
-  if(rsEl) rsEl.value='';
-  if(resEl) resEl.textContent='';
-  const tabla = document.getElementById('t-'+tipo);
-  if(tabla) tabla.querySelectorAll('tr').forEach(tr=>{
-    tr.classList.remove('cuit-row-match');
-    tr.style.display='';
-  });
-}
-
-function buscarEnTablaPyme(){
-  const q1=(document.getElementById('pyme-cuit-input')?.value||'').trim().toLowerCase();
-  const q2=(document.getElementById('pyme-rs-input')?.value||'').trim().toLowerCase();
-  const res=document.getElementById('pyme-cuit-result');
-  if(!q1&&!q2){limpiarBusquedaPyme();return;}
-  // Buscar en DD.pyme
-  const src=DD.pyme||[];
-  const matches=src.filter(r=>{
-    const cuit=(r['CUIT']||'').toString().toLowerCase();
-    const nom=((r['Apellido']||'')+' '+(r['Nombre']||'')).toLowerCase();
-    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
-  });
-  if(res) res.textContent=matches.length+' resultado(s)';
-  // Highlight en tabla
-  const tbody=document.getElementById('t-pyme');
-  if(tbody) tbody.querySelectorAll('tr').forEach((tr,i)=>{
-    tr.classList.toggle('cuit-row-match', i<matches.length);
-    tr.style.display='';
-  });
-  if(matches.length>0){
-    openDD('PyMENación · Búsqueda',
-      matches.length+' cuentas · CUIT: '+q1,
-      ['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Sucursal','Actividad','Observaciones'],
-      matches.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',
-        `<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,
-        r['Sucursal']||'—',r['Actividad de la Pyme']||'—',r['Observaciones']||'—']),
-      matches);
-  }
-}
-function limpiarBusquedaPyme(){
-  ['pyme-cuit-input','pyme-rs-input'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  const r=document.getElementById('pyme-cuit-result');if(r)r.textContent='';
-  document.getElementById('t-pyme')?.querySelectorAll('tr').forEach(tr=>tr.classList.remove('cuit-row-match'));
-}
-
-function buscarEnTablaAgro(){
-  const q1=(document.getElementById('agro-cuit-input')?.value||'').trim().toLowerCase();
-  const q2=(document.getElementById('agro-rs-input')?.value||'').trim().toLowerCase();
-  const res=document.getElementById('agro-cuit-result');
-  if(!q1&&!q2){limpiarBusquedaAgro();return;}
-  const src=DD.agro||[];
-  const matches=src.filter(r=>{
-    const cuit=(r['CUIT']||'').toString().toLowerCase();
-    const nom=((r['Apellido']||'')+' '+(r['Nombre']||'')).toLowerCase();
-    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
-  });
-  if(res) res.textContent=matches.length+' resultado(s)';
-  if(matches.length>0){
-    openDD('AgroNación · Búsqueda',
-      matches.length+' cuentas',
-      ['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Sucursal','Observaciones'],
-      matches.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',
-        `<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,
-        r['Sucursal']||'—',r['Observaciones']||'—']),
-      matches);
-  }
-}
-function limpiarBusquedaAgro(){
-  ['agro-cuit-input','agro-rs-input'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  const r=document.getElementById('agro-cuit-result');if(r)r.textContent='';
-}
-
-// ══════════════════════════════════════════════════════
-// CONSUMO CARDS — actualizar datos en renderizado
-// ══════════════════════════════════════════════════════
-
-function updateConsumoCards(tipo, rows){
-  const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-  const pM=v=>parseMonto(v||0);
-  const setC=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-
-  if(tipo==='pyme'||tipo==='agro'){
-    const c26=rows.reduce((a,r)=>a+pM(r['Compras 2026']),0);
-    const c25=rows.reduce((a,r)=>a+pM(r['Compras 2025']),0);
-    const lim=rows.reduce((a,r)=>a+pM(r['Límite de Compra']),0);
-    const act=rows.filter(r=>pM(r['Compras 2026'])>0).length;
-    const crec=c25>0?((c26-c25)/c25*100).toFixed(1)+'%':'—';
-    const uso=lim>0?(c26/lim*100).toFixed(1)+'%':'—';
-    setC(tipo+'-consumo-2026', fmtV(c26));
-    setC(tipo+'-consumo-2025', fmtV(c25));
-    setC(tipo+'-consumo-crec', crec);
-    setC(tipo+'-consumo-lim', fmtV(lim));
-    setC(tipo+'-consumo-uso', uso);
-    setC(tipo+'-consumo-act', act.toLocaleString('es-AR'));
-    // Panel de negocio
-    generateNegociosPanel(tipo, rows);
-  }
-
-  if(tipo==='corp'){
-    const lim=rows.reduce((a,r)=>a+pM(r['Lim.Compra']),0);
-    const rem=rows.reduce((a,r)=>a+pM(r['Reman Compra']),0);
-    const sal=rows.reduce((a,r)=>a+pM(r['Imp Sal Ant']),0);
-    const pag=rows.reduce((a,r)=>a+pM(r['PAGOS']),0);
-    const uso=lim>0?((lim-rem)/lim*100).toFixed(1)+'%':'—';
-    const pct=sal>0?(pag/sal*100).toFixed(1)+'%':'—';
-    setC('corp-consumo-lim', fmtV(lim));
-    setC('corp-consumo-rem', fmtV(rem));
-    setC('corp-consumo-uso', uso);
-    setC('corp-consumo-sal', fmtV(sal));
-    setC('corp-consumo-pag', fmtV(pag));
-    setC('corp-consumo-pct', pct);
-  }
-
-  if(tipo==='bna'){
-    const comp=rows.reduce((a,r)=>a+pM(r['COMPRAS 2026']),0);
-    const vent=rows.reduce((a,r)=>a+pM(r['VENTAS 2026']),0);
-    const total=comp+vent;
-    const act=rows.filter(r=>pM(r['COMPRAS 2026'])>0||pM(r['VENTAS 2026'])>0).length;
-    const pct=rows.length>0?(act/rows.length*100).toFixed(1)+'%':'—';
-    setC('bna-consumo-comp', fmtV(comp));
-    setC('bna-consumo-vent', fmtV(vent));
-    setC('bna-consumo-total', fmtV(total));
-    setC('bna-consumo-activas', act.toLocaleString('es-AR'));
-    setC('bna-consumo-pct', pct);
-    setC('bna-consumo-inact', (rows.length-act).toLocaleString('es-AR'));
-  }
-}
-
-// Panel de potencial de negocio
-function generateNegociosPanel(tipo, rows){
-  const panelEl=document.getElementById(tipo+'-negocios-panel');
-  if(!panelEl) return;
-  const contentEl=document.getElementById(tipo+'-negocios-content');
-  if(!contentEl) return;
-
-  const pM=v=>parseMonto(v||0);
-  const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-
-  const sinActividad=rows.filter(r=>pM(r['Compras 2026'])<=0);
-  const limOcioso=sinActividad.reduce((a,r)=>a+pM(r['Límite de Compra']),0);
-  const bajouseRows=rows.filter(r=>{const lim=pM(r['Límite de Compra']);const c26=pM(r['Compras 2026']);return lim>0&&c26>0&&c26/lim<0.1;});
-  const potencial=bajouseRows.reduce((a,r)=>{const lim=pM(r['Límite de Compra']);const c26=pM(r['Compras 2026']);return a+(lim-c26);},0);
-
-  contentEl.innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-      <div style="background:var(--roj-cl);border-radius:8px;padding:10px;border:1px solid #f0c0be">
-        <div style="font-size:9px;font-weight:800;color:var(--roj);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">⚠️ Sin actividad 2026</div>
-        <div style="font-size:18px;font-weight:800;color:var(--roj)">${sinActividad.length} cuentas</div>
-        <div style="font-size:10px;color:var(--txt2)">Límite ocioso: <b>${fmtV(limOcioso)}</b></div>
-      </div>
-      <div style="background:var(--nrj-cl);border-radius:8px;padding:10px;border:1px solid #ffd59e">
-        <div style="font-size:9px;font-weight:800;color:var(--nrj);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">📈 Bajo uso (&lt;10%)</div>
-        <div style="font-size:18px;font-weight:800;color:var(--nrj)">${bajouseRows.length} cuentas</div>
-        <div style="font-size:10px;color:var(--txt2)">Potencial: <b>${fmtV(potencial)}</b></div>
-      </div>
-    </div>
-    <div style="font-size:10px;color:var(--txt2);background:var(--gris);border-radius:6px;padding:8px">
-      <b style="color:var(--bna-marino)">💡 Acciones recomendadas:</b>
-      <ul style="margin:4px 0 0 14px;padding:0">
-        ${sinActividad.length>0?`<li>Gestionar activación de <b>${sinActividad.length} cuentas</b> sin compras 2026</li>`:''}
-        ${bajouseRows.length>0?`<li>Potenciar uso en <b>${bajouseRows.length} cuentas</b> con uso <10% del límite</li>`:''}
-        <li>Revisar límites de cuentas con saldo pendiente</li>
-        <li>Contactar titulares con límites altos y sin actividad</li>
-      </ul>
-    </div>
-  `;
-}
-
-// ══════════════════════════════════════════════════════
-// PATCH: Actualizar renderPYME, renderAGRO, renderCORP, renderBNA
-// para llamar a updateConsumoCards
-// ══════════════════════════════════════════════════════
-const _origRenderPYME=renderPYME;
-renderPYME=function(rows){_origRenderPYME(rows);updateConsumoCards('pyme',rows||DD.pyme||[]);};
-const _origRenderAGRO=renderAGRO;
-renderAGRO=function(rows){_origRenderAGRO(rows);updateConsumoCards('agro',rows||DD.agro||[]);};
-const _origRenderCORP=renderCORP;
-renderCORP=function(rows){_origRenderCORP(rows);updateConsumoCards('corp',rows||DD.corp||[]);};
-const _origRenderBNA=renderBNA;
-renderBNA=function(rows){_origRenderBNA(rows);updateConsumoCards('bna',rows||DD.bna||[]);};
-
-// ══════════════════════════════════════════════════════
-// CUIT search in MARC/SN/VIAJA: show results as DD
-// ══════════════════════════════════════════════════════
-function marcSearchDD(){
-  const q1=(document.getElementById('marc-cuit-input')?.value||'').trim().toLowerCase();
-  const q2=(document.getElementById('marc-rs-input')?.value||'').trim().toLowerCase();
-  if(!q1&&!q2){limpiarBusqueda('marc');return;}
-  const src=(DD.marc||[]).filter(r=>['CATAMARCA','La Rioja','LA RIOJA'].some(p=>(r['PROVINCIA']||'').toUpperCase().includes(p.toUpperCase())));
-  const matches=src.filter(r=>{
-    const cuit=(r['CUIT']||'').toString().toLowerCase();
-    const nom=((r['NOMBRE DEL COMERCIO']||'')+' '+(r['RAZON SOCIAL']||'')).toLowerCase();
-    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
-  });
-  const res=document.getElementById('marc-cuit-result');
-  if(res) res.textContent=matches.length+' resultado(s)';
-  if(matches.length>0){
-    openDD('Marcatón · Búsqueda: '+q1+(q2?' / '+q2:''),
-      matches.length+' comercios',
-      ['Comercio','CUIT','Sucursal','Adquirente','Rubro','Alta/Baja','Acepta BNA+'],
-      matches.map(r=>[r['NOMBRE DEL COMERCIO']||'—',r['CUIT']||'—',r['SUCURSAL']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['RUBRO']||'—',
-        `<span class="pill ${(r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu'}">${r['ALTA / BAJA']||'—'}</span>`,
-        r['ACEPTA BNA+:']||'—']),
-      matches);
-  }
-}
-function snSearchDD(){
-  const q1=(document.getElementById('sn-cuit-input')?.value||'').trim().toLowerCase();
-  const q2=(document.getElementById('sn-rs-input')?.value||'').trim().toLowerCase();
-  if(!q1&&!q2){limpiarBusqueda('sn');return;}
-  const src=DD.sn||[];
-  const matches=src.filter(r=>{
-    const cuit=(r['CUIT']||'').toString().toLowerCase();
-    const nom=(r['NOMBRE DEL COMERCIO']||'').toLowerCase();
-    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
-  });
-  const res=document.getElementById('sn-cuit-result');
-  if(res) res.textContent=matches.length+' resultado(s)';
-  if(matches.length>0){
-    openDD('SN/AE · Búsqueda: '+q1+(q2?' / '+q2:''),
-      matches.length+' comercios',
-      ['Comercio','CUIT','Sucursal','Adquirente','Rubro','Alta/Baja','Acepta BNA+'],
-      matches.map(r=>[r['NOMBRE DEL COMERCIO']||'—',r['CUIT']||'—',r['SUCURSAL']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['RUBRO']||'—',
-        `<span class="pill ${(r['ALTA / BAJA']||'').toUpperCase()==='ALTA'?'p-act':'p-chu'}">${r['ALTA / BAJA']||'—'}</span>`,
-        r['ACEPTA BNA+:']||'—']),
-      matches);
-  }
-}
-function viajaSearchDD(){
-  const q1=(document.getElementById('viaja-cuit-input')?.value||'').trim().toLowerCase();
-  const q2=(document.getElementById('viaja-rs-input')?.value||'').trim().toLowerCase();
-  if(!q1&&!q2){limpiarBusqueda('viaja');return;}
-  const src=DD.viaja||[];
-  const matches=src.filter(r=>{
-    const cuit=(r['CUIT']||'').toString().toLowerCase();
-    const nom=(r['NOMBRE DEL COMERCIO']||'').toLowerCase();
-    return (!q1||cuit.includes(q1)||nom.includes(q1))&&(!q2||nom.includes(q2)||cuit.includes(q2));
-  });
-  const res=document.getElementById('viaja-cuit-result');
-  if(res) res.textContent=matches.length+' resultado(s)';
-  if(matches.length>0){
-    openDD('Viaja+ · Búsqueda: '+q1+(q2?' / '+q2:''),
-      matches.length+' agencias',
-      ['Comercio','CUIT','Sucursal','Adquirente','Rubro','Acepta BNA+'],
-      matches.map(r=>[r['NOMBRE DEL COMERCIO']||'—',r['CUIT']||'—',r['SUCURSAL']||'—',r['ADQUIRENTE - PRISMA / FISERV / MAS PAGOS']||'—',r['RUBRO']||'—',r['ACEPTA BNA+:']||'—']),
-      matches);
-  }
-}
-
-// ══════════════════════════════════════════════════════
-// BUSCADOR CUIT/RS EN FACTURACIÓN +PAGOS
-// ══════════════════════════════════════════════════════
-function buscarEnFACMP(){
-  const q1=(document.getElementById('facmp-cuit-input')?.value||'').trim().toLowerCase().replace(/[-\s]/g,'');
-  const q2=(document.getElementById('facmp-rs-input')?.value||'').trim().toLowerCase();
-  const resEl=document.getElementById('facmp-cuit-result');
-
-  if(!q1&&!q2){limpiarBusquedaFACMP();return;}
-
-  // Tomar filas del mes/filtro actual
-  const base=getFACMPRows();
-  if(!base.length){
-    if(resEl) resEl.textContent='Sin datos cargados';
-    return;
-  }
-
-  const matches=base.filter(r=>{
-    const cuit=(r['CUIT']||'').toString().replace(/[-\s]/g,'').toLowerCase();
-    const rs=(r['RAZONSOCIAL']||r['Razon Social']||'').toLowerCase();
-    return (!q1||(cuit.includes(q1)||rs.includes(q1)))&&(!q2||rs.includes(q2)||cuit.includes(q2));
-  });
-
-  if(resEl) resEl.textContent=matches.length>0?matches.length+' resultado(s)':'Sin resultados';
-
-  // Resaltar en tabla
-  const tbody=document.getElementById('t-facmp');
-  if(tbody){
-    const trs=tbody.querySelectorAll('tr');
-    trs.forEach(tr=>{
-      const txt=tr.textContent.toLowerCase().replace(/[-\s]/g,'');
-      const m=(!q1||txt.includes(q1))&&(!q2||tr.textContent.toLowerCase().includes(q2));
-      tr.classList.toggle('cuit-row-match',m);
-      tr.style.display='';
-    });
-  }
-
-  // Mostrar en drill-down si hay resultados
-  if(matches.length>0){
-    const pN=v=>parseFloat((v||'0').toString().replace(/[$\s.]/g,'').replace(',','.'))||0;
-    const fmtV=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-    const totalNeto=matches.reduce((a,r)=>a+pN(r['NETO']),0);
-    // Agrupar por tipo
-    const porTipo={};
-    matches.forEach(r=>{const t=r['Tipo']||'—';if(!porTipo[t])porTipo[t]=0;porTipo[t]+=pN(r['NETO']);});
-    const tipoStr=Object.entries(porTipo).map(([t,v])=>`${t}: ${fmtV(v)}`).join(' · ');
-
-    openDD(
-      'Facturación +Pagos · '+( (matches[0]||{})['RAZONSOCIAL'] || q1 || q2 ),
-      matches.length+' registro(s) · Total: '+fmtV(totalNeto),
-      ['Razón Social','CUIT','Tipo','Neto $','Sucursal','Mes'],
-      matches.map(r=>[
-        r['RAZONSOCIAL']||'—',
-        r['CUIT']||'—',
-        `<span class="pill p-az" style="font-size:9px">${r['Tipo']||'—'}</span>`,
-        '<b>$'+Math.round(pN(r['NETO'])).toLocaleString('es-AR')+'</b>',
-        (r['SUCURSAL']||'—').replace(/^\d+-/,'').trim(),
-        r['_mes']||'—'
-      ]),
-      matches
-    );
-  }
-}
-
-function limpiarBusquedaFACMP(){
-  ['facmp-cuit-input','facmp-rs-input'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  const r=document.getElementById('facmp-cuit-result');if(r)r.textContent='';
-  const tbody=document.getElementById('t-facmp');
-  if(tbody) tbody.querySelectorAll('tr').forEach(tr=>{tr.classList.remove('cuit-row-match');tr.style.display='';});
-}
-
-
-// Wire up marc/sn/viaja search buttons
-document.addEventListener('DOMContentLoaded',function(){
-  // Replace onclick="buscarEnTabla" with proper functions for marc/sn/viaja
-  const marcBtn=document.querySelector('#marc-cuit-bar button');
-  if(marcBtn) marcBtn.onclick=marcSearchDD;
-  document.querySelectorAll('[onclick*="buscarEnTabla('marc')"]').forEach(e=>e.onclick=marcSearchDD);
-  document.querySelectorAll('[onclick*="buscarEnTabla('sn')"]').forEach(e=>e.onclick=snSearchDD);
-  document.querySelectorAll('[onclick*="buscarEnTabla('viaja')"]').forEach(e=>e.onclick=viajaSearchDD);
-});
-
-// ══════════════════════════════════════════════════════
-// METAS: Agregar filtro de más meses
-// ══════════════════════════════════════════════════════
-// Agregar meses faltantes al selector de Metas
-document.addEventListener('DOMContentLoaded', function(){
-  const sel = document.getElementById('f-metas-mes');
-  if(sel){
-    const mesesFaltantes = [
-      {v:'2026-04',l:'Abr 2026'},{v:'2026-05',l:'May 2026'},
-      {v:'2026-06',l:'Jun 2026'},{v:'2026-07',l:'Jul 2026'},
-      {v:'2026-08',l:'Ago 2026'},{v:'2026-09',l:'Sep 2026'},
-      {v:'2026-10',l:'Oct 2026'},{v:'2026-11',l:'Nov 2026'},
-      {v:'2026-12',l:'Dic 2026'}
-    ];
-    mesesFaltantes.forEach(m=>{
-      if(!sel.querySelector('option[value="'+m.v+'"]')){
-        const o=document.createElement('option');
-        o.value=m.v; o.textContent=m.l;
-        sel.appendChild(o);
-      }
-    });
-  }
-});
-
-
-
-
-
-</div><!-- end main-content -->
-</div><!-- end body-wrap -->
 
 <script>
 // eliminado
@@ -2437,7 +2134,7 @@ function renderFAC(rows){
 
   rankFAC(rows);
 
-  if(typeof renderMetas==='function') renderMetas();
+  if(typeof renderMetas==='function') setTimeout(()=>{ try{renderMetas();}catch(e){console.error('[METAS rFAC]',e);} },300);
 }
 function applyFilterFAC(){
   const suc=document.getElementById('f-fac-suc').value;
@@ -3742,22 +3439,19 @@ function renderFacEvo(rows){
 
   const p$=v=>parseFloat((v||'0').toString().replace(/[\$\.]/g,'').replace(',','.'))||0;
 
-  // Detectar columnas de meses por fecha (Apps Script: "26/MM/2026")
-  const colsDetObj={};
-  for(let mi=1;mi<=12;mi++){
-    const col=getFacColByMonth(rows,mi);
-    if(col){
-      const hd=rows.some(r=>{const v=(r[col]||'').toString().replace(/[$\s,]/g,'').trim();return v&&v!=='-'&&(parseFloat(v.replace(/\./g,'').replace(',','.'))||0)>0;});
-      if(hd) colsDetObj[mi]=col;
-    }
+  // Detectar columnas de meses (buscar "Total") 
+  const sample=rows[0]||{};
+  const colsMes=Object.keys(sample).filter(k=>/total/i.test(k)&&/\d{2,4}/.test(k));
+  if(colsMes.length===0){ 
+    // fallback a las columnas hardcodeadas
+    const fallback=['Total  ENERO 26','Total  FEBRERO 26'];
+    colsMes.push(...fallback.filter(c=>sample[c]!==undefined));
   }
-  const colsMes=Object.values(colsDetObj);
-  const MESES_N2=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const getMesLabel=col=>{const m=Object.entries(colsDetObj).find(([,c])=>c===col);return m?MESES_N2[parseInt(m[0])]:col.slice(0,3);};
+  
   if(colsMes.length===0) return;
 
   // Calcular total por columna-mes
-  const totalesPorMes=colsMes.map(col=>rows.reduce((a,r)=>a+parseMontoFAC(r[col]),0));
+  const totalesPorMes=colsMes.map(col=>rows.reduce((a,r)=>a+p$(r[col]),0));
   const labels=colsMes.map(col=>{
     const m=col.match(/(ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC|ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SEPTIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE)/i);
     if(m) return m[1].charAt(0).toUpperCase()+m[1].slice(1,3).toLowerCase();
@@ -3770,8 +3464,8 @@ function renderFacEvo(rows){
   const tend=totalesPorMes.length>=2?
     totalesPorMes[totalesPorMes.length-1]-totalesPorMes[totalesPorMes.length-2]:0;
 
-  const nB=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-  const nM=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const nB=v=>'$'+(v/1e9).toFixed(2)+'B';
+  const nM=v=>'$'+(v/1e6).toFixed(0)+'M';
 
   const setEl=(id,v,color)=>{
     const el=document.getElementById(id);
@@ -4034,41 +3728,24 @@ function rankBNA(rows){
 
 // ── Ranking FAC por sucursal y top facturadores ──
 function rankFAC(rows){
+  const p$=v=>{let s=(v||'0').toString().replace(/[$\s]/g,'').trim();if(!s||s==='-'||s==='—')return 0;const hD=s.includes('.'),hC=s.includes(',');if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}else if(!hD&&hC){s=s.replace(',','.');}return parseFloat(s)||0;};
   const fac=document.getElementById('f-fac-suc')?.value||'';
   const filtered=fac?rows.filter(r=>r['Sucursal']&&r['Sucursal'].includes(fac)):rows;
-
-  // Detectar columnas de meses dinámicamente (Apps Script envía "26/MM/2026")
-  const detCols={};
-  for(let m=1;m<=12;m++){
-    const col=getFacColByMonth(filtered.length?filtered:rows, m);
-    if(col) detCols[m]=col;
-  }
-  console.log('[FAC rankFAC] Columnas detectadas:', detCols);
-
-  const p$=v=>{
-    let s=(v||'0').toString().replace(/[$\s]/g,'').trim();
-    if(!s||s==='-'||s==='—')return 0;
-    const hD=s.includes('.'),hC=s.includes(',');
-    if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}
-    else if(!hD&&hC){s=s.replace(',','.');}
-    return parseFloat(s)||0;
-  };
-
-  // Por sucursal — sumar todos los meses detectados
+  // Detect ALL month columns dynamically
+  const sample=filtered[0]||rows[0]||{};
+  const colsMes=Object.keys(sample).filter(k=>/total/i.test(k)&&(/\d{2,4}/.test(k)||/ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC/i.test(k)));
+  const MESES_ORDER=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+  colsMes.sort((a,b)=>{const ma=MESES_ORDER.findIndex(m=>a.toUpperCase().includes(m));const mb=MESES_ORDER.findIndex(m=>b.toUpperCase().includes(m));return ma-mb;});
+  const getMesLabel=col=>{const m=col.match(/(ENE|FEB|MAR|ABR|MAY|JUN|JUL|AGO|SEP|OCT|NOV|DIC|ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SEPTIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE)/i);return m?m[1].slice(0,3):'?';};
+  // Por sucursal — sumar todos los meses
   const gSuc={};
   filtered.forEach(r=>{
     const s=r['Sucursal']||'—';
     const cod=s.replace(/^\d+-/,'').trim();
-    if(!gSuc[cod])gSuc[cod]={suc:cod,total:0,porMes:{}};
-    const MESES_N=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-    Object.entries(detCols).forEach(([m,col])=>{
-      const v=p$(r[col]||0);
-      gSuc[cod].total+=v;
-      const lbl=MESES_N[parseInt(m)];
-      gSuc[cod].porMes[lbl]=(gSuc[cod].porMes[lbl]||0)+v;
-    });
+    if(!gSuc[cod]){gSuc[cod]={suc:cod,total:0,porMes:{}};}
+    colsMes.forEach(col=>{const v=p$(r[col]);gSuc[cod].total+=v;gSuc[cod].porMes[col]=(gSuc[cod].porMes[col]||0)+v;});
   });
-  const sucArr=Object.values(gSuc).filter(x=>x.total>0).sort((a,b)=>b.total-a.total);
+  const sucArr=Object.values(gSuc).sort((a,b)=>b.total-a.total);
   const topSuc=sucArr.slice(0,8);
   const mx=topSuc[0]?.total||1;
   const medal=['🥇','🥈','🥉','4°','5°','6°','7°','8°'];
@@ -4089,7 +3766,7 @@ function rankFAC(rows){
           <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
             <div style="width:${(x.total/mx*100).toFixed(0)}%;height:100%;background:#4EBFA4;border-radius:4px"></div>
           </div>
-          <div style="font-size:8px;color:#888">${Object.entries(x.porMes||{}).map(([m,v])=>m+': '+fmtM(v)).join(' · ')}</div>
+          <div style="font-size:8px;color:#888">Ene: ${fmtM(x.ene)} · Feb: ${fmtM(x.feb)}</div>
         </div>`).join('')}
     </div>`;
 
@@ -4100,11 +3777,11 @@ function rankFAC(rows){
     if(!k) return;
     const nom=(r['Razon Social / Apellido']||r['RAZONSOCIAL']||k).toString().trim().slice(0,28);
     const suc=(r['Sucursal']||'').replace(/^\d+-/,'').trim();
-    if(!gCUIT[k])gCUIT[k]={nom,suc,total:0};
-    // usar columnas detectadas dinámicamente
-    Object.entries(detCols).forEach(([m,col])=>{gCUIT[k].total+=p$(r[col]||0);});
+    if(!gCUIT[k])gCUIT[k]={nom,suc,ene:0,feb:0};
+    gCUIT[k].ene+=p$(r['Total  ENERO 26']);
+    gCUIT[k].feb+=p$(r['Total  FEBRERO 26']);
   });
-  const topFac=Object.values(gCUIT)
+  const topFac=Object.values(gCUIT).map(x=>({...x,total:x.ene+x.feb}))
     .filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8);
   const mxF=topFac[0]?.total||1;
 
@@ -4243,6 +3920,43 @@ function renderFACMP(rows){
   // Total y contador
   const totalNeto = rows.reduce((a,r) => a+pN(r['NETO']),0);
   document.getElementById('facmp-total').textContent = nf(rows.length);
+  // ─ Evolución mensual ─
+  if(FACMP_MESES.length>0){
+    const mesesLabels = FACMP_MESES.map(mesShortLabel);
+    const totalesPorMes = FACMP_MESES.map(h=>(FACMP_DATA[h]||[]).reduce((a,r)=>a+pN(r['NETO']),0));
+    const totalAcum = totalesPorMes.reduce((a,v)=>a+v,0);
+    const mejorIdx = totalesPorMes.indexOf(Math.max(...totalesPorMes));
+    const elT=document.getElementById('facmp-evo-total');
+    const elM=document.getElementById('facmp-evo-mejor');
+    const elTit=document.getElementById('facmp-evo-tit');
+    if(elT) elT.textContent = fmtM(totalAcum);
+    if(elM) elM.textContent = totalesPorMes.length>0 ? fmtM(totalesPorMes[mejorIdx])+' ('+mesesLabels[mejorIdx]+')' : '—';
+    if(elTit) elTit.textContent = '📈 Evolución mensual · '+mesesLabels.join(' → ')+' · Total: '+fmtM(totalAcum);
+    const canEvo = document.getElementById('c-facmp-evo');
+    if(canEvo){
+      if(CH['c-facmp-evo']) CH['c-facmp-evo'].destroy();
+      CH['c-facmp-evo'] = new Chart(canEvo,{
+        type:'bar',
+        data:{
+          labels:mesesLabels,
+          datasets:[{
+            label:'Acreditaciones $',
+            data:totalesPorMes.map(v=>+(v/1e6).toFixed(1)),
+            backgroundColor:totalesPorMes.map((_,i)=>i===mejorIdx?'#007094':'rgba(0,112,148,.55)'),
+            borderRadius:5,borderColor:'#002056',borderWidth:1,
+          }]
+        },
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'M'}}},
+          scales:{
+            x:{ticks:{font:{size:11},color:'#002056'}},
+            y:{ticks:{font:{size:9},callback:v=>'$'+v+'M'},title:{display:true,text:'Millones $',font:{size:9}}}
+          }
+        }
+      });
+    }
+  }
+
   document.getElementById('fc-facmp').textContent = nf(rows.length)+' registros · '+fmtM(totalNeto)+' total';
   const statusEl = document.getElementById('facmp-status');
   if(statusEl) statusEl.style.display = (rows.length||FACMP_MESES.length) ? 'none' : 'block';
@@ -4354,41 +4068,16 @@ function exportFACMP(){
 // Acreditaciones: acumulado trimestral (FAC FISERV/Payway = hoja FACTURACION)
 
 // Normalizar nombre de sucursal para cruzar entre fuentes
-// normSuc: unifica nombres de sucursal de TODAS las hojas a las keys de META_RES
-// Fuentes: TC Individuos, FACTURACION (con cod), METAS_ACRED (sin cod), META_RES
 function normSuc(s){
   if(!s) return '';
-  let r = s.toString().toUpperCase().trim();
-  // 1. Quitar código numérico inicial (ej: "1795-F.MAMERTO ESQUIU" → "F.MAMERTO ESQUIU")
-  r = r.replace(/^\d+-/, '');
-  // 2. Normalizar variantes de Fray Mamerto Esquiú
-  if(r.includes('MAMERTO') || r.includes('ESQUIU') || r.includes('SQUIU'))
-    return 'FRAY MAMERTO ESQUIU';
-  // 3. Normalizar variantes de San Fernando del Valle de Catamarca
-  if(r.includes('S.F.V.') || r.includes('SFV') || r.includes('SAN FERN') ||
-     r.includes('SAN F.') || r.includes('CATAMARCA') && r.includes('VALLE'))
-    return 'SAN F. DEL V. DE CATAMARCA';
-  // 4. Normalizar variantes de Villa Dolores Catamarca
-  if(r.includes('VILLA DOLORES')){
-    return 'VILLA DOLORES (CAT)';
-  }
-  // 5. Normalizar San Fernando del Valle sin las variantes anteriores
-  if(r === 'SAN FERNANDO DEL VALLE DE CATAMARCA')
-    return 'SAN F. DEL V. DE CATAMARCA';
-  return r;
-}
-
-// normSucMeta: mapea nombres de META_ACRED a keys de META_RES
-// META_ACRED usa "F.MAMERTO ESQUIU", "S.F.V.CATAMARCA", "VILLA DOLORES-CAT"
-function normSucMeta(s){
-  if(!s) return '';
-  const MAP = {
-    'F.MAMERTO ESQUIU': 'FRAY MAMERTO ESQUIU',
-    'S.F.V.CATAMARCA':  'SAN F. DEL V. DE CATAMARCA',
-    'VILLA DOLORES-CAT': 'VILLA DOLORES (CAT)',
-  };
-  const up = s.toString().toUpperCase().trim();
-  return MAP[up] || up;
+  return s.toString().toUpperCase()
+    .replace(/^\d+-/,'')
+    .replace('SAN F. DEL V. DE CATAMARCA','SAN F. DEL V. DE CATAMARCA')
+    .replace('S.F.V.CATAMARCA','SAN F. DEL V. DE CATAMARCA')
+    .replace('VILLA DOLORES-CAT','VILLA DOLORES (CAT)')
+    .replace('F.MAMERTO ESQUIU','FRAY MAMERTO ESQUIU')
+    .replace('FRAY MAMERTO SQUIU','FRAY MAMERTO ESQUIU')
+    .trim();
 }
 
 // Metas Cuentas con Resumen TC (hitos trimestrales)
@@ -4477,25 +4166,10 @@ function getMetaRes(suc, mesStr){
   return null;
 }
 
-// getMetaAcred: busca la meta trimestral de acreditaciones para una sucursal
-// META_ACRED puede usar claves distintas a META_RES (abreviaturas)
-// Mapeo inverso: normaliza ambas partes para encontrar el match
-const _META_ACRED_NORM = {}; // cache: clave normalizada → clave original
-(function(){
-  Object.keys(META_ACRED).forEach(k=>{
-    _META_ACRED_NORM[normSuc(k)] = k;
-    // También mapear con normSucMeta por si las claves de META_ACRED tienen variantes
-  });
-})();
-
+// Obtener meta de acreditaciones según el mes (prorrateada al mes dentro del trimestre)
 function getMetaAcred(suc, mesStr){
-  // Buscar directamente o via clave normalizada
-  let m = META_ACRED[suc];
-  if(!m){
-    const normKey = _META_ACRED_NORM[suc] || _META_ACRED_NORM[normSuc(suc)];
-    if(normKey) m = META_ACRED[normKey];
-  }
-  if(!m) return null;
+  // Devuelve la META TRIMESTRAL COMPLETA (fija, no dividir por 3)
+  const m = META_ACRED[suc]; if(!m) return null;
   const [yy, mm] = mesStr.split('-').map(Number);
   if(mm>=1 &&mm<=3 ) return {meta:m.q1, q:'Q1', label:'Ene–Mar', mesesQ:[1,2,3]};
   if(mm>=4 &&mm<=6 ) return {meta:m.q2, q:'Q2', label:'Abr–Jun', mesesQ:[4,5,6]};
@@ -4504,256 +4178,234 @@ function getMetaAcred(suc, mesStr){
   return null;
 }
 
-// ── parseMontoFAC: parsea montos argentinos tipo "$ 165.017,86" o "165017.86" ──
-function parseMontoFAC(v){
-  if(!v && v !== 0) return 0;
-  let s = v.toString().replace(/[$\s]/g,'').trim();
-  if(!s || s==='-' || s==='—' || s==='-') return 0;
-  const hD = s.includes('.'), hC = s.includes(',');
-  if(hD && hC){ s = s.replace(/\./g,'').replace(',','.'); }
-  else if(!hD && hC){ s = s.replace(',','.'); }
-  return parseFloat(s) || 0;
-}
-
-// ── getFacColByMonth: detecta la columna real de FACTURACION para un mes dado ──
-// Apps Script envía fechas como "26/01/2026", "26/02/2026", etc. (dd/MM/yyyy)
-// También soporta variantes "01/01/2026" y nombres de texto como "Total ENERO 26"
-function getFacColByMonth(facRows, mesNum){
-  if(!facRows.length) return null;
-  const keys = Object.keys(facRows[0]);
-  const mm = mesNum.toString().padStart(2,'0');
-  // 1. Formato Apps Script: "26/MM/2026" o "01/MM/2026" o "DD/MM/YYYY"
-  const byDate = keys.find(k => {
-    const parts = k.split('/');
-    if(parts.length === 3 && parts[2] === '2026'){
-      return parseInt(parts[1]) === mesNum;
-    }
-    return false;
-  });
-  if(byDate) return byDate;
-  // 2. Formato texto con mes en español (fallback)
-  const nombres = ['','ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO',
-    'JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
-  const byName = keys.find(k =>
-    k.toUpperCase().includes('TOTAL') && k.toUpperCase().includes(nombres[mesNum])
-  );
-  if(byName) return byName;
-  // 3. Buscar cualquier key que contenga el número de mes en posición MM de fecha
-  const byNum = keys.find(k => {
-    const m = k.match(/^(\d{1,2})\/(\d{2})\/(\d{4})$/);
-    return m && parseInt(m[2]) === mesNum;
-  });
-  return byNum || null;
-}
-
-// ── getAcredTrimestre: acumula FAC PROCESADORAS por trimestre ──
-// Fuente: DD.fac (hoja FACTURACION) — NO usa Facturación +Pagos
-// Columnas: fechas "26/01/2026" enviadas por Apps Script
+// Acumula acreditaciones reales del trimestre (todos los meses con datos hasta mesStr)
 function getAcredTrimestre(mesStr){
   const facRows = DD.fac || [];
-  if(!facRows.length) return {porSuc:{}, mesesConDatos:0, colsEncontradas:{}};
-
-  const [yy, mm] = mesStr.split('-').map(Number);
-  let mesQ1, mesQ2;
-  if(mm>=1  && mm<=3 ){ mesQ1=1;  mesQ2=mm; }
-  else if(mm>=4  && mm<=6 ){ mesQ1=4;  mesQ2=mm; }
-  else if(mm>=7  && mm<=9 ){ mesQ1=7;  mesQ2=mm; }
-  else                      { mesQ1=10; mesQ2=mm; }
-
-  // Detectar columnas reales para cada mes del trimestre
-  const colsEncontradas = {};
-  const mesesConDatos = [];
-  for(let m2=mesQ1; m2<=mesQ2; m2++){
-    const col = getFacColByMonth(facRows, m2);
-    if(col){
-      // Verificar que tenga datos reales (no todo cero/vacío)
-      const tieneDatos = facRows.some(r => parseMontoFAC(r[col]) > 0);
-      if(tieneDatos){
-        colsEncontradas[m2] = col;
-        mesesConDatos.push(m2);
-      }
-    }
+  if(!facRows.length) return {porSuc:{}, mesesConDatos:0};
+  // Mapa de columna por mes numérico
+  const colPorMes = {
+    1:'Total  ENERO 26', 2:'Total  FEBRERO 26', 3:'Total  MARZO 26',
+    4:'Total  ABRIL 26',  5:'Total  MAYO 26',    6:'Total  JUNIO 26',
+    7:'Total  JULIO 26',  8:'Total  AGOSTO 26',  9:'Total  SEPTIEMBRE 26',
+   10:'Total  OCTUBRE 26',11:'Total  NOVIEMBRE 26',12:'Total  DICIEMBRE 26',
+  };
+  const p$ = v => {
+    let s=(v||'0').toString().replace(/[$\s]/g,'').trim();
+    if(!s||s==='—'||s==='-') return 0;
+    const hD=s.includes('.'), hC=s.includes(',');
+    if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}
+    else if(!hD&&hC){s=s.replace(',','.');}
+    return parseFloat(s)||0;
+  };
+  const [yy,mm]=mesStr.split('-').map(Number);
+  // Determinar qué meses del trimestre tienen datos en la hoja FAC
+  let mesQ1,mesQ2;
+  if(mm>=1 &&mm<=3 ){mesQ1=1; mesQ2=mm;}
+  else if(mm>=4&&mm<=6 ){mesQ1=4; mesQ2=mm;}
+  else if(mm>=7&&mm<=9 ){mesQ1=7; mesQ2=mm;}
+  else{mesQ1=10;mesQ2=mm;}
+  // Solo meses que tienen columna en el Sheet
+  const mesesARang=[];
+  for(let m2=mesQ1;m2<=mesQ2;m2++){
+    const col=colPorMes[m2];
+    if(!col) continue;
+    // Verificar que al menos un registro tiene dato en esa columna
+    const tieneDatos=facRows.some(r=>p$(r[col])>0);
+    if(tieneDatos) mesesARang.push(m2);
   }
-
-  // Debug log
-  console.log('[METAS FAC] Columnas detectadas:', colsEncontradas);
-  console.log('[METAS FAC] Meses con datos:', mesesConDatos);
-
-  // Acumular por sucursal normalizada
-  const porSuc = {};
-  facRows.forEach(r => {
-    const suc = normSuc(r['Sucursal'] || '');
-    if(!suc || suc === 'TOTAL ZONAL' || suc === 'NOA OESTE') return;
-    if(!porSuc[suc]) porSuc[suc] = 0;
-    mesesConDatos.forEach(m2 => {
-      porSuc[suc] += parseMontoFAC(r[colsEncontradas[m2]]);
+  const porSuc={};
+  facRows.forEach(r=>{
+    const suc=normSuc(r['Sucursal']||''); if(!suc) return;
+    if(!porSuc[suc]) porSuc[suc]=0;
+    mesesARang.forEach(m2=>{
+      const col=colPorMes[m2];
+      if(col) porSuc[suc]+=p$(r[col]||'0');
     });
   });
-
-  const MESES_LABELS = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  return {
-    porSuc,
-    mesesConDatos: mesesConDatos.length,
-    mesesLabel: mesesConDatos.map(m=>MESES_LABELS[m]).join('+'),
-    colsEncontradas
-  };
+  return {porSuc, mesesConDatos:mesesARang.length, mesesQ1, mesesQ2};
 }
 
 // ── Render principal de Metas ──
 function renderMetas(){
   const mesStr  = document.getElementById('f-metas-mes')?.value || '2026-01';
   const tipoVer = document.getElementById('f-metas-tipo')?.value || 'ambas';
-  const n = v => Number(v||0).toLocaleString('es-AR');
-  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-  const pctColor = p => p>=100?'var(--bna-verde)':p>=80?'var(--bna-naranja)':'#c0241c';
-  const pctEmoji = p => p>=100?'✅':p>=80?'⚠️':'🚨';
+  const nf  = v => Number(v||0).toLocaleString('es-AR');
+  const fmtB= v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const pctColor= p => p>=100?'#1a7a4a':p>=80?'#e07b00':'#b22222';
+  const pctEmoji= p => p>=100?'✅':p>=80?'⚠️':'🚨';
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  const setC=(id,c)=>{const el=document.getElementById(id);if(el)el.style.color=c;};
+  const setH=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
 
-  // ── Label mes ──
-  const meses = {'2025-12':'Dic 2025','2026-01':'Ene 2026','2026-02':'Feb 2026','2026-03':'Mar 2026',
-                 '2026-04':'Abr 2026','2026-05':'May 2026','2026-06':'Jun 2026','2026-07':'Jul 2026',
-                 '2026-08':'Ago 2026','2026-09':'Sep 2026','2026-10':'Oct 2026','2026-11':'Nov 2026','2026-12':'Dic 2026'};
-  const mesLabel = meses[mesStr] || mesStr;
-  const el = document.getElementById('metas-mes-lbl');
-  if(el) el.textContent = mesLabel;
+  // Mes label
+  const MESES_LAB={'2025-12':'Dic 2025','2026-01':'Ene 2026','2026-02':'Feb 2026','2026-03':'Mar 2026',
+    '2026-04':'Abr 2026','2026-05':'May 2026','2026-06':'Jun 2026','2026-07':'Jul 2026',
+    '2026-08':'Ago 2026','2026-09':'Sep 2026','2026-10':'Oct 2026','2026-11':'Nov 2026','2026-12':'Dic 2026'};
+  const mesLabel = MESES_LAB[mesStr]||mesStr;
+  set('metas-mes-lbl', mesLabel);
 
-  // ── C/Resumen: stock del período seleccionado ──
-  // Si el selector tiene un mes → usar ese mes
-  // Fallback: último mes disponible en TC_DATA
-  const todosLosMeses = TC_DATA.meses || [];
-  const mesParaRes = mesStr && todosLosMeses.includes(mesStr)
-    ? mesStr
-    : (todosLosMeses.length ? todosLosMeses[todosLosMeses.length-1] : null);
-  const tcRows = mesParaRes
-    ? (TC_DATA.records||[]).filter(r => r.mes === mesParaRes)
-    : [];
-  const resReal = {};
-  tcRows.forEach(r => { resReal[normSuc(r.suc)] = r.ctas_res || 0; });
+  // ─── META 1: Cuentas con Resumen TC ───
+  // STOCK: usar el MES SELECCIONADO de TC_DATA (no acumular)
+  // Si no hay datos para ese mes, usar el último disponible
+  const todosLosMeses = TC_DATA.meses||[];
+  let mesParaRes = mesStr;
+  if(!todosLosMeses.includes(mesStr)){
+    // Usar último mes disponible
+    mesParaRes = todosLosMeses.length ? todosLosMeses[todosLosMeses.length-1] : null;
+  }
+  const tcRows = mesParaRes ? (TC_DATA.records||[]).filter(r=>r.mes===mesParaRes) : [];
+  const resReal={};
+  tcRows.forEach(r=>{ resReal[normSuc(r.suc)] = r.ctas_res||0; });
+  const mesResLabel = mesParaRes ? (MESES_LAB[mesParaRes]||mesParaRes) : 'Sin datos';
+  const hasTCData = tcRows.length > 0;
 
-  // ── Acreditaciones: acumulado trimestral real ──
-  const mesStrAcred = (mesStr === '2025-12') ? '2026-01' : mesStr;
-  const acredTrim = getAcredTrimestre(mesStrAcred);
-  const acredReal = acredTrim.porSuc;
-  const mesesConDatos = acredTrim.mesesConDatos;
-  const facTieneDatos = mesesConDatos > 0;
-  const mesesLabel = acredTrim.mesesLabel || '';
-  console.log('[METAS] acredTrim:', acredTrim);
-  console.log('[METAS] Sucursales con datos FAC:', Object.keys(acredReal));
+  // ─── META 2: Acreditaciones (FAC Procesadoras) ───
+  // ACUMULAR las columnas de FAC según el trimestre del mes seleccionado
+  const facRows = DD.fac||[];
+  const p$=v=>{let s=(v||'0').toString().replace(/[$\s]/g,'').trim();
+    if(!s||s==='-'||s==='—')return 0;
+    const hD=s.includes('.'),hC=s.includes(',');
+    if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}else if(!hD&&hC){s=s.replace(',','.');}
+    return parseFloat(s)||0;};
+  const colPorMes={
+    1:'Total  ENERO 26',2:'Total  FEBRERO 26',3:'Total  MARZO 26',
+    4:'Total  ABRIL 26',5:'Total  MAYO 26',6:'Total  JUNIO 26',
+    7:'Total  JULIO 26',8:'Total  AGOSTO 26',9:'Total  SEPTIEMBRE 26',
+    10:'Total  OCTUBRE 26',11:'Total  NOVIEMBRE 26',12:'Total  DICIEMBRE 26',
+  };
+  // Also try single-space variants
+  const colPorMesAlt={
+    1:'Total ENERO 26',2:'Total FEBRERO 26',3:'Total MARZO 26',
+    4:'Total ABRIL 26',5:'Total MAYO 26',6:'Total JUNIO 26',
+    7:'Total JULIO 26',8:'Total AGOSTO 26',9:'Total SEPTIEMBRE 26',
+    10:'Total OCTUBRE 26',11:'Total NOVIEMBRE 26',12:'Total DICIEMBRE 26',
+  };
+  const getColVal=(row,mm)=>{
+    const c1=colPorMes[mm],c2=colPorMesAlt[mm];
+    if(c1&&row[c1]!==undefined) return p$(row[c1]);
+    if(c2&&row[c2]!==undefined) return p$(row[c2]);
+    // try case-insensitive
+    const target='total'+(mm<=9?('0'+mm):mm);
+    const k=Object.keys(row).find(k=>k.toLowerCase().replace(/[^a-z0-9]/g,'').includes(target.replace(/[^a-z0-9]/g,'')));
+    return k?p$(row[k]):0;
+  };
+  const [yy,mm] = mesStr.split('-').map(Number);
+  let mesQ1,mesQ2,qLabel,qKey;
+  if(mm>=1&&mm<=3){mesQ1=1;mesQ2=mm;qLabel='Q1 (Ene–Mar)';qKey='q1';}
+  else if(mm>=4&&mm<=6){mesQ1=4;mesQ2=mm;qLabel='Q2 (Abr–Jun)';qKey='q2';}
+  else if(mm>=7&&mm<=9){mesQ1=7;mesQ2=mm;qLabel='Q3 (Jul–Sep)';qKey='q3';}
+  else{mesQ1=10;mesQ2=mm;qLabel='Q4 (Oct–Dic)';qKey='q4';}
 
-  // ── Construir filas por sucursal ──
-  const sucs = Object.keys(META_RES);
-  const rows = sucs.map(suc => {
-    // C/Resumen — meta = hito trimestral interpolado, real = stock actual
-    const metaRes  = getMetaRes(suc, mesParaRes || mesStr);
-    const realRes  = resReal[suc] || 0;
-    const pctRes   = metaRes ? Math.round(realRes/metaRes*100) : null;
+  // Find which columns actually have data
+  const mesesConDatos=[];
+  for(let m2=mesQ1;m2<=mesQ2;m2++){
+    const hayDatos=facRows.some(r=>getColVal(r,m2)>0);
+    if(hayDatos) mesesConDatos.push(m2);
+  }
+  const acredPorSuc={};
+  facRows.forEach(r=>{
+    const suc=normSuc(r['Sucursal']||'');if(!suc)return;
+    if(!acredPorSuc[suc])acredPorSuc[suc]=0;
+    mesesConDatos.forEach(m2=>{acredPorSuc[suc]+=getColVal(r,m2);});
+  });
+  const hasFACData = mesesConDatos.length>0;
+  const mesesLabel = mesesConDatos.map(m=>['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m]).join('+');
 
-    // Acreditaciones — meta TRIMESTRAL completa, real = acumulado trimestre
-    const acredObj  = getMetaAcred(suc, mesStrAcred);
-    const metaAcred = acredObj ? acredObj.meta : null;
-    const metaLabel = acredObj ? acredObj.q+' '+acredObj.label : '';
-    const realAcred = acredReal[suc] || 0;
-    const pctAcred  = (metaAcred && facTieneDatos) ? Math.round(realAcred/metaAcred*100) : null;
-
-    return { suc, metaRes, realRes, pctRes, metaAcred, metaLabel, realAcred, pctAcred, mesesConDatos };
+  // ─── BUILD ROWS ───
+  const sucs=Object.keys(META_RES);
+  const rows=sucs.map(suc=>{
+    const metaRes   = getMetaRes(suc, mesParaRes||mesStr);
+    const realRes   = resReal[suc]||0;
+    const pctRes    = (metaRes&&hasTCData) ? Math.round(realRes/metaRes*100) : null;
+    const acredObj  = META_ACRED[suc];
+    const metaAcred = acredObj ? acredObj[qKey] : null;
+    const realAcred = acredPorSuc[suc]||0;
+    const pctAcred  = (metaAcred&&hasFACData) ? Math.round(realAcred/metaAcred*100) : null;
+    return{suc,metaRes,realRes,pctRes,metaAcred,realAcred,pctAcred};
   });
 
-  // ── KPIs globales ──
+  // ─── KPIs GLOBALES ───
   const totRealRes   = rows.reduce((a,r)=>a+r.realRes,0);
   const totMetaRes   = rows.reduce((a,r)=>a+(r.metaRes||0),0);
   const totRealAcred = rows.reduce((a,r)=>a+r.realAcred,0);
   const totMetaAcred = rows.reduce((a,r)=>a+(r.metaAcred||0),0);
-  const pctGlbRes    = totMetaRes?Math.round(totRealRes/totMetaRes*100):0;
-  const pctGlbAcred  = totMetaAcred?Math.round(totRealAcred/totMetaAcred*100):0;
+  const pctGlbRes    = totMetaRes&&hasTCData ? Math.round(totRealRes/totMetaRes*100) : 0;
+  const pctGlbAcred  = totMetaAcred&&hasFACData ? Math.round(totRealAcred/totMetaAcred*100) : 0;
+  const cumplen      = rows.filter(r=>(r.pctRes||0)>=100).length;
 
-  const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
-  const setC= (id,c) => { const el=document.getElementById(id); if(el) el.style.color=c; };
-  set('metas-k1-real', n(totRealRes));
-  set('metas-k1-meta', 'meta: '+n(totMetaRes));
-  set('metas-k1-pct',  pctGlbRes+'%');
-  set('metas-k1-dif',  (totRealRes>=totMetaRes?'+':(totRealRes-totMetaRes<0?'':'+'))+n(totRealRes-totMetaRes)+' cuentas');
-  setC('metas-k1-pct', pctColor(pctGlbRes));
-  document.getElementById('metas-k1-pill').style.borderLeft='3px solid '+pctColor(pctGlbRes);
+  // KPI cards
+  setH('metas-k1-val', hasTCData
+    ? `<div style="font-size:28px;font-weight:900;color:${pctColor(pctGlbRes)}">${pctGlbRes}%</div><div style="font-size:12px;color:#666;margin-top:2px">${nf(totRealRes)} / meta ${nf(totMetaRes)}</div><div style="font-size:11px;color:#999">Stock ${mesResLabel}${mesParaRes!==mesStr?' (último disponible)':''}</div>`
+    : '<div style="font-size:13px;color:#999">Sin datos TC Individuos</div>');
+  setH('metas-k2-val', hasFACData
+    ? `<div style="font-size:28px;font-weight:900;color:${pctColor(pctGlbAcred)}">${pctGlbAcred}%</div><div style="font-size:12px;color:#666;margin-top:2px">${fmtB(totRealAcred)} / meta ${fmtB(totMetaAcred)}</div><div style="font-size:11px;color:#999">${qLabel} · ${mesesLabel||'—'} acumulado</div>`
+    : '<div style="font-size:13px;color:#999">Sin datos de Facturación</div>');
+  setH('metas-cumple', `${cumplen}/${rows.length} <span style="font-size:11px;font-weight:400;color:#666">sucursales ≥100% C/Resumen</span>`);
 
-  set('metas-k2-real', fmtB(totRealAcred));
-  const acredObj0 = getMetaAcred(Object.keys(META_ACRED)[0], mesStr);
-  const trimLabel = acredObj0 ? acredObj0.q+' ('+acredObj0.label+')' : 'trimestre';
-  set('metas-k2-meta', 'meta '+trimLabel+': '+fmtB(totMetaAcred));
-  set('metas-k2-pct',  facTieneDatos ? pctGlbAcred+'%' : 'Sin datos FAC');
-  set('metas-k2-dif',  facTieneDatos
-    ? fmtB(totRealAcred-totMetaAcred)+' · '+mesesConDatos+' mes'+(mesesConDatos!==1?'es':'')+ ' acumulados'
-    : 'Cargá los datos de Facturación');
-  setC('metas-k2-pct', pctColor(pctGlbAcred));
-  document.getElementById('metas-k2-pill').style.borderLeft='3px solid '+pctColor(pctGlbAcred);
+  set('fc-metas', `${cumplen}/${rows.length} cumplen · ${mesLabel}`);
 
-  set('fc-metas', rows.filter(r=>(r.pctRes||0)>=100).length+'/'+rows.length+' sucursales cumplen C/Resumen');
+  // ─── TABLA ───
+  const sorted=[...rows].sort((a,b)=>(b.pctRes||0)-(a.pctRes||0));
+  const showRes  = tipoVer!=='acred';
+  const showAcred= tipoVer!=='res';
 
-  // ── Tabla ──
-  const sorted = [...rows].sort((a,b)=>(b.pctRes||0)-(a.pctRes||0));
-  const showRes   = tipoVer!=='acred';
-  const showAcred = tipoVer!=='res';
-
-  // Encabezado dinámico
-  const thead = document.getElementById('metas-thead');
-  if(thead) thead.innerHTML = `<tr>
+  const thead=document.getElementById('metas-thead');
+  if(thead) thead.innerHTML=`<tr>
     <th>#</th><th>Sucursal</th>
-    ${showRes?`<th>C/Resumen real</th><th>Meta</th><th style="min-width:80px">% Cumpl.</th>`:''}
-    ${showAcred?`<th>Acred. real (acum.)</th><th>Meta trimestral</th><th style="min-width:80px">% Cumpl. trim.</th>`:''}
+    ${showRes?`<th>C/Resumen real</th><th>Meta ${mesResLabel}</th><th>% Cumpl.</th>`:''}
+    ${showAcred?`<th>Acred. real (${mesesLabel||qLabel})</th><th>Meta ${qLabel}</th><th>% Cumpl.</th>`:''}
   </tr>`;
 
-  document.getElementById('t-metas').innerHTML = sorted.map((r,i) => {
-    const crColor  = pctColor(r.pctRes||0);
-    const acColor  = pctColor(r.pctAcred||0);
-    const difRes   = r.metaRes ? r.realRes - r.metaRes : null;
-    const difAcred = r.metaAcred ? r.realAcred - r.metaAcred : null;
-
-    const barRes = r.pctRes!=null ? `<div style="background:#e8eef5;border-radius:3px;height:4px;margin-top:2px;overflow:hidden"><div style="width:${Math.min(100,r.pctRes)}%;height:100%;background:${crColor};border-radius:3px"></div></div>` : '';
-    const barAcred = r.pctAcred!=null ? `<div style="background:#e8eef5;border-radius:3px;height:4px;margin-top:2px;overflow:hidden"><div style="width:${Math.min(100,r.pctAcred||0)}%;height:100%;background:${acColor};border-radius:3px"></div></div>` : '';
-
+  const tbody=document.getElementById('t-metas');
+  if(tbody) tbody.innerHTML=sorted.map((r,i)=>{
+    const crC=pctColor(r.pctRes||0), acC=pctColor(r.pctAcred||0);
+    const bar=(pct,c)=>pct!=null?`<div style="background:#e8eef5;border-radius:3px;height:4px;margin-top:2px;overflow:hidden"><div style="width:${Math.min(100,pct)}%;height:100%;background:${c};border-radius:3px"></div></div>`:'';
     return `<tr class="crow">
       <td class="rk">${i+1}</td>
       <td style="font-weight:700">${r.suc}</td>
       ${showRes?`
-        <td style="font-weight:700">${r.realRes>0?n(r.realRes):'—'}</td>
-        <td style="color:var(--txt2);font-size:11px">${r.metaRes?n(r.metaRes):'—'}</td>
-        <td>${r.pctRes!=null?`<span style="font-weight:800;color:${crColor}">${pctEmoji(r.pctRes)} ${r.pctRes}%</span>${barRes}<div style="font-size:9px;color:${crColor}">${difRes!=null?(difRes>=0?'+':'')+n(difRes):''}</div>`:'—'}</td>`:''}
+        <td style="font-weight:700">${r.realRes>0?nf(r.realRes):'—'}</td>
+        <td style="color:var(--txt2);font-size:11px">${r.metaRes?nf(r.metaRes):'—'}</td>
+        <td>${r.pctRes!=null?`<span style="font-weight:800;color:${crC}">${pctEmoji(r.pctRes)} ${r.pctRes}%</span>${bar(r.pctRes,crC)}`:(hasTCData?'Sin datos':'—')}</td>`:''}
       ${showAcred?`
         <td style="font-weight:700">${r.realAcred>0?fmtB(r.realAcred):'—'}</td>
-        <td style="color:var(--txt2);font-size:11px">${r.metaAcred?fmtB(r.metaAcred)+'<br><span style=\'font-size:8px;color:#888\'>('+r.metaLabel+')</span>':'—'}</td>
-        <td>${r.pctAcred!=null?`<span style="font-weight:800;color:${acColor}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${barAcred}<div style="font-size:9px;color:${acColor}">${difAcred!=null?(difAcred>=0?'+':'')+fmtB(difAcred):''}</div><div style="font-size:8px;color:#888">${r.mesesConDatos} mes${r.mesesConDatos!==1?'es':''} acum.</div>`:facTieneDatos?'Sin datos':'—'}</td>`:''}
+        <td style="color:var(--txt2);font-size:11px">${r.metaAcred?fmtB(r.metaAcred):'—'}</td>
+        <td>${r.pctAcred!=null?`<span style="font-weight:800;color:${acC}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${bar(r.pctAcred,acC)}`:(hasFACData?'Sin datos':'—')}</td>`:''}
     </tr>`;
   }).join('');
 
-  // ── Gráfico ──
+  // ─── GRÁFICO ───
   const chartData = tipoVer==='acred' ? sorted.filter(r=>r.pctAcred!=null) : sorted;
-  const labels    = chartData.map(r=>r.suc.replace('SAN F. DEL V. DE CATAMARCA','SFV Catamarca'));
-  const dataRes   = chartData.map(r=>r.pctRes||0);
-  const dataAcred = chartData.map(r=>r.pctAcred||0);
-  const bgRes     = dataRes.map(v=>v>=100?'rgba(78,191,164,.85)':v>=80?'rgba(246,149,90,.85)':'rgba(192,36,28,.85)');
-  const bgAcred   = dataAcred.map(v=>v>=100?'rgba(0,112,148,.85)':v>=80?'rgba(246,149,90,.6)':'rgba(192,36,28,.6)');
+  const labels  = chartData.map(r=>r.suc.replace('SAN F. DEL V. DE CATAMARCA','SFV Catamarca'));
+  const dataRes  = chartData.map(r=>r.pctRes||0);
+  const dataAcred= chartData.map(r=>r.pctAcred||0);
+  const bgRes  = dataRes.map(v=>v>=100?'rgba(26,122,74,.85)':v>=80?'rgba(224,123,0,.85)':'rgba(178,34,34,.85)');
+  const bgAcred= dataAcred.map(v=>v>=100?'rgba(0,112,148,.85)':v>=80?'rgba(246,149,90,.7)':'rgba(178,34,34,.6)');
 
-  const tit = document.getElementById('metas-chart-tit');
-  if(tit) tit.textContent='% Cumplimiento por sucursal · '+mesLabel;
+  const tit=document.getElementById('metas-chart-tit');
+  if(tit) tit.textContent=`Cumplimiento por sucursal · ${mesLabel}`;
 
   if(CH['c-metas'])CH['c-metas'].destroy();
   const datasets=[];
-  if(showRes)   datasets.push({label:'C/Resumen TC %',data:dataRes,backgroundColor:bgRes,borderRadius:3});
-  if(showAcred&&facCol) datasets.push({label:'Acreditaciones %',data:dataAcred,backgroundColor:bgAcred,borderRadius:3});
-
-  const facCol=true;
+  if(showRes&&hasTCData) datasets.push({label:'C/Resumen TC %',data:dataRes,backgroundColor:bgRes,borderRadius:3});
+  if(showAcred&&hasFACData) datasets.push({label:'Acreditaciones %',data:dataAcred,backgroundColor:bgAcred,borderRadius:3});
+  // Add 100% reference line
   if(datasets.length){
+    const maxVal=Math.max(120,...dataRes,...dataAcred);
     CH['c-metas']=new Chart(document.getElementById('c-metas'),{
       type:'bar',
-      data:{labels, datasets},
+      data:{labels,datasets},
       options:{
         indexAxis:'y',responsive:true,maintainAspectRatio:false,
         plugins:{
           legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},
-          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}
+          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},
+          annotation:{annotations:{line100:{type:'line',xMin:100,xMax:100,borderColor:'rgba(0,32,86,.4)',borderWidth:1,borderDash:[4,4]}}}
         },
         scales:{
-          x:{min:0,max:Math.max(120,Math.max(...dataRes,...dataAcred)+10),
+          x:{min:0,max:Math.min(150,maxVal+10),
              ticks:{font:{size:9},callback:v=>v+'%'},
-             title:{display:true,text:'% de cumplimiento',font:{size:9}}},
+             title:{display:true,text:'% cumplimiento',font:{size:9}}},
           y:{ticks:{font:{size:9},color:'#002056'}}
         }
       }
@@ -4815,7 +4467,7 @@ function initTC(){
   }
   poblarSel('f-tc-suc', TC_DATA.sucs||[]);
   renderTC();
-  if(typeof renderMetas==='function') setTimeout(renderMetas,200);
+  if(typeof renderMetas==='function') setTimeout(()=>{ try{renderMetas();}catch(e){console.error('[METAS]',e);} },300);
 }
 function applyFilterTC(){ renderTC(); }
 function renderTC(){

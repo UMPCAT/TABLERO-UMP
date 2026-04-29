@@ -1082,7 +1082,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <div id="fac-ranking-top" style="flex:1;min-width:220px"></div>
   </div>
   <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
-    <div class="ban-t">Facturación de Comercios</div><div class="ban-s">Enero 2026 vs Febrero 2026</div></div><div><div class="ban-n" id="fac-total">—</div><div class="ban-nl">facturación feb (B$)</div></div></div>
+    <div class="ban-t">Facturación de Comercios</div><div class="ban-s" id="fac-banner-sub">Procesadoras · acumulado disponible</div></div><div><div class="ban-n" id="fac-total">—</div><div class="ban-nl" id="fac-banner-nl">facturación acumulada</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-fac-suc" onchange="applyFilterFAC()"><option value="">Todas</option></select>
@@ -1091,9 +1091,9 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFAC()">⬇ Exportar</button>
   </div>
   <div class="metrics">
-    <div class="metric az"><div class="mlbl">Total Enero</div><div class="mval" id="fac-k1">—</div><div class="msub">miles de millones $</div></div>
-    <div class="metric vd"><div class="mlbl">Total Febrero</div><div class="mval" id="fac-k2">—</div><div class="msub">miles de millones $</div></div>
-    <div class="metric rj"><div class="mlbl">Variación</div><div class="mval" id="fac-k3">—</div><div class="msub">Ene → Feb</div></div>
+    <div class="metric az"><div class="mlbl" id="fac-k1-lbl">Último mes</div><div class="mval" id="fac-k1">—</div><div class="msub" id="fac-k1-sub">facturación mensual</div></div>
+    <div class="metric vd"><div class="mlbl" id="fac-k2-lbl">Mes anterior</div><div class="mval" id="fac-k2">—</div><div class="msub" id="fac-k2-sub">facturación mensual</div></div>
+    <div class="metric rj"><div class="mlbl">Variación</div><div class="mval" id="fac-k3">—</div><div class="msub" id="fac-k3-sub">mes anterior → último</div></div>
     <div class="metric dr"><div class="mlbl">Comercios</div><div class="mval" id="fac-k4">—</div><div class="msub">facturando</div></div>
   </div>
   <!-- Acumulado FAC -->
@@ -1760,6 +1760,10 @@ id="page-pyme">
       <option value="2026-10">Oct 2026</option>
       <option value="2026-11">Nov 2026</option>
       <option value="2026-12">Dic 2026</option>
+    </select>
+    <span class="fbar-lbl" style="margin-left:10px">Sucursal:</span>
+    <select id="f-metas-suc" onchange="renderMetas()">
+      <option value="">Todas</option>
     </select>
     <span class="fbar-lbl" style="margin-left:10px">Ver:</span>
     <select id="f-metas-tipo" onchange="renderMetas()">
@@ -2518,9 +2522,19 @@ function rFAC(rows){
   const varPct = tPrev>0 ? ((tLast-tPrev)/tPrev*100).toFixed(1) : '0';
 
   const setEl = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  const lastLbl = lastM ? MESES_S[lastM]+' 2026' : 'Sin mes';
+  const prevLbl = prevM ? MESES_S[prevM]+' 2026' : 'Sin mes anterior';
+  const mesesTxt = mesesDisp.map(m=>MESES_S[m]).join(' + ');
+  setEl('fac-banner-sub', `Procesadoras · ${mesesTxt || 'sin períodos detectados'} 2026`);
+  setEl('fac-banner-nl', 'facturación acumulada');
+  setEl('fac-k1-lbl', lastM ? `Total ${MESES_S[lastM]}` : 'Último mes');
+  setEl('fac-k2-lbl', prevM ? `Total ${MESES_S[prevM]}` : 'Mes anterior');
+  setEl('fac-k1-sub', lastLbl);
+  setEl('fac-k2-sub', prevLbl);
+  setEl('fac-k3-sub', prevM && lastM ? `${MESES_S[prevM]} → ${MESES_S[lastM]}` : 'comparativo mensual');
   setEl('fac-total', fmtB(totalAcum));
-  if(lastM)  setEl('fac-k1', fmtB(totMes[lastM]||0));
-  if(prevM)  setEl('fac-k2', fmtB(totMes[prevM]||0));
+  if(lastM)  setEl('fac-k1', fmtB(totMes[lastM]||0)); else setEl('fac-k1','—');
+  if(prevM)  setEl('fac-k2', fmtB(totMes[prevM]||0)); else setEl('fac-k2','—');
   setEl('fac-k3', (parseFloat(varPct)>=0?'+':'')+varPct+'%');
   setEl('fac-k4', n(rows.filter(r=>(r['Sucursal']||'')!=='TOTAL').length));
   const elAcum = document.getElementById('fac-acum-total');
@@ -4657,6 +4671,7 @@ function getAcredTrimestre(mesStr){
 function renderMetas(){
   const mesStr  = document.getElementById('f-metas-mes')?.value || '2026-03';
   const tipoVer = document.getElementById('f-metas-tipo')?.value || 'ambas';
+  const sucFiltro = document.getElementById('f-metas-suc')?.value || '';
   const nf   = v => Number(v||0).toLocaleString('es-AR');
   const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
   const pctColor = p => p>=100?'#1a7a4a':p>=80?'#e07b00':'#b22222';
@@ -4706,7 +4721,15 @@ function renderMetas(){
   // TC usa esas mismas claves (coincide con META_RES directamente)
   // FAC usa normSuc → quita código → coincide con META_ACRED
   const sucsMeta = Object.keys(META_RES);
-  const rows = sucsMeta.map(suc => {
+  const selMetasSuc = document.getElementById('f-metas-suc');
+  if(selMetasSuc && selMetasSuc.options.length <= 1){
+    const actual = selMetasSuc.value || '';
+    selMetasSuc.innerHTML = '<option value="">Todas</option>' + sucsMeta
+      .slice().sort((a,b)=>a.localeCompare(b,'es'))
+      .map(s=>`<option value="${s}">${s}</option>`).join('');
+    selMetasSuc.value = actual;
+  }
+  const rowsAll = sucsMeta.map(suc => {
     // Meta C/Resumen: META_RES usa "FRAY MAMERTO ESQUIU"
     const metaRes  = getMetaRes(suc, mesParaRes||mesStr);
     const realRes  = resReal[suc] || 0;  // TC ya usa mismas claves
@@ -4720,6 +4743,7 @@ function renderMetas(){
 
     return { suc, metaRes, realRes, pctRes, metaAcred, realAcred, pctAcred };
   });
+  const rows = sucFiltro ? rowsAll.filter(r=>r.suc === sucFiltro) : rowsAll;
 
   // ── KPIs globales ───────────────────────────────────────────
   const totRealRes  = rows.reduce((a,r)=>a+r.realRes, 0);
@@ -4744,8 +4768,8 @@ function renderMetas(){
        <div style="font-size:10px;color:#bbb;margin-top:3px">📄 Fuente: FAC Procesadoras — excluye +Pagos</div>`
     : '<div style="font-size:13px;color:#999">Sin datos de Facturación Procesadoras</div>');
 
-  setHTML('metas-cumple', `${cumplen}/${rows.length} <span style="font-size:11px;font-weight:400;color:#666">sucursales ≥100% C/Resumen</span>`);
-  setEl('fc-metas', `${cumplen}/${rows.length} cumplen · ${mesLabel}`);
+  setHTML('metas-cumple', `${cumplen}/${rows.length} <span style="font-size:11px;font-weight:400;color:#666">${sucFiltro ? 'sucursal filtrada' : 'sucursales'} ≥100% C/Resumen</span>`);
+  setEl('fc-metas', `${sucFiltro ? sucFiltro + ' · ' : ''}${cumplen}/${rows.length} cumplen · ${mesLabel}`);
 
   // ── Tabla ────────────────────────────────────────────────────
   const sorted    = [...rows].sort((a,b) => (b.pctRes||0) - (a.pctRes||0));

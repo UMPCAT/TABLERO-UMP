@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23002056'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>B</text></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23002856'/><rect x='7' y='10' width='18' height='12' rx='3' fill='%2300ADDB'/><rect x='11' y='7' width='18' height='12' rx='3' fill='%23F6955A' opacity='.9'/><rect x='10' y='18' width='10' height='2' rx='1' fill='white' opacity='.85'/></svg>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#002056">
 <meta name="mobile-web-app-capable" content="yes">
@@ -160,6 +160,22 @@ body{
   pointer-events:none;
 }
 .ld-logo-svg{ width:52px;height:52px;position:relative;z-index:1 }
+
+.mp-symbol{background:rgba(255,255,255,.96);border-radius:22px}
+.mp-card-stack{position:relative;width:58px;height:44px}
+.mp-card-stack span{position:absolute;width:46px;height:28px;border-radius:8px;border:2px solid var(--azul);background:#fff;box-shadow:0 5px 14px rgba(0,40,86,.12)}
+.mp-card-stack span:nth-child(1){left:2px;top:12px;transform:rotate(-8deg);background:#DFF3F6}
+.mp-card-stack span:nth-child(2){left:8px;top:7px;transform:rotate(4deg);background:#fff}
+.mp-card-stack span:nth-child(3){left:14px;top:2px;background:linear-gradient(135deg,var(--cyan),var(--azul));border-color:var(--marino)}
+.mp-card-stack span:nth-child(3)::after{content:'';position:absolute;left:7px;bottom:6px;width:22px;height:3px;border-radius:99px;background:rgba(255,255,255,.75)}
+.mp-mini-logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#fff,var(--cel));display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.35)}
+.mp-mini-logo::before{content:'';width:22px;height:15px;border-radius:5px;background:linear-gradient(135deg,var(--cyan),var(--azul));box-shadow:8px 6px 0 rgba(246,149,90,.55),-6px 7px 0 rgba(101,201,216,.55)}
+.mp-header-logo{display:flex;align-items:center;gap:10px}
+.mp-header-logo .mp-mark{width:44px;height:44px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.mp-header-logo .mp-mark::before{content:'';width:26px;height:18px;border-radius:6px;background:linear-gradient(135deg,var(--cyan),var(--azul));box-shadow:8px 7px 0 rgba(246,149,90,.72)}
+.mp-header-logo .mp-word{color:#fff;font-weight:800;font-size:14px;letter-spacing:-.2px}
+.mp-header-logo .mp-sub{color:rgba(255,255,255,.55);font-size:10px;margin-top:1px}
+
 @keyframes ldPulse{
   0%,100%{box-shadow:0 0 0 0 rgba(101,201,216,.45),0 8px 32px rgba(0,0,0,.22)}
   50%{box-shadow:0 0 0 22px rgba(101,201,216,0),0 8px 32px rgba(0,0,0,.22)}
@@ -760,45 +776,21 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
 <body>
 
 <!-- LOADER -->
-<div id="loader" class="loader">
+<div id="loader" class="loader notion-loader">
   <div class="ld-wave">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 56" fill="none" style="height:44px;width:auto">
-  <!-- Círculo blanco con ícono templete -->
-  <circle cx="28" cy="28" r="27" fill="white"/>
-  <!-- Templete BNA dentro del círculo -->
-  <g fill="#007094">
-    <!-- Base -->
-    <rect x="12" y="41" width="32" height="4" rx="2"/>
-    <!-- Columnas -->
-    <rect x="14" y="21" width="5" height="20" rx="2"/>
-    <rect x="24" y="21" width="5" height="20" rx="2"/>
-    <rect x="34" y="21" width="5" height="20" rx="2"/>
-    <!-- Entablamento -->
-    <rect x="11" y="17" width="34" height="4" rx="2"/>
-    <!-- Frontón triangular -->
-    <polygon points="28,7 11,17 45,17"/>
-  </g>
-  <!-- Texto "BNA" en blanco -->
-  <text x="68" y="36" font-family="'Inter Tight','Inter',Arial Black,sans-serif" font-size="26" font-weight="800" fill="white" letter-spacing="1.5">BNA</text>
-</svg>
-  </div>
-  <div class="ld-logo-wrap">
-    <svg class="ld-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-      <circle cx="26" cy="26" r="26" fill="#007094"/>
-      <g fill="white">
-        <rect x="8"  y="42" width="36" height="4" rx="2"/>
-        <rect x="11" y="19" width="5"  height="23" rx="2"/>
-        <rect x="23" y="19" width="5"  height="23" rx="2"/>
-        <rect x="35" y="19" width="5"  height="23" rx="2"/>
-        <rect x="7"  y="15" width="38" height="4"  rx="2"/>
-        <polygon points="26,5 7,15 45,15"/>
-      </g>
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" style="width:100%;height:80px">
+      <path d="M0,60 C300,100 900,20 1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,.07)"/>
     </svg>
   </div>
-  <div class="ld-badge"><span>Banco de la Nación Argentina</span></div>
-  <div class="ld-title">Medios de Pago</div>
+  <div class="ld-logo-wrap mp-symbol" aria-label="Medios de Pago">
+    <div class="mp-card-stack">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="ld-badge"><span>Unidad Medios de Pago</span></div>
+  <div class="ld-title">Tablero UMP</div>
   <div class="ld-subtitle">Zonal NOA Oeste</div>
-  <div class="ld-slogan">Todo es más fácil.</div>
+  <div class="ld-slogan">Gestión comercial · clientes · acreditaciones · metas</div>
   <div class="ld-dots">
     <div class="ld-dot"></div>
     <div class="ld-dot"></div>
@@ -814,19 +806,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
 <div id="sidebar" class="sidebar">
   <div class="sidebar-inner">
     <div class="sidebar-brand">
-      <div class="sidebar-brand-logo">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
-        <circle cx="20" cy="20" r="20" fill="#007094"/>
-        <g fill="white">
-          <rect x="6"  y="32" width="28" height="3" rx="1.5"/>
-          <rect x="8"  y="15" width="4"  height="17" rx="1.5"/>
-          <rect x="18" y="15" width="4"  height="17" rx="1.5"/>
-          <rect x="28" y="15" width="4"  height="17" rx="1.5"/>
-          <rect x="5"  y="12" width="30" height="3"  rx="1.5"/>
-          <polygon points="20,4 5,12 35,12"/>
-        </g>
-      </svg>
-    </div>
+      <div class="sidebar-brand-logo"><div class="mp-mini-logo" aria-hidden="true"></div></div>
       <div class="sidebar-brand-text">
         <div class="sidebar-brand-title">UMP NOA Oeste</div>
         <div class="sidebar-brand-sub">BNA · Medios de Pago</div>
@@ -871,22 +851,10 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
 <div class="topbar"></div>
 <div class="header">
   <div class="hbrand">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 60" style="height:46px;width:auto">
-      <!-- Círculo blanco con ícono templete -->
-      <circle cx="30" cy="30" r="28" fill="#fff" opacity=".95"/>
-      <!-- Templete BNA (simplificado) -->
-      <g transform="translate(30,30)" fill="#1B3A6B">
-        <rect x="-12" y="8" width="24" height="3" rx="1"/>
-        <rect x="-10" y="-7" width="3" height="15" rx="1"/>
-        <rect x="-2" y="-7" width="3" height="15" rx="1"/>
-        <rect x="6" y="-7" width="3" height="15" rx="1"/>
-        <rect x="-13" y="-10" width="26" height="3" rx="1"/>
-        <rect x="-6" y="-16" width="11" height="6" rx="1"/>
-      </g>
-      <!-- Texto BNA -->
-      <text x="68" y="26" font-family="'Barlow',Arial Black,sans-serif" font-size="20" font-weight="900" fill="white" letter-spacing="1">BNA</text>
-      <text x="68" y="44" font-family="'Barlow',Arial,sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,.62)" letter-spacing=".5">Medios de Pago</text>
-    </svg>
+    <div class="mp-header-logo">
+      <div class="mp-mark" aria-hidden="true"></div>
+      <div><div class="mp-word">Medios de Pago</div><div class="mp-sub">Tablero de gestión UMP</div></div>
+    </div>
     <div class="hdiv"></div>
     <div><div class="htitle">Tablero UMP · Zonal NOA Oeste</div><div class="hsub">Catamarca &amp; La Rioja · Medios de Pago</div></div>
   </div>
@@ -2523,6 +2491,9 @@ function rFAC(rows){
   FAC_COLS_CACHE = null; // reset cache
   const cols = getFacCols();
   const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  if(!Object.keys(cols).length){
+    console.warn('[FAC] No se detectaron columnas mensuales. Revisar Apps Script: FACTURACION debe devolver todas las columnas, incluyendo los encabezados fecha 26/01/2026, 26/02/2026, 26/03/2026.');
+  }
 
   // Selector de sucursales
   const sucs = [...new Set(
@@ -4497,97 +4468,7 @@ function rankBNA(rows){
 // [dup removed]
 
 
-// ══ FACTURACION MAS PAGOS — versión dinámica ══
-// Detecta automáticamente todos los meses del Sheet.
-// Para agregar Abril: solo creá la hoja "ABRIL ZON NOA" en el Sheet.
-// No hay que tocar ningún código.
-
-let FACMP_DATA   = {};  // {nombreHoja: [{RAZONSOCIAL,CUIT,Tipo,NETO,SUCURSAL,_mes},...]}
-let FACMP_MESES  = [];  // ['ENERO ZON NOA','FEBRERO ZON NOA',...] ordenados
-
-const MESES_LABEL = {
-  ENERO:'Enero', FEBRERO:'Febrero', MARZO:'Marzo', ABRIL:'Abril',
-  MAYO:'Mayo', JUNIO:'Junio', JULIO:'Julio', AGOSTO:'Agosto',
-  SEPTIEMBRE:'Sep', OCTUBRE:'Oct', NOVIEMBRE:'Nov', DICIEMBRE:'Dic'
-};
-
-function mesShortLabel(nombreHoja){
-  const m = nombreHoja.match(/^(\w+)/);
-  return m ? (MESES_LABEL[m[1].toUpperCase()] || m[1]) : nombreHoja;
-}
-
-async function loadFACMP(){
-  if(!API_URL_FAC){
-    console.warn('[FACMP] API_URL_FAC no configurada — cargá la URL del Apps Script');
-    return;
-  }
-
-  // 1. Pedir al Apps Script la lista de meses disponibles
-  try {
-    const urlLista = API_URL_FAC + '?action=listar_meses';
-    console.log('[FACMP] Consultando meses disponibles...');
-    const r   = await fetch(urlLista, {redirect:'follow'});
-    const txt = await r.text();
-    const json = JSON.parse(txt);
-    if(json.error){ console.error('[FACMP] Error listando meses:', json.error); return; }
-    FACMP_MESES = json.meses || [];
-    console.log('[FACMP] Meses detectados:', FACMP_MESES);
-  } catch(e){
-    console.error('[FACMP] No se pudo obtener lista de meses:', e.message);
-    return;
-  }
-
-  if(!FACMP_MESES.length){
-    console.warn('[FACMP] No se encontraron hojas de meses (patrón: MES ZON NOA)');
-    return;
-  }
-
-  // 2. Cargar cada mes en paralelo
-  FACMP_DATA = {};
-  const cargas = FACMP_MESES.map(async hoja => {
-    try {
-      const url  = API_URL_FAC + '?sheet=' + encodeURIComponent(hoja);
-      const resp = await fetch(url, {redirect:'follow'});
-      const json = JSON.parse(await resp.text());
-      if(json.error){ console.warn('[FACMP]', hoja, json.error); return; }
-      const label = mesShortLabel(hoja);
-      FACMP_DATA[hoja] = json.rows.map(row => {
-        const obj = {}; json.headers.forEach((h,i) => obj[h] = row[i]||'');
-        obj['_mes'] = label;  // etiqueta corta para la tabla
-        return obj;
-      });
-      console.log('[FACMP]', hoja + ':', FACMP_DATA[hoja].length, 'filas');
-    } catch(e){ console.warn('[FACMP] Error cargando', hoja, e.message); }
-  });
-  await Promise.allSettled(cargas);
-
-  // 3. Poblar selector de meses y renderizar
-  const selMes = document.getElementById('f-facmp-mes');
-  if(selMes){
-    while(selMes.options.length > 1) selMes.remove(1);
-    FACMP_MESES.forEach(hoja => {
-      const o = document.createElement('option');
-      o.value = hoja;
-      o.textContent = mesShortLabel(hoja);
-      selMes.appendChild(o);
-    });
-  }
-
-  renderFACMP();
-}
-
-function getFACMPRows(){
-  // Retorna TODAS las filas — el filtro por mes se aplica en applyFilterFACMP via _mes
-  return FACMP_MESES.flatMap(h => FACMP_DATA[h] || []);
-}
-
-// [applyFilterFACMP duplicado eliminado]
-// [dup removed]
-
-
-// [renderFACMP duplicado eliminado]
-
-
+// FACTURACION MAS PAGOS: lectura directa desde hoja horizontal FACTURACION MAS PAGOS
 function resetFilterFACMP(){
   ['f-facmp-suc','f-facmp-mes','f-facmp-tipo'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.value='';
@@ -4598,9 +4479,9 @@ function resetFilterFACMP(){
 function exportFACMP(){
   const rows=getFACMPRows();
   if(!rows.length)return;
-  const keys=['RAZONSOCIAL','CUIT','Tipo','NETO','SUCURSAL','_mes'];
+  const keys=['RAZONSOCIAL','CUIT','Tipo','NETO','Sucursal','_mesLabel'];
   const hdr=['Razón Social','CUIT','Tipo','Neto','Sucursal','Mes'];
-  const csv=[hdr.join(','),...rows.map(r=>keys.map(k=>(r[k]||'').toString().replace(/,/g,';')).join(','))].join('\n');
+  const csv=[hdr.join(','),...rows.map(r=>keys.map(k=>(k==='NETO'?Math.round(r[k]||0):(r[k]||'')).toString().replace(/,/g,';')).join(','))].join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
   a.download='facturacion_maspagos.csv';
@@ -4744,6 +4625,9 @@ function getAcredTrimestre(mesStr){
   }
 
   console.log('[METAS FAC] Cols:', colsMap, '| Meses:', mesesConDatos);
+  if(!mesesConDatos.length){
+    console.warn('[METAS FAC] Sin meses detectados en DD.fac. El Apps Script debe enviar FACTURACION con las columnas fecha 26/01/2026, 26/02/2026, 26/03/2026 y no filtrar por COLS.');
+  }
 
   const porSuc = {};
   facRows.forEach(r=>{
@@ -5235,8 +5119,8 @@ function buscarEnFACMP(){
         r['RAZONSOCIAL']||'—',r['CUIT']||'—',
         `<span class="pill p-az" style="font-size:9px">${r['Tipo']||'—'}</span>`,
         '<b>$'+Math.round(pN(r['NETO'])).toLocaleString('es-AR')+'</b>',
-        (r['SUCURSAL']||'—').replace(/^\d+-/,'').trim(),
-        r['_mes']||'—'
+        (r['Sucursal']||r['SUCURSAL']||'—').replace(/^\d+-/,'').trim(),
+        r['_mesLabel']||r['_mes']||'—'
       ]),matches);
   }
 }

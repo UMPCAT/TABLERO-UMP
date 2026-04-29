@@ -12,140 +12,180 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-/* ═══════════════════════════════════════════════════
-   TABLERO UMP · NOA OESTE · Identidad BNA+ 2026
-   Azul petróleo #0D6E8A · Naranja BNA+ #E8581A
-   ═══════════════════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap');
 
+/* ════════════════════════════════════════════════════
+   TABLERO UMP · NOA OESTE
+   Identidad BNA 2026 — basada en brand guidelines oficiales
+   Azul marino   #1B3A6B  (BNA institucional)
+   Azul petróleo #0D6E8A  (BNA digital / sidebar)
+   Celeste BNA+  #29B5E0  (app BNA+ / interactivo)
+   Naranja       #E8581A  (acento BNA+)
+   ════════════════════════════════════════════════════ */
+
 :root{
-  --bna-deep:    #0A4A5E;
-  --bna-ocean:   #0D6E8A;
-  --bna-sky:     #1A90B8;
-  --bna-light:   #29B5E0;
-  --bna-plus:    #E8581A;
-  --bna-plus2:   #F07030;
-  --az:          #0A4A5E;
-  --az2:         #0D6E8A;
-  --az3:         #29B5E0;
-  --cel:         #dff0f8;
-  --cel2:        #a8d8ee;
-  --vrd:         #2EAF8A;
-  --vrd-cl:      #e0f7f1;
-  --nrj:         #E8581A;
-  --nrj-cl:      #fdeee6;
-  --dor:         #E8A052;
-  --roj:         #C0241C;
-  --roj-cl:      #fdeaea;
-  --vio:         #7A7ABE;
-  --gris:        #EEF6FA;
-  --gris2:       #DDE8F0;
-  --brd:         #C2DAE8;
-  --txt:         #0A4A5E;
-  --txt2:        #3A6070;
-  --sh:          0 3px 16px rgba(10,74,94,.10);
-  --sh2:         0 8px 32px rgba(10,74,94,.16);
-  --r:           10px;
-  --rl:          16px;
-  --bna-azul:    #0D6E8A;
-  --bna-cyan:    #29B5E0;
-  --bna-celeste: #5CC8E0;
-  --bna-marino:  #0A4A5E;
-  --bna-dorado:  #E8A052;
-  --bna-verde:   #2EAF8A;
-  --bna-naranja: #E8581A;
-  --bna-violeta: #7A7ABE;
+  /* ── Paleta BNA oficial ── */
+  --bna-marino:  #1B3A6B;   /* azul marino institucional */
+  --bna-dark:    #0F2A55;   /* marino más oscuro para sidebar */
+  --bna-petrol:  #0D6E8A;   /* petróleo digital */
+  --bna-sky:     #1A90B8;   /* cielo medio */
+  --bna-celeste: #29B5E0;   /* celeste BNA+ app */
+  --bna-light:   #7AD4EE;   /* celeste claro */
+  --bna-plus:    #E8581A;   /* naranja BNA+ */
+  --bna-plus2:   #F07030;   /* naranja hover */
+  --bna-vio:     #7B6FAB;   /* violeta brand guides */
+  --bna-vio2:    #A99FCC;   /* violeta claro */
+
+  /* ── Aliases funcionales ── */
+  --az:     var(--bna-marino);
+  --az2:    var(--bna-petrol);
+  --az3:    var(--bna-celeste);
+  --cel:    #DBEFF8;
+  --cel2:   #A8D8EE;
+  --vrd:    #2EAF8A;
+  --vrd-cl: #DCF2EC;
+  --nrj:    var(--bna-plus);
+  --nrj-cl: #FDEEE6;
+  --dor:    #E8A052;
+  --roj:    #C0241C;
+  --roj-cl: #FDEAEA;
+  --vio:    var(--bna-vio);
+  --gris:   #F0F5FA;
+  --gris2:  #DDE8F2;
+  --brd:    #C0D4E8;
+  --txt:    var(--bna-marino);
+  --txt2:   #3A5570;
+  --sh:     0 2px 12px rgba(27,58,107,.09);
+  --sh2:    0 8px 28px rgba(27,58,107,.14);
+  --r:      10px;
+  --rl:     14px;
+
+  /* ── BNA brand legacy ── */
+  --bna-azul:    var(--bna-petrol);
+  --bna-cyan:    var(--bna-celeste);
+  --bna-dorado:  var(--dor);
+  --bna-verde:   var(--vrd);
+  --bna-naranja: var(--bna-plus);
+  --bna-violeta: var(--bna-vio);
   --bna-cobalto: #5A9AB8;
   --bna-plata:   #A0B8C8;
 }
 
+/* ════ RESET ════ */
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:'Barlow','Segoe UI',sans-serif;
-  background:#EEF6FA;
+  font-family:'Barlow','Segoe UI',Arial,sans-serif;
+  background:#EAF3F8;
   color:var(--txt);font-size:14px;
   display:flex;min-height:100vh;
 }
 
-/* SCROLLBAR */
+/* ════ SCROLLBAR ════ */
 ::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:#EEF6FA}
-::-webkit-scrollbar-thumb{background:var(--bna-ocean);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:var(--bna-deep)}
+::-webkit-scrollbar-track{background:#EAF3F8}
+::-webkit-scrollbar-thumb{background:var(--bna-celeste);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--bna-petrol)}
 
-/* ══ LOADER BNA+ ══ */
+/* ════════════════════════════════════════════════════
+   LOADER — splash BNA+
+   Fondo: degradado marino→petróleo→celeste (como app BNA+)
+   Logo: templete BNA en círculo blanco
+   ════════════════════════════════════════════════════ */
 .loader{
   position:fixed;inset:0;z-index:9999;
   background:
-    radial-gradient(ellipse at 10% 90%,rgba(232,88,26,.18) 0%,transparent 45%),
-    radial-gradient(ellipse at 90% 10%,rgba(41,181,224,.14) 0%,transparent 45%),
-    linear-gradient(145deg,#062030 0%,#0A4A5E 35%,#0D6E8A 65%,#1A90B8 100%);
+    radial-gradient(ellipse at 15% 85%, rgba(232,88,26,.15) 0%,transparent 45%),
+    radial-gradient(ellipse at 85% 15%, rgba(41,181,224,.12) 0%,transparent 45%),
+    linear-gradient(145deg,#0D1F3C 0%,#1B3A6B 30%,#0D6E8A 65%,#29B5E0 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   overflow:hidden;
 }
 .loader::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.04) 0%,transparent 50%),
-             radial-gradient(circle at 80% 80%,rgba(232,88,26,.08) 0%,transparent 50%);
+  /* Patrón chevron sutil del brand guide BNA */
+  background-image:
+    repeating-linear-gradient(135deg,
+      transparent 0px, transparent 18px,
+      rgba(255,255,255,.025) 18px, rgba(255,255,255,.025) 19px
+    ),
+    repeating-linear-gradient(45deg,
+      transparent 0px, transparent 18px,
+      rgba(255,255,255,.015) 18px, rgba(255,255,255,.015) 19px
+    );
   pointer-events:none;
 }
 .loader.hidden{display:none}
+
+/* Logo BNA — templete en círculo como brand oficial */
 .ld-logo-box{
-  width:100px;height:100px;border-radius:24px;
-  background:linear-gradient(135deg,#0D6E8A 0%,#1A90B8 100%);
-  border:2px solid rgba(255,255,255,.22);
+  width:100px;height:100px;border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 0 0 rgba(41,181,224,.45), 0 10px 40px rgba(0,0,0,.25);
+  animation:ldPulse 2.4s ease-in-out infinite;
+  margin-bottom:24px;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 0 0 rgba(29,145,184,.5),0 14px 44px rgba(0,0,0,.32);
-  animation:ldPulse 2.2s ease-in-out infinite;
-  margin-bottom:26px;position:relative;overflow:hidden;
+  position:relative;overflow:hidden;
+  flex-shrink:0;
 }
-.ld-logo-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 60%);}
-.ld-logo-text{font-family:'Barlow Condensed','Barlow',sans-serif;font-size:34px;font-weight:900;color:#fff;letter-spacing:-.5px;position:relative;z-index:1;line-height:1}
-.ld-logo-plus{color:#E8581A;font-size:42px;line-height:1}
-@keyframes ldPulse{0%,100%{box-shadow:0 0 0 0 rgba(29,145,184,.5),0 14px 44px rgba(0,0,0,.32)}50%{box-shadow:0 0 0 18px rgba(29,145,184,0),0 14px 44px rgba(0,0,0,.32)}}
-.ld-badge{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);border-radius:30px;padding:5px 18px;margin-bottom:10px;backdrop-filter:blur(8px)}
-.ld-badge span{font-family:'Barlow',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.80);letter-spacing:.18em;text-transform:uppercase}
-.ld-title{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:#fff;text-align:center;line-height:1.1;margin-bottom:4px;letter-spacing:.02em;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.2)}
+.ld-logo-box::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.5) 0%,transparent 60%);
+}
+.ld-logo-svg{
+  width:58px;height:58px;position:relative;z-index:1;
+}
+@keyframes ldPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(41,181,224,.45),0 10px 40px rgba(0,0,0,.25)}
+  50%{box-shadow:0 0 0 20px rgba(41,181,224,0),0 10px 40px rgba(0,0,0,.25)}
+}
+
+.ld-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:30px;padding:5px 20px;margin-bottom:10px;backdrop-filter:blur(8px)}
+.ld-badge span{font-size:10px;font-weight:700;color:rgba(255,255,255,.82);letter-spacing:.18em;text-transform:uppercase}
+.ld-title{font-family:'Barlow',sans-serif;font-size:28px;font-weight:900;color:#fff;text-align:center;line-height:1.1;margin-bottom:4px;letter-spacing:.01em}
 .ld-subtitle{font-size:12px;font-weight:600;color:rgba(255,255,255,.58);letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:2px}
-.ld-slogan{font-size:13px;color:rgba(255,255,255,.42);text-align:center;font-style:italic;margin-bottom:28px}
+.ld-slogan{font-size:13px;color:rgba(255,255,255,.40);text-align:center;font-style:italic;margin-bottom:28px}
 .ld-dots{display:flex;gap:10px;margin-bottom:16px}
 .ld-dot{width:10px;height:10px;border-radius:50%;animation:ldDot 1.5s ease-in-out infinite}
-.ld-dot:nth-child(1){animation-delay:0s;background:rgba(255,255,255,.9)}
-.ld-dot:nth-child(2){animation-delay:.2s;background:#E8581A}
-.ld-dot:nth-child(3){animation-delay:.4s;background:#29B5E0}
+.ld-dot:nth-child(1){animation-delay:0s;background:#fff}
+.ld-dot:nth-child(2){animation-delay:.22s;background:#E8581A}
+.ld-dot:nth-child(3){animation-delay:.44s;background:#29B5E0}
 @keyframes ldDot{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1.2);opacity:1}}
 .ld-msg{font-size:11px;color:rgba(255,255,255,.38);text-align:center;letter-spacing:.04em;min-height:16px}
-.ld-wave{position:absolute;bottom:0;left:0;width:100%;overflow:hidden;line-height:0;opacity:.08}
+.ld-wave{position:absolute;bottom:0;left:0;width:100%;overflow:hidden;line-height:0;opacity:.07}
 
-/* ══ SIDEBAR BNA+ ══ */
+/* ════════════════════════════════════════════════════
+   SIDEBAR — azul marino institucional
+   ════════════════════════════════════════════════════ */
 .sidebar{
-  position:fixed;top:0;left:0;width:228px;height:100vh;
-  background:linear-gradient(180deg,#062030 0%,#0A3A50 40%,#0D6E8A 100%);
+  position:fixed;top:0;left:0;width:230px;height:100vh;
+  background:linear-gradient(180deg,#0D1F3C 0%,#1B3A6B 55%,#0F3060 100%);
   z-index:120;transition:width .25s cubic-bezier(.4,0,.2,1);overflow:hidden;
-  box-shadow:4px 0 28px rgba(6,32,48,.45);
+  box-shadow:4px 0 24px rgba(13,31,60,.50);
   display:flex;flex-direction:column;flex-shrink:0;
 }
 .sidebar.collapsed{width:54px}
 .sidebar-inner{display:flex;flex-direction:column;height:100%;overflow:hidden}
+
+/* Brand BNA — templete en círculo */
 .sidebar-brand{
   display:flex;align-items:center;gap:11px;padding:14px 12px 11px;
   border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;
-  background:rgba(0,0,0,.20);
+  background:rgba(0,0,0,.22);
 }
 .sidebar-brand-logo{
-  width:38px;height:38px;border-radius:10px;
-  background:linear-gradient(135deg,#0D6E8A,#1A90B8);
-  border:1.5px solid rgba(255,255,255,.20);
+  width:40px;height:40px;border-radius:50%;
+  background:#fff;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:13px;font-weight:900;color:#fff;letter-spacing:-.5px;
-  overflow:hidden;position:relative;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  position:relative;
 }
-.sidebar-brand-logo::after{content:'+';position:absolute;bottom:1px;right:3px;font-size:13px;font-weight:900;color:#E8581A;line-height:1}
+/* Ícono templete BNA dentro del círculo blanco */
+.sidebar-brand-logo svg{width:22px;height:22px}
 .sidebar-brand-text{overflow:hidden;transition:opacity .22s,max-width .25s;max-width:175px;white-space:nowrap}
-.sidebar-brand-title{font-size:12px;font-weight:800;color:#fff;letter-spacing:.01em}
+.sidebar-brand-title{font-size:13px;font-weight:800;color:#fff;letter-spacing:.01em}
 .sidebar-brand-sub{font-size:9px;color:rgba(255,255,255,.42);letter-spacing:.06em;margin-top:1px}
 .sidebar.collapsed .sidebar-brand-text{opacity:0;max-width:0}
+
 .sidebar-toggle{
   display:flex;align-items:center;justify-content:flex-end;
   padding:7px 12px;cursor:pointer;color:rgba(255,255,255,.26);
@@ -153,217 +193,340 @@ body{
 }
 .sidebar-toggle:hover{color:rgba(255,255,255,.68)}
 .sidebar.collapsed .sidebar-toggle{justify-content:center}
+
 .sidebar-nav{overflow-y:auto;overflow-x:hidden;flex:1;padding:8px 0 28px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.07) transparent}
 .sidebar-nav::-webkit-scrollbar{width:3px}
 .sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:2px}
 .snav-sep{height:1px;background:rgba(255,255,255,.07);margin:7px 12px}
 .sidebar.collapsed .snav-sep{margin:4px 8px}
-.snav-section{font-size:9px;font-weight:800;letter-spacing:.13em;color:rgba(255,255,255,.22);text-transform:uppercase;padding:10px 13px 3px;white-space:nowrap;overflow:hidden;transition:all .22s}
+.snav-section{font-size:9px;font-weight:700;letter-spacing:.13em;color:rgba(255,255,255,.22);text-transform:uppercase;padding:10px 13px 3px;white-space:nowrap;overflow:hidden;transition:all .22s}
 .sidebar.collapsed .snav-section{opacity:0;height:2px;padding:1px 0}
+
 .ntab{
   display:flex;align-items:center;gap:10px;padding:9px 14px;
-  font-size:12px;font-weight:600;color:rgba(255,255,255,.48);cursor:pointer;
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.50);cursor:pointer;
   border-left:3px solid transparent;white-space:nowrap;
-  transition:all .15s cubic-bezier(.4,0,.2,1);margin:1px 0;
+  transition:all .15s;margin:1px 0;
 }
-.ntab:hover{color:rgba(255,255,255,.90);background:rgba(255,255,255,.07);border-left-color:rgba(232,88,26,.50)}
-.ntab.active{color:#fff;border-left-color:#E8581A;background:rgba(232,88,26,.12);font-weight:700}
-.stab-ico{font-size:15px;flex-shrink:0;width:19px;text-align:center}
+.ntab:hover{color:rgba(255,255,255,.90);background:rgba(255,255,255,.06);border-left-color:rgba(41,181,224,.45)}
+.ntab.active{
+  color:#fff;border-left-color:#29B5E0;
+  background:linear-gradient(90deg,rgba(41,181,224,.14) 0%,transparent 100%);
+  font-weight:700;
+}
+.stab-ico{font-size:15px;flex-shrink:0;width:20px;text-align:center}
 .stab-lbl{overflow:hidden;text-overflow:ellipsis;transition:opacity .22s,max-width .25s;max-width:185px}
 .sidebar.collapsed .stab-lbl{opacity:0;max-width:0}
 .sidebar.collapsed .ntab{justify-content:center;padding:10px 0}
 
-/* ══ LAYOUT ══ */
+/* ════ LAYOUT ════ */
 .body-wrap{display:flex;min-height:100vh;width:100%}
 .main-content{
-  margin-left:228px;transition:margin-left .25s cubic-bezier(.4,0,.2,1);
-  flex:1;min-width:0;
+  margin-left:230px;transition:margin-left .25s cubic-bezier(.4,0,.2,1);
+  flex:1;min-width:0;min-height:100vh;
   background:
-    radial-gradient(ellipse at 100% 0%,rgba(13,110,138,.06) 0%,transparent 55%),
-    linear-gradient(180deg,#EAF4F9 0%,#F2F8FB 50%,#EEF5F8 100%);
-  min-height:100vh;
+    radial-gradient(ellipse at 100% 0%,rgba(41,181,224,.07) 0%,transparent 55%),
+    linear-gradient(180deg,#E8F4FA 0%,#EEF5F9 50%,#E8F0F8 100%);
 }
 .sidebar.collapsed ~ .main-content,.body-wrap.collapsed .main-content{margin-left:54px}
 
-/* ══ TOPBAR + HEADER ══ */
-.topbar{height:4px;background:linear-gradient(90deg,#062030 0%,#0D6E8A 35%,#1A90B8 55%,#E8581A 80%,#F07030 100%)}
+/* ════ TOPBAR ════
+   Línea colorida: marino → petróleo → celeste → naranja (paleta BNA completa) */
+.topbar{
+  height:4px;
+  background:linear-gradient(90deg,
+    #1B3A6B 0%,
+    #0D6E8A 30%,
+    #29B5E0 60%,
+    #E8581A 85%,
+    #F07030 100%
+  );
+}
+
+/* ════ HEADER ════
+   Azul marino institucional con logo BNA oficial */
 .header{
-  background:linear-gradient(90deg,#0A4A5E 0%,#0D6E8A 100%);
-  padding:0 22px;display:flex;align-items:center;justify-content:space-between;
-  height:60px;box-shadow:0 2px 16px rgba(10,74,94,.30);
+  background:#1B3A6B;
+  padding:0 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:60px;
+  box-shadow:0 2px 14px rgba(13,31,60,.30);
   position:sticky;top:0;z-index:100;
 }
-.hbrand{display:flex;align-items:center;gap:13px}
-.hdiv{width:1px;height:26px;background:rgba(255,255,255,.18)}
-.htitle{color:#fff;font-size:13px;font-weight:800;letter-spacing:.01em}
-.hsub{color:rgba(255,255,255,.50);font-size:11px;margin-top:1px}
+.hbrand{display:flex;align-items:center;gap:14px}
+.hdiv{width:1px;height:28px;background:rgba(255,255,255,.18)}
+.htitle{color:#fff;font-size:13px;font-weight:800}
+.hsub{color:rgba(255,255,255,.48);font-size:11px;margin-top:1px}
 .hright{text-align:right}
-.hdate{color:rgba(255,255,255,.36);font-size:10px}
-.hbadge{background:#E8581A;color:#fff;font-size:10px;font-weight:800;padding:2px 10px;border-radius:20px;display:inline-block;margin-top:3px;letter-spacing:.04em}
+.hdate{color:rgba(255,255,255,.35);font-size:10px}
+/* Badge naranja BNA+ */
+.hbadge{
+  background:#E8581A;color:#fff;
+  font-size:10px;font-weight:800;padding:2px 11px;
+  border-radius:20px;display:inline-block;margin-top:3px;
+  letter-spacing:.05em;
+}
 
-/* ══ PAGES ══ */
+/* ════ PAGES ════ */
 .page{display:none;padding:16px 20px 52px}
 .page.active{display:block}
 
-/* ══ NAV TOOLS ══ */
+/* ════ NAV TOOLS ════ */
 .navtools{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-bottom:12px;flex-wrap:wrap}
-.navbtn{background:#fff;border:1.5px solid var(--brd);border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;color:var(--txt);cursor:pointer;font-family:inherit;transition:all .15s}
-.navbtn:hover{background:var(--cel);border-color:var(--bna-ocean)}
-.navbtn.pri{background:var(--bna-ocean);color:#fff;border-color:transparent}
+.navbtn{
+  background:#fff;border:1.5px solid var(--brd);border-radius:999px;
+  padding:7px 16px;font-size:12px;font-weight:700;color:var(--txt);
+  cursor:pointer;font-family:inherit;transition:all .15s;
+}
+.navbtn:hover{background:var(--cel);border-color:var(--bna-celeste)}
+.navbtn.pri{background:var(--bna-celeste);color:#fff;border-color:transparent}
 .navbtn:disabled{opacity:.4;cursor:not-allowed}
 
-/* ══ BANNER BNA+ ══ */
+/* ════ BANNER ════
+   Estilo app BNA+: celeste brillante con efecto ola */
 .banner{
-  background:linear-gradient(135deg,#0A4A5E 0%,#0D6E8A 60%,#1A90B8 100%);
+  background:linear-gradient(135deg,#1B3A6B 0%,#0D6E8A 50%,#1A90B8 100%);
   border-radius:18px;padding:16px 20px;margin-bottom:14px;
   display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 6px 24px rgba(10,74,94,.20);
+  box-shadow:0 6px 22px rgba(27,58,107,.18);
   position:relative;overflow:hidden;
 }
-.banner::before{content:'';position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%);pointer-events:none}
-.banner::after{content:'';position:absolute;left:-20px;bottom:-50px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(232,88,26,.10) 0%,transparent 70%);pointer-events:none}
+.banner::before{
+  content:'';position:absolute;right:-50px;top:-50px;
+  width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 68%);
+  pointer-events:none;
+}
+.banner::after{
+  content:'';position:absolute;left:-30px;bottom:-60px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(41,181,224,.12) 0%,transparent 68%);
+  pointer-events:none;
+}
+/* Chevron decorativo del brand guide BNA — esquina inferior derecha */
+.banner-chevron{
+  position:absolute;right:16px;bottom:10px;opacity:.08;
+  font-size:60px;font-weight:900;color:#fff;line-height:1;pointer-events:none;
+  letter-spacing:-8px;
+}
 .ban-t{color:#fff;font-size:14px;font-weight:800;position:relative;z-index:1}
-.ban-s{color:rgba(255,255,255,.55);font-size:11px;margin-top:2px;position:relative;z-index:1}
-.ban-n{color:#E8A052;font-size:28px;font-weight:900;letter-spacing:-1px;text-align:right;line-height:1;position:relative;z-index:1}
+.ban-s{color:rgba(255,255,255,.54);font-size:11px;margin-top:2px;position:relative;z-index:1}
+.ban-n{color:#7AD4EE;font-size:28px;font-weight:900;letter-spacing:-1px;text-align:right;line-height:1;position:relative;z-index:1}
 .ban-nl{color:rgba(255,255,255,.44);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;position:relative;z-index:1}
-.banner.celeste{background:linear-gradient(135deg,#0D6E8A 0%,#1A90B8 100%)}
+.banner.celeste{background:linear-gradient(135deg,#0D6E8A 0%,#29B5E0 100%)}
+.banner.verde{background:linear-gradient(135deg,#1B6A50 0%,#2EAF8A 100%)}
 
-/* ══ SYNC BAR ══ */
+/* ════ SYNC BAR ════ */
 .sbar{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--brd);border-radius:14px;padding:8px 16px;margin-bottom:14px;box-shadow:var(--sh);flex-wrap:wrap}
 .sdot{width:9px;height:9px;border-radius:50%;background:#aaa;flex-shrink:0;transition:background .3s}
 .sdot.ok{background:var(--vrd)}.sdot.err{background:var(--roj)}
 .stxt{font-size:11px;color:var(--txt2);font-weight:600;flex:1}
-.sbtn{background:var(--bna-ocean);color:#fff;border:none;border-radius:999px;padding:5px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
-.sbtn:hover{background:var(--bna-deep)}
+.sbtn{background:var(--bna-celeste);color:#fff;border:none;border-radius:999px;padding:5px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.sbtn:hover{background:var(--bna-petrol)}
 .sbtn.sec{background:none;border:1.5px solid var(--brd);color:var(--txt2)}
 
-/* ══ FILTER BAR ══ */
+/* ════ FILTER BAR ════ */
 .fbar{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--brd);border-radius:14px;padding:9px 14px;margin-bottom:12px;box-shadow:var(--sh);flex-wrap:wrap;transition:border-color .15s}
-.fbar:focus-within{border-color:var(--bna-ocean)}
-.fbar-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--bna-deep);white-space:nowrap}
-.fbar select{font-size:12px;font-family:inherit;padding:5px 10px;border:1.5px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt);font-weight:600;transition:border-color .15s}
-.fbar select:focus{outline:none;border-color:var(--bna-ocean)}
+.fbar:focus-within{border-color:var(--bna-celeste);box-shadow:0 0 0 2px rgba(41,181,224,.10)}
+.fbar-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--bna-marino);white-space:nowrap}
+.fbar select{font-size:12px;font-family:inherit;padding:5px 10px;border:1.5px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt);font-weight:600;transition:border-color .15s;cursor:pointer}
+.fbar select:focus{outline:none;border-color:var(--bna-celeste)}
 .fbar input[type=date]{font-size:12px;font-family:inherit;padding:5px 9px;border:1.5px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)}
-.fbar-count{margin-left:auto;background:var(--cel);color:var(--bna-ocean);font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;border:1px solid var(--cel2);white-space:nowrap}
+.fbar-count{margin-left:auto;background:var(--cel);color:var(--bna-petrol);font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;border:1px solid var(--cel2);white-space:nowrap}
 .fbar-reset{background:none;border:1.5px solid var(--brd);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;font-family:inherit;transition:all .15s}
 .fbar-reset:hover{background:var(--nrj-cl);border-color:var(--nrj);color:var(--nrj)}
 
-/* ══ CUIT BAR ══ */
+/* ════ CUIT BAR ════ */
 .cuit-bar{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--brd);border-radius:14px;padding:9px 14px;margin-bottom:12px;box-shadow:var(--sh);flex-wrap:wrap}
 .cuit-bar input{flex:1;min-width:150px;font-size:13px;font-family:inherit;padding:7px 12px;border:1.5px solid var(--brd);border-radius:var(--r);color:var(--txt);transition:border-color .15s}
-.cuit-bar input:focus{outline:none;border-color:var(--bna-ocean);box-shadow:0 0 0 3px rgba(13,110,138,.10)}
-.cuit-bar button{background:var(--bna-ocean);color:#fff;border:none;border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s}
-.cuit-bar button:hover{background:var(--bna-deep)}
+.cuit-bar input:focus{outline:none;border-color:var(--bna-celeste);box-shadow:0 0 0 3px rgba(41,181,224,.10)}
+.cuit-bar button{background:var(--bna-celeste);color:#fff;border:none;border-radius:999px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s}
+.cuit-bar button:hover{background:var(--bna-petrol)}
 .cuit-bar .clear-btn{background:none;border:1.5px solid var(--brd);color:var(--txt2)}
 .cuit-bar .clear-btn:hover{background:var(--gris2)}
-tr.cuit-row-match td{background:#fff8f2!important;border-left:3px solid var(--bna-plus)!important}
+tr.cuit-row-match td{background:#FFF5EE!important;border-left:3px solid var(--bna-plus)!important}
 
-/* ══ METRICS ══ */
+/* ════ METRICS ════
+   Tarjetas estilo guía BNA: muy redondeadas, borde superior de color */
 .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
 .g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}
-.metric{background:#fff;border-radius:18px;padding:14px 15px 12px;border:1px solid var(--brd);box-shadow:var(--sh);border-top:3px solid var(--brd);transition:transform .15s,box-shadow .15s}
+.metric{
+  background:#fff;border-radius:18px;padding:14px 15px 12px;
+  border:1px solid var(--brd);box-shadow:var(--sh);
+  border-top:3px solid var(--brd);
+  transition:transform .15s,box-shadow .15s;
+}
 .metric.clickable{cursor:pointer}
 .metric.clickable:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
-.metric.az{border-top-color:var(--bna-ocean)}.metric.vd{border-top-color:var(--vrd)}
-.metric.rj{border-top-color:var(--roj)}.metric.dr{border-top-color:var(--dor)}
-.metric.nrj{border-top-color:var(--bna-plus)}.metric.cy{border-top-color:var(--bna-light)}
-.metric.vio{border-top-color:var(--vio)}.metric.cel{border-top-color:#5CC8E0}
+.metric.az{border-top-color:var(--bna-celeste)}
+.metric.vd{border-top-color:var(--vrd)}
+.metric.rj{border-top-color:var(--roj)}
+.metric.dr{border-top-color:var(--dor)}
+.metric.nrj{border-top-color:var(--bna-plus)}
+.metric.cy{border-top-color:var(--bna-celeste)}
+.metric.vio{border-top-color:var(--bna-vio)}
+.metric.cel{border-top-color:var(--bna-light)}
 .mlbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);margin-bottom:6px}
 .mval{font-size:22px;font-weight:900;line-height:1;letter-spacing:-1px}
-.metric.az .mval{color:var(--bna-ocean)}.metric.vd .mval{color:var(--vrd)}
-.metric.rj .mval{color:var(--roj)}.metric.dr .mval{color:var(--dor)}
-.metric.nrj .mval{color:var(--bna-plus)}.metric.cy .mval{color:var(--bna-light)}
-.metric.vio .mval{color:var(--vio)}
+.metric.az .mval{color:var(--bna-celeste)}
+.metric.vd .mval{color:var(--vrd)}
+.metric.rj .mval{color:var(--roj)}
+.metric.dr .mval{color:var(--dor)}
+.metric.nrj .mval{color:var(--bna-plus)}
+.metric.cy .mval{color:var(--bna-celeste)}
+.metric.vio .mval{color:var(--bna-vio)}
 .msub{font-size:10px;color:var(--txt2);margin-top:4px;font-weight:600}
 
-/* ══ CARDS ══ */
+/* ════ CARDS ════ */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
 .card{background:#fff;border-radius:18px;padding:14px 15px 12px;border:1px solid var(--brd);box-shadow:var(--sh)}
 .card.full{grid-column:1/-1}
-.ctit{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--bna-ocean);margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--cel);display:flex;align-items:center;gap:7px}
-.ctit::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,#E8581A,#0D6E8A);border-radius:2px;flex-shrink:0}
+.ctit{
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--bna-petrol);margin-bottom:10px;padding-bottom:8px;
+  border-bottom:2px solid var(--cel);display:flex;align-items:center;gap:7px;
+}
+/* Barra lateral: celeste (BNA color dominante) */
+.ctit::before{content:'';width:3px;height:13px;background:var(--bna-celeste);border-radius:2px;flex-shrink:0}
 .cw{position:relative;width:100%}
 .leg{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .li{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--txt2);font-weight:600}
 .ld{width:10px;height:10px;border-radius:2px}
 
-/* ══ TABLES ══ */
+/* ════ TABLES ════ */
 .tcard{background:#fff;border-radius:18px;border:1px solid var(--brd);box-shadow:var(--sh);overflow:hidden;margin-bottom:12px}
-.thead2{padding:10px 16px;border-bottom:1px solid var(--brd);background:linear-gradient(90deg,#EAF4F9 0%,#F5FAFC 100%);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
-.ttit{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--bna-deep);display:flex;align-items:center;gap:6px}
-.ttit::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,#E8581A 0%,#0D6E8A 100%);border-radius:2px}
+.thead2{
+  padding:10px 16px;border-bottom:1px solid var(--brd);
+  background:linear-gradient(90deg,#EAF4FA 0%,#F5FAFD 100%);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;
+}
+.ttit{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--bna-marino);display:flex;align-items:center;gap:6px}
+.ttit::before{content:'';width:3px;height:13px;background:var(--bna-celeste);border-radius:2px}
 .twrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
-th{background:linear-gradient(90deg,#0A4A5E 0%,#0D6E8A 100%);color:rgba(255,255,255,.90);padding:8px 11px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;position:sticky;top:0;z-index:1;cursor:pointer;user-select:none}
-th:hover{background:linear-gradient(90deg,#082030,#0A5068)}
+/* Encabezado de tabla: azul marino institucional */
+th{
+  background:#1B3A6B;
+  color:rgba(255,255,255,.88);padding:8px 11px;
+  text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;white-space:nowrap;position:sticky;top:0;z-index:1;
+  cursor:pointer;user-select:none;
+}
+th:hover{background:#0F2A55}
 td{padding:7px 11px;border-bottom:1px solid var(--gris2);color:var(--txt);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 .rk{color:var(--txt2);font-size:11px;font-weight:700;width:28px}
 .crow{cursor:pointer}.crow:hover td{background:var(--cel)!important}
 
-/* ══ PILLS ══ */
+/* ════ PILLS ════ */
 .pill{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;white-space:nowrap;display:inline-block}
-.p-act{background:#e0f5ee;color:#1E7A5A;border:1px solid #8ED8BF}
-.p-chu{background:var(--roj-cl);color:var(--roj);border:1px solid #F0B8B4}
+.p-act{background:#DCF2EC;color:#1A7A54;border:1px solid #86D8BE}
+.p-chu{background:var(--roj-cl);color:var(--roj);border:1px solid #F0B4B0}
 .p-pas{background:#FEF0E8;color:#C04010;border:1px solid #F0B898}
-.p-az{background:#E0EEF6;color:var(--bna-deep);border:1px solid #A8CCDE}
-.p-gr{background:#EEF2F5;color:#5A6878;border:1px solid #C8D4DC}
-.p-dor{background:#FEF5E6;color:#906028;border:1px solid #EEC870}
-.p-vio{background:#EEEEF8;color:#5858A0;border:1px solid #C0C0E0}
+.p-az{background:#DBEFF8;color:var(--bna-marino);border:1px solid #A0D0E8}
+.p-gr{background:#EEF2F6;color:#4A6478;border:1px solid #C0D0DC}
+.p-dor{background:#FEF5E4;color:#906028;border:1px solid #E8C060}
+.p-vio{background:#EEE8F8;color:#5050A0;border:1px solid #C0B0E0}
 .sem{width:12px;height:12px;border-radius:50%;display:inline-block;flex-shrink:0}
 .sem-vd{background:var(--vrd)}.sem-nrj{background:var(--bna-plus)}.sem-rj{background:var(--roj)}
-.bm{height:4px;border-radius:2px;background:var(--bna-ocean);display:inline-block;min-width:2px}
+.bm{height:4px;border-radius:2px;background:var(--bna-celeste);display:inline-block;min-width:2px}
 
-/* ══ BUTTONS ══ */
+/* ════ BUTTONS ════ */
 .action-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:999px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s}
 .btn-wsp{background:#25d366;color:#fff}.btn-wsp:hover{background:#1da851}
-.btn-mail{background:var(--bna-ocean);color:#fff}.btn-mail:hover{background:var(--bna-deep)}
-.btn-exp{background:var(--vrd);color:#fff}.btn-exp:hover{background:#259970}
+.btn-mail{background:var(--bna-celeste);color:#fff}.btn-mail:hover{background:var(--bna-petrol)}
+.btn-exp{background:var(--vrd);color:#fff}.btn-exp:hover{background:#249970}
 
-/* ══ DRILL-DOWN ══ */
-.ddoverlay{position:fixed;inset:0;background:rgba(6,32,48,.60);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;backdrop-filter:blur(2px)}
+/* ════ DRILL-DOWN ════ */
+.ddoverlay{position:fixed;inset:0;background:rgba(13,31,60,.60);z-index:200;opacity:0;transition:opacity .2s;pointer-events:none;backdrop-filter:blur(2px)}
 .ddoverlay.open{opacity:1;pointer-events:all}
-.ddpanel{position:fixed;top:50%;left:50%;transform:translate(-50%,-62%);background:#fff;border-radius:20px;z-index:201;width:min(96vw,860px);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(10,74,94,.38);transition:opacity .25s,transform .25s;opacity:0;pointer-events:none}
+.ddpanel{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-62%);
+  background:#fff;border-radius:20px;z-index:201;
+  width:min(96vw,860px);max-height:90vh;
+  display:flex;flex-direction:column;
+  box-shadow:0 28px 70px rgba(27,58,107,.36);
+  transition:opacity .25s,transform .25s;opacity:0;pointer-events:none;
+}
 .ddpanel.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
-.ddhead{padding:14px 18px 12px;border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:linear-gradient(90deg,#0A4A5E 0%,#0D6E8A 100%);border-radius:20px 20px 0 0}
+.ddhead{
+  padding:14px 18px 12px;border-bottom:1px solid var(--brd);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+  background:#1B3A6B;border-radius:20px 20px 0 0;
+}
 .ddtitle{color:#fff;font-size:13px;font-weight:800}
 .ddsub{color:rgba(255,255,255,.55);font-size:11px;margin-top:1px}
 .ddactions{display:flex;gap:8px;align-items:center}
-.ddclose{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.ddclose{
+  background:rgba(255,255,255,.14);border:none;color:#fff;
+  width:28px;height:28px;border-radius:50%;font-size:15px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
 .ddclose:hover{background:rgba(232,88,26,.50)}
 .ddbody{overflow-y:auto;flex:1}
 .ddbody table th{position:sticky;top:0;z-index:1}
 
-/* ══ CONSUMO CARDS ══ */
+/* ════ CONSUMO CARDS ════ */
 .consumo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-.consumo-card{background:#fff;border-radius:16px;padding:13px 15px;border:1px solid var(--brd);box-shadow:var(--sh);border-top:3px solid var(--bna-ocean);transition:transform .15s}
+.consumo-card{background:#fff;border-radius:16px;padding:13px 15px;border:1px solid var(--brd);box-shadow:var(--sh);border-top:3px solid var(--bna-celeste);transition:transform .15s}
 .consumo-card:hover{transform:translateY(-1px)}
-.consumo-card.verde{border-top-color:var(--vrd)}.consumo-card.naranja{border-top-color:var(--bna-plus)}
-.consumo-card.dorado{border-top-color:var(--dor)}.consumo-card.violeta{border-top-color:var(--vio)}
+.consumo-card.verde{border-top-color:var(--vrd)}
+.consumo-card.naranja{border-top-color:var(--bna-plus)}
+.consumo-card.dorado{border-top-color:var(--dor)}
+.consumo-card.violeta{border-top-color:var(--bna-vio)}
 .cc-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--txt2);margin-bottom:5px}
-.cc-val{font-size:20px;font-weight:900;color:var(--bna-deep);line-height:1.1;letter-spacing:-.5px}
+.cc-val{font-size:20px;font-weight:900;color:var(--bna-marino);line-height:1.1;letter-spacing:-.5px}
 .cc-sub{font-size:10px;color:var(--txt2);margin-top:3px}
 
-/* ══ MENU GRID ══ */
+/* ════ MENU PRINCIPAL ════
+   Estilo guía BNA: cards muy redondeadas con ícono en cuadrado
+   (como la guía de actualización de app en imagen 6/7) */
 .menu-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.menu-card{background:#fff;border:1.5px solid var(--brd);border-radius:20px;padding:22px 16px;box-shadow:0 4px 20px rgba(10,74,94,.08);cursor:pointer;transition:.18s transform,.18s box-shadow;position:relative;overflow:hidden}
-.menu-card::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(13,110,138,.06) 0%,transparent 70%)}
-.menu-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(10,74,94,.16);border-color:var(--bna-ocean)}
-.menu-ico{font-size:32px;margin-bottom:12px}
-.menu-tit{font-size:14px;font-weight:800;color:var(--bna-deep);margin-bottom:5px}
+.menu-card{
+  background:#fff;border:1.5px solid var(--brd);border-radius:20px;
+  padding:22px 16px;
+  box-shadow:0 4px 18px rgba(27,58,107,.08);
+  cursor:pointer;transition:.18s transform,.18s box-shadow,.18s border-color;
+  position:relative;overflow:hidden;
+}
+.menu-card::after{
+  content:'›';position:absolute;right:14px;bottom:12px;
+  font-size:22px;font-weight:900;color:var(--bna-celeste);opacity:.25;
+  transition:opacity .15s,transform .15s;
+}
+.menu-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(27,58,107,.14);
+  border-color:var(--bna-celeste);
+}
+.menu-card:hover::after{opacity:.6;transform:translateX(3px)}
+.menu-ico{
+  width:46px;height:46px;border-radius:12px;
+  background:linear-gradient(135deg,#E0F2FA,#CBEBF5);
+  border:1.5px solid rgba(41,181,224,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:12px;
+}
+.menu-tit{font-size:14px;font-weight:800;color:var(--bna-marino);margin-bottom:5px}
 .menu-sub{font-size:11px;color:var(--txt2);line-height:1.45}
 
-/* ══ FICHA CLIENTE ══ */
+/* ════ FICHA CLIENTE ════ */
 .ficha-wrap{border:1.5px solid var(--brd);border-radius:18px;overflow:hidden;box-shadow:var(--sh);margin-bottom:14px}
-.ficha-head{background:linear-gradient(90deg,#0A4A5E 0%,#0D6E8A 100%);color:#fff;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ficha-head{background:#1B3A6B;color:#fff;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .ficha-nombre{font-size:15px;font-weight:800}
 .ficha-sub{font-size:11px;opacity:.58;margin-top:2px}
 .ficha-suc-badge{background:rgba(255,255,255,.16);font-size:11px;padding:3px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.20)}
 .ficha-sec{border-bottom:1px solid var(--brd);padding:12px 16px;display:flex;align-items:flex-start;gap:12px}
 .ficha-sec:last-child{border-bottom:none}
 .ficha-sec:hover{background:var(--gris)}
-.fsec-icon{width:36px;height:36px;border-radius:var(--r);background:var(--cel);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;margin-top:1px}
+.fsec-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#E0F2FA,#CBEBF5);
+  border:1px solid rgba(41,181,224,.20);
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;margin-top:1px;
+}
 .fsec-body{flex:1;min-width:0}
 .fsec-titulo{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2);margin-bottom:3px}
 .fsec-dato{font-size:12px;font-weight:700;color:var(--txt)}
@@ -373,32 +536,38 @@ tr:last-child td{border-bottom:none}
 .cliente-search-box p{font-size:12px;color:var(--txt2);margin-bottom:14px}
 .cliente-search-big{display:flex;gap:10px;max-width:540px;margin:0 auto}
 .cliente-search-big input{flex:1;font-size:14px;font-family:inherit;padding:12px 16px;border:1.5px solid var(--brd);border-radius:var(--r);color:var(--txt);transition:border-color .15s}
-.cliente-search-big input:focus{outline:none;border-color:var(--bna-ocean);box-shadow:0 0 0 3px rgba(13,110,138,.10)}
-.cliente-search-big button{background:linear-gradient(135deg,var(--bna-ocean),var(--bna-deep));color:#fff;border:none;border-radius:999px;padding:12px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s}
-.cliente-search-big button:hover{opacity:.88}
+.cliente-search-big input:focus{outline:none;border-color:var(--bna-celeste);box-shadow:0 0 0 3px rgba(41,181,224,.10)}
+.cliente-search-big button{background:var(--bna-celeste);color:#fff;border:none;border-radius:999px;padding:12px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.cliente-search-big button:hover{background:var(--bna-petrol)}
 .not-found{background:var(--gris);border-radius:var(--r);padding:12px 16px;font-size:12px;color:var(--txt2);font-style:italic}
 
-/* ══ EXTRAS ══ */
-.suc-row-vd td{border-left:4px solid var(--vrd)}.suc-row-nrj td{border-left:4px solid var(--bna-plus)}.suc-row-rj td{border-left:4px solid var(--roj)}
+/* ════ EXTRAS ════ */
+.suc-row-vd td{border-left:4px solid var(--vrd)}
+.suc-row-nrj td{border-left:4px solid var(--bna-plus)}
+.suc-row-rj td{border-left:4px solid var(--roj)}
 .score-bar{height:8px;border-radius:4px;display:inline-block}
-.callout{display:flex;align-items:flex-start;gap:10px;background:var(--gris);border-radius:12px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--bna-ocean)}
+/* Callouts estilo guía BNA (imagen 6) */
+.callout{display:flex;align-items:flex-start;gap:10px;background:var(--gris);border-radius:14px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--bna-celeste)}
 .callout.warn{background:#FEF8EE;border-left-color:var(--bna-plus)}
 .callout.err{background:var(--roj-cl);border-left-color:var(--roj)}
 .callout.ok{background:var(--vrd-cl);border-left-color:var(--vrd)}
 .callout-ico{font-size:18px;flex-shrink:0;margin-top:1px}
 .callout-txt{font-size:12px;color:var(--txt);line-height:1.5}
-.stat-badge{display:inline-flex;align-items:center;gap:5px;background:var(--cel);color:var(--bna-ocean);font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;border:1px solid var(--cel2)}
+.stat-badge{display:inline-flex;align-items:center;gap:5px;background:var(--cel);color:var(--bna-petrol);font-size:11px;font-weight:800;padding:3px 12px;border-radius:20px;border:1px solid var(--cel2)}
+/* Meta timeline */
 .meta-timeline{display:flex;gap:0;margin:10px 0;overflow-x:auto}
 .meta-hito{flex:1;min-width:80px;text-align:center;position:relative;padding:6px 4px 4px}
 .meta-hito::before{content:'';position:absolute;top:14px;left:0;right:0;height:2px;background:var(--gris2);z-index:0}
 .meta-hito:first-child::before{left:50%}.meta-hito:last-child::before{right:50%}
 .meta-hito-dot{width:14px;height:14px;border-radius:50%;background:var(--brd);border:2px solid #fff;margin:0 auto 4px;position:relative;z-index:1;transition:background .3s}
-.meta-hito-dot.done{background:var(--vrd)}.meta-hito-dot.current{background:var(--bna-plus);box-shadow:0 0 0 3px rgba(232,88,26,.20)}.meta-hito-dot.pending{background:var(--brd)}
+.meta-hito-dot.done{background:var(--vrd)}
+.meta-hito-dot.current{background:var(--bna-plus);box-shadow:0 0 0 3px rgba(232,88,26,.20)}
+.meta-hito-dot.pending{background:var(--brd)}
 .meta-hito-lbl{font-size:9px;color:var(--txt2);white-space:nowrap}.meta-hito-val{font-size:8px;color:var(--txt2);font-weight:600}
 .prog-bar-wrap{background:var(--gris2);border-radius:4px;height:8px;overflow:hidden;margin-top:4px}
 .prog-bar-fill{height:100%;border-radius:4px;transition:width .6s ease-out}
 
-/* ══ RESPONSIVE ══ */
+/* ════ RESPONSIVE ════ */
 @media(max-width:900px){
   .sidebar{width:54px}
   .sidebar .stab-lbl{opacity:0;max-width:0}
@@ -406,7 +575,7 @@ tr:last-child td{border-bottom:none}
   .sidebar .ntab{justify-content:center;padding:10px 0}
   .sidebar .sidebar-brand-text{opacity:0;max-width:0}
   .main-content{margin-left:54px}
-  .sidebar.expanded{width:228px}
+  .sidebar.expanded{width:230px}
   .sidebar.expanded .stab-lbl,.sidebar.expanded .sidebar-brand-text{opacity:1;max-width:185px}
   .sidebar.expanded .snav-section{opacity:1;height:auto;padding:10px 13px 3px}
   .sidebar.expanded .ntab{justify-content:flex-start;padding:9px 14px}
@@ -421,12 +590,12 @@ tr:last-child td{border-bottom:none}
   .consumo-grid{grid-template-columns:1fr 1fr}
 }
 
-/* ══ ANIMATIONS ══ */
+/* ════ ANIMATIONS ════ */
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .page.active{animation:fadeIn .22s ease-out}
 .metric{animation:fadeIn .2s ease-out}
 
-/* ══ SORT ══ */
+/* ════ SORT ════ */
 .ddbody table th.sort-asc::after{content:' ↑';opacity:.9;font-size:10px}
 .ddbody table th.sort-desc::after{content:' ↓';opacity:.9;font-size:10px}
 .ddbody table th.sort-none::after{content:' ↕';opacity:.3;font-size:10px}
@@ -443,9 +612,7 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
       <path d="M0,60 C300,100 900,20 1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,.07)"/>
     </svg>
   </div>
-  <div class="ld-logo-box">
-    <span class="ld-logo-text">BNA<span class="ld-logo-plus">+</span></span>
-  </div>
+  <div class="ld-circle"><span>🏦</span></div>
   <div class="ld-badge"><span>Banco de la Nación Argentina</span></div>
   <div class="ld-title">Medios de Pago</div>
   <div class="ld-subtitle">Zonal NOA Oeste</div>
@@ -465,7 +632,7 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <div id="sidebar" class="sidebar">
   <div class="sidebar-inner">
     <div class="sidebar-brand">
-      <div class="sidebar-brand-logo">BNA</div>
+      <div class="sidebar-brand-logo">B</div>
       <div class="sidebar-brand-text">
         <div class="sidebar-brand-title">UMP NOA Oeste</div>
         <div class="sidebar-brand-sub">BNA · Medios de Pago</div>
@@ -510,10 +677,21 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <div class="topbar"></div>
 <div class="header">
   <div class="hbrand">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 52" style="height:44px;width:auto">
-      <rect width="150" height="52" rx="11" fill="rgba(255,255,255,.10)"/>
-      <text x="10" y="38" font-family="'Barlow Condensed',Arial Black,sans-serif" font-size="32" font-weight="900" fill="white" letter-spacing="-1">BNA</text>
-      <text x="104" y="42" font-family="'Barlow Condensed',Arial Black,sans-serif" font-size="42" font-weight="900" fill="#E8581A" letter-spacing="-2">+</text>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 60" style="height:46px;width:auto">
+      <!-- Círculo blanco con ícono templete -->
+      <circle cx="30" cy="30" r="28" fill="#fff" opacity=".95"/>
+      <!-- Templete BNA (simplificado) -->
+      <g transform="translate(30,30)" fill="#1B3A6B">
+        <rect x="-12" y="8" width="24" height="3" rx="1"/>
+        <rect x="-10" y="-7" width="3" height="15" rx="1"/>
+        <rect x="-2" y="-7" width="3" height="15" rx="1"/>
+        <rect x="6" y="-7" width="3" height="15" rx="1"/>
+        <rect x="-13" y="-10" width="26" height="3" rx="1"/>
+        <rect x="-6" y="-16" width="11" height="6" rx="1"/>
+      </g>
+      <!-- Texto BNA -->
+      <text x="68" y="26" font-family="'Barlow',Arial Black,sans-serif" font-size="20" font-weight="900" fill="white" letter-spacing="1">BNA</text>
+      <text x="68" y="44" font-family="'Barlow',Arial,sans-serif" font-size="11" font-weight="500" fill="rgba(255,255,255,.62)" letter-spacing=".5">Medios de Pago</text>
     </svg>
     <div class="hdiv"></div>
     <div><div class="htitle">Tablero UMP · Zonal NOA Oeste</div><div class="hsub">Catamarca &amp; La Rioja · Medios de Pago</div></div>
@@ -526,7 +704,7 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
     </div>
     <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px">
       <div class="hdate" id="hfecha">Cargando…</div>
-      <div class="hbadge">UMP NOA OESTE</div>
+      <div class="hbadge">USO INTERNO</div>
     </div>
   </div>
 </div>
@@ -550,7 +728,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <div class="page active" id="page-menu">
   <div class="banner celeste">
     <div>
-      <div class="ban-t">Menú principal · Medios de Pago Zonal NOA Oeste</div>
+      <div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">Menú principal · Medios de Pago Zonal NOA Oeste</div>
       <div class="ban-s">Ingresá por sección, navegá rápido y volvé al menú cuando lo necesites</div>
     </div>
     <div><div class="ban-n">BNA</div><div class="ban-nl">tablero integral</div></div>
@@ -571,7 +750,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <div class="page" id="page-oport">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
-    <div><div class="ban-t">⭐ Panel de Oportunidades</div><div class="ban-s">Priorización semanal · acción directa · semáforo por sucursal</div></div>
+    <div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">⭐ Panel de Oportunidades</div><div class="ban-s">Priorización semanal · acción directa · semáforo por sucursal</div></div>
     <div><div class="ban-n" id="op-churn-count">—</div><div class="ban-nl">comercios a recuperar</div></div>
   </div>
   <div class="sbar"><div class="sdot" id="sdot-main"></div><span class="stxt" id="stxt-main">Conectando…</span><button class="sbtn" onclick="loadAll()">↺ Actualizar</button></div>
@@ -612,7 +792,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <!-- ═══ +PAGOS NACIÓN ═══ -->
 <div class="page" id="page-com">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner"><div><div class="ban-t">Comercios +Pagos Nación</div><div class="ban-s">Estado de actividad · adquirencia · contactos</div></div><div><div class="ban-n" id="com-total">—</div><div class="ban-nl">comercios</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">Comercios +Pagos Nación</div><div class="ban-s">Estado de actividad · adquirencia · contactos</div></div><div><div class="ban-n" id="com-total">—</div><div class="ban-nl">comercios</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-com-suc" onchange="applyFilterCOM()"><option value="">Todas</option></select>
@@ -661,7 +842,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
     <div>
-      <div class="ban-t">Comercios en General · FISERV / Payway</div>
+      <div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">Comercios en General · FISERV / Payway</div>
       <div class="ban-s">Comercios con MASTERCARD · VISA · NATIVA · BANCAT · PyMES · AgroNación — potenciales para +Pagos y promos</div>
     </div>
     <div><div class="ban-n" id="ceg-total">—</div><div class="ban-nl">comercios registrados</div></div>
@@ -737,7 +919,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
     <div id="fac-ranking-suc" style="flex:1;min-width:220px"></div>
     <div id="fac-ranking-top" style="flex:1;min-width:220px"></div>
   </div>
-  <div class="banner"><div><div class="ban-t">Facturación de Comercios</div><div class="ban-s">Enero 2026 vs Febrero 2026</div></div><div><div class="ban-n" id="fac-total">—</div><div class="ban-nl">facturación feb (B$)</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">Facturación de Comercios</div><div class="ban-s">Enero 2026 vs Febrero 2026</div></div><div><div class="ban-n" id="fac-total">—</div><div class="ban-nl">facturación feb (B$)</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-fac-suc" onchange="applyFilterFAC()"><option value="">Todas</option></select>
@@ -795,7 +978,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <!-- ═══ MARCATÓN ═══ -->
 <div class="page" id="page-marc">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">&#8592; Atr&aacute;s</button><button class="navbtn pri" onclick="go('menu')">&#8962; Men&uacute; principal</button><button class="navbtn" onclick="navNext()">Adelante &#8594;</button></div>
-  <div class="banner"><div><div class="ban-t">Marcaton Marcaton</div><div class="ban-s">Comercios adheridos - analisis por rubro y sucursal</div></div><div><div class="ban-n" id="marc-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">Marcaton Marcaton</div><div class="ban-s">Comercios adheridos - analisis por rubro y sucursal</div></div><div><div class="ban-n" id="marc-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-marc-suc" onchange="applyFilter_MARC()"><option value="">Todas</option></select>
@@ -839,7 +1023,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <!-- ═══ SEMANA NACIÓN / AE ═══ -->
 <div class="page" id="page-sn">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">&#8592; Atr&aacute;s</button><button class="navbtn pri" onclick="go('menu')">&#8962; Men&uacute; principal</button><button class="navbtn" onclick="navNext()">Adelante &#8594;</button></div>
-  <div class="banner"><div><div class="ban-t">SN SN / AE</div><div class="ban-s">Semanario Nacion y Adelantos Extraordinarios</div></div><div><div class="ban-n" id="sn-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">SN SN / AE</div><div class="ban-s">Semanario Nacion y Adelantos Extraordinarios</div></div><div><div class="ban-n" id="sn-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-sn-suc" onchange="applyFilter_SN()"><option value="">Todas</option></select>
@@ -883,7 +1068,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <!-- ═══ VIAJA+ ═══ -->
 <div class="page" id="page-viaja">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">&#8592; Atr&aacute;s</button><button class="navbtn pri" onclick="go('menu')">&#8962; Men&uacute; principal</button><button class="navbtn" onclick="navNext()">Adelante &#8594;</button></div>
-  <div class="banner"><div><div class="ban-t">Viaja+ Viaja+</div><div class="ban-s">Agencias de turismo - Programa Viaja+ 3CSI</div></div><div><div class="ban-n" id="viaja-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">Viaja+ Viaja+</div><div class="ban-s">Agencias de turismo - Programa Viaja+ 3CSI</div></div><div><div class="ban-n" id="viaja-total">&#8212;</div><div class="ban-nl">adheridos</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-viaja-suc" onchange="applyFilter_VIAJA()"><option value="">Todas</option></select>
@@ -927,7 +1113,8 @@ th.sort-desc::after{content:' ↓';opacity:.9;font-size:9px}
 <!-- ═══ PYMENACIÓN ═══ -->
 <div class="page" 
 id="page-pyme">
-  <div class="banner"><div><div class="ban-t">PyMENación</div><div class="ban-s">Tarjeta empresarial PyME</div></div><div><div class="ban-n" id="pyme-total">—</div><div class="ban-nl">cuentas</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">PyMENación</div><div class="ban-s">Tarjeta empresarial PyME</div></div><div><div class="ban-n" id="pyme-total">—</div><div class="ban-nl">cuentas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-pyme-suc" onchange="applyFilterPYME()"><option value="">Todas</option></select>
@@ -1022,7 +1209,8 @@ id="page-pyme">
 <!-- ═══ AGRONACIÓN ═══ -->
 <div class="page" id="page-agro">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner"><div><div class="ban-t">AgroNación</div><div class="ban-s">Tarjeta agropecuaria</div></div><div><div class="ban-n" id="agro-total">—</div><div class="ban-nl">cuentas</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">AgroNación</div><div class="ban-s">Tarjeta agropecuaria</div></div><div><div class="ban-n" id="agro-total">—</div><div class="ban-nl">cuentas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-agro-suc" onchange="applyFilterAGRO()"><option value="">Todas</option></select>
@@ -1117,7 +1305,8 @@ id="page-pyme">
 <!-- ═══ CORPORATIVA ═══ -->
 <div class="page" id="page-corp">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner"><div><div class="ban-t">TC Corporativa</div><div class="ban-s">Tarjeta corporativa · cartera NOA Oeste</div></div><div><div class="ban-n" id="corp-total">—</div><div class="ban-nl">cuentas</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">TC Corporativa</div><div class="ban-s">Tarjeta corporativa · cartera NOA Oeste</div></div><div><div class="ban-n" id="corp-total">—</div><div class="ban-nl">cuentas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-corp-suc" onchange="applyFilterCORP()"><option value="">Todas</option></select>
@@ -1181,7 +1370,8 @@ id="page-pyme">
 <!-- ═══ BNA CONECTA ═══ -->
 <div class="page" id="page-bna">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
-  <div class="banner"><div><div class="ban-t">BNA Conecta</div><div class="ban-s">Compradores y vendedores</div></div><div><div class="ban-n" id="bna-total">—</div><div class="ban-nl">empresas</div></div></div>
+  <div class="banner"><div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">BNA Conecta</div><div class="ban-s">Compradores y vendedores</div></div><div><div class="ban-n" id="bna-total">—</div><div class="ban-nl">empresas</div></div></div>
   <div class="fbar">
     <span class="fbar-lbl">Sucursal:</span>
     <select id="f-bna-suc" onchange="applyFilterBNA()"><option value="">Todas</option></select>
@@ -1260,7 +1450,8 @@ id="page-pyme">
 <div class="page" id="page-tc">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
-    <div><div class="ban-t">💳 TC Individuos · NOA Oeste</div>
+    <div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">💳 TC Individuos · NOA Oeste</div>
     <div class="ban-s">Consumo MC + VISA · Cuentas · Activación · Altas · Adicionales</div></div>
     <div><div class="ban-n" id="tc-total">—</div><div class="ban-nl">tarjetas</div></div>
   </div>
@@ -1360,7 +1551,8 @@ id="page-pyme">
 <div class="page" id="page-cliente">
   <div class="navtools"><button class="navbtn" onclick="navPrev()">← Atrás</button><button class="navbtn pri" onclick="go('menu')">⌂ Menú principal</button><button class="navbtn" onclick="navNext()">Adelante →</button></div>
   <div class="banner">
-    <div><div class="ban-t">🔍 Monitor de Cliente</div><div class="ban-s">Ingresá un CUIT para ver todos sus productos de medios de pago</div></div>
+    <div><div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">🔍 Monitor de Cliente</div><div class="ban-s">Ingresá un CUIT para ver todos sus productos de medios de pago</div></div>
     <div><div class="ban-n">CUIT</div><div class="ban-nl">buscador unificado</div></div>
   </div>
 
@@ -1383,7 +1575,8 @@ id="page-pyme">
 <div id="page-metas" class="page">
   <div class="banner" style="background:linear-gradient(135deg,#002056 0%,#1a0050 50%,#5a189a 100%)">
     <div>
-      <div class="ban-t">🎯 Cumplimiento de Metas · NOA Oeste</div>
+      <div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">🎯 Cumplimiento de Metas · NOA Oeste</div>
       <div class="ban-s">C/Resumen TC (stock período) · Acreditaciones acumuladas vs META TRIMESTRAL fija</div>
     </div>
     <div><div class="ban-n" id="metas-mes-lbl" style="font-size:14px">—</div><div class="ban-nl">período</div></div>
@@ -1478,7 +1671,8 @@ id="page-pyme">
 <div id="page-facmp" class="page">
   <div class="banner">
     <div>
-      <div class="ban-t">💳 Facturación +Pagos Nación</div>
+      <div class="banner-chevron">&rsaquo;&rsaquo;&rsaquo;</div>
+    <div class="ban-t">💳 Facturación +Pagos Nación</div>
       <div class="ban-s">Movimientos TD/TC · QR · TC Adelantado · por sucursal y facturador</div>
     </div>
     <div><div class="ban-n" id="facmp-total">—</div><div class="ban-nl">registros</div></div>
@@ -2008,70 +2202,563 @@ function ddCEGActividad(act){
 }
 
 // ── RENDER FAC ──
-function rFAC(rows){
-  DD.fac=rows;
-  const sucs=[...new Set(rows.map(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()).filter(Boolean))].sort();
-  poblarSel('f-fac-suc',sucs);
-  renderFAC(rows);
-  document.getElementById('fc-fac').textContent=n(rows.length)+' comercios';
-}
-function renderFAC(rows){
-  renderFacEvo(rows);
-  const p$=v=>parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
-  const tE=rows.reduce((a,r)=>a+p$(r['Total  ENERO 26']),0);
-  const tF=rows.reduce((a,r)=>a+p$(r['Total  FEBRERO 26']),0);
-  const vp=tE>0?((tF-tE)/tE*100).toFixed(1):'0';
-  document.getElementById('fac-total').textContent='$'+(tF/1e9).toFixed(1)+'B';
-  document.getElementById('fac-k1').textContent='$'+(tE/1e9).toFixed(2)+'B';
-  document.getElementById('fac-k2').textContent='$'+(tF/1e9).toFixed(2)+'B';
-  document.getElementById('fac-k3').textContent=(+vp>=0?'+':'')+vp+'%';
-  document.getElementById('fac-k4').textContent=n(rows.length);
-  const sm={};rows.forEach(r=>{const s=(r['Sucursal']||'').replace(/^\d+-/,'').trim();if(!s)return;if(!sm[s])sm[s]={e:0,f:0};sm[s].e+=p$(r['Total  ENERO 26']);sm[s].f+=p$(r['Total  FEBRERO 26']);});
-  const sa=Object.entries(sm).map(([nm,v])=>({nm,e:+(v.e/1e6).toFixed(1),f:+(v.f/1e6).toFixed(1)})).sort((a,b)=>b.f-a.f).slice(0,15);
-  mk('c-fac',{type:'bar',data:{labels:sa.map(s=>s.nm),datasets:[{label:'Enero',data:sa.map(s=>s.e),backgroundColor:'#007094',borderRadius:3},{label:'Febrero',data:sa.map(s=>s.f),backgroundColor:'#D4AC87',borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}},scales:{x:{ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y:{ticks:{font:{size:9},color:'#0d1f4a'}}},onClick:(e,el)=>{if(el.length)ddFacSuc(sa[el[0].index].nm);}}});
-  const mx=sa[0]?sa[0].f:1;
-  // ── Acumulado FAC ──
-  const p$f=v=>parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
-  // Detectar todas las columnas de meses en los datos
-  const colsMes = Object.keys((rows[0]||{})).filter(k=>/total.*2[0-9]/i.test(k)||/enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre/i.test(k));
-  const acumFac = rows.reduce((tot,r)=>tot+colsMes.reduce((a,col)=>a+p$f(r[col]),0),0);
-  const nMesesFac= colsMes.length;
-  const elAcumT = document.getElementById('fac-acum-total');
-  const elAcumM = document.getElementById('fac-acum-meses');
-  if(elAcumT) elAcumT.textContent='$'+(acumFac/1e9).toFixed(2)+'B';
-  if(elAcumM) elAcumM.textContent=nMesesFac+' mes'+(nMesesFac!==1?'es':'')+ ' · Ene + Feb 2026';
+// ══════════════════════════════════════════════════════════════
+// FACTURACION — Procesadoras (FISERV / PRISMA)
+// Apps Script envía columnas datetime como "26/MM/YYYY"
+// Ej: col "26/01/2026" = enero, "26/02/2026" = febrero, etc.
+// ══════════════════════════════════════════════════════════════
 
-  document.getElementById('t-fac').innerHTML=sa.map((s,i)=>{
-    const v=s.e>0?(s.f-s.e)/s.e*100:0;
-    const alerta=v<=-10?'<span class="pill p-chu">⚠ Caída</span>':v>10?'<span class="pill p-act">↑ Sube</span>':'<span class="pill p-gr">Estable</span>';
-    return`<tr class="crow" data-nm="${s.nm}" onclick="ddFacSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>$${s.e.toFixed(1)}M</td><td>$${s.f.toFixed(1)}M</td><td style="font-weight:700;color:${v>=0?'var(--bna-verde)':'var(--roj)'}">${v>=0?'+':''}${v.toFixed(1)}%</td><td>${alerta}</td><td><span class="bm" style="width:${Math.round(s.f/mx*60)}px"></span></td></tr>`;
+// ── Parsea montos tipo "$ 165.017,86" → número ──
+function parseMontoFAC(v){
+  if(!v && v!==0) return 0;
+  let s = v.toString().replace(/[$\s]/g,'').trim();
+  if(!s || s==='-' || s==='—' || s==='nan') return 0;
+  const hD=s.includes('.'), hC=s.includes(',');
+  if(hD && hC){ s=s.replace(/\./g,'').replace(',','.'); }
+  else if(!hD && hC){ s=s.replace(',','.'); }
+  return parseFloat(s)||0;
+}
+
+// ── normSuc: normaliza nombres de sucursal a claves de META_ACRED ──
+// FAC:       "1795-F.MAMERTO ESQUIU" → "F.MAMERTO ESQUIU"
+// TC:        "FRAY MAMERTO ESQUIU"   → ya está bien (META_RES usa esta clave)
+// META_ACRED: "F.MAMERTO ESQUIU"     → coincide con FAC normalizado
+function normSuc(s){
+  if(!s) return '';
+  let r = s.toString().trim();
+  // Quitar código numérico "NNNN-" del inicio
+  r = r.replace(/^\d+-/, '');
+  return r;
+}
+
+// ── normSucTC: normaliza sucursales de TC a claves de META_RES ──
+// TC usa "FRAY MAMERTO ESQUIU" → META_RES usa "FRAY MAMERTO ESQUIU" ✓
+// TC usa "SAN F. DEL V. DE CATAMARCA" → META_RES usa la misma ✓
+// TC usa "VILLA DOLORES (CAT)" → META_RES usa la misma ✓
+function normSucTC(s){
+  if(!s) return s;
+  return s.trim();  // TC ya viene normalizado igual que META_RES
+}
+
+// ── normSucFAC_to_MetaAcred: FAC → META_ACRED (son idénticos tras normSuc) ──
+// "1795-F.MAMERTO ESQUIU" → normSuc → "F.MAMERTO ESQUIU" → META_ACRED key ✓
+// Verificado: todos los 23 sucursales de FAC matchean META_ACRED con normSuc
+
+// ── getFacColByMonth: encuentra la columna real del mes en rows de FAC ──
+// Apps Script formatea datetime como "26/MM/YYYY"
+function getFacColByMonth(rows, mesNum){
+  if(!rows || !rows.length) return null;
+  const keys = Object.keys(rows[0]);
+  // Buscar patrón DD/MM/YYYY donde mes coincida
+  return keys.find(k => {
+    const p = k.split('/');
+    return p.length===3 && p[2].length===4 && parseInt(p[1])===mesNum;
+  }) || null;
+}
+
+// ── FAC: datos por mes ── (cache calculado una vez)
+let FAC_COLS_CACHE = null;
+function getFacCols(){
+  const rows = DD.fac || [];
+  if(!rows.length) return {};
+  if(FAC_COLS_CACHE) return FAC_COLS_CACHE;
+  const map = {};
+  for(let m=1; m<=12; m++){
+    const col = getFacColByMonth(rows, m);
+    if(col && rows.some(r => parseMontoFAC(r[col])>0)){
+      map[m] = col;
+    }
+  }
+  FAC_COLS_CACHE = map;
+  console.log('[FAC] Columnas detectadas:', map);
+  return map;
+}
+
+function rFAC(rows){
+  DD.fac = rows;
+  FAC_COLS_CACHE = null; // reset cache
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  // Selector de sucursales
+  const sucs = [...new Set(
+    rows.map(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()).filter(s=>s&&s!=='TOTAL')
+  )].sort();
+  poblarSel('f-fac-suc', sucs);
+
+  // Totales globales por mes
+  const totMes = {};
+  Object.entries(cols).forEach(([m, col]) => {
+    totMes[m] = rows.reduce((a,r) => a+parseMontoFAC(r[col]), 0);
+  });
+  const mesesDisp = Object.keys(totMes).map(Number).sort((a,b)=>a-b);
+  const totalAcum = mesesDisp.reduce((a,m)=>a+totMes[m], 0);
+
+  // KPIs header
+  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const lastM  = mesesDisp[mesesDisp.length-1];
+  const prevM  = mesesDisp[mesesDisp.length-2];
+  const tLast  = lastM  ? totMes[lastM]  : 0;
+  const tPrev  = prevM  ? totMes[prevM]  : 0;
+  const varPct = tPrev>0 ? ((tLast-tPrev)/tPrev*100).toFixed(1) : '0';
+
+  const setEl = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  setEl('fac-total', fmtB(totalAcum));
+  if(lastM)  setEl('fac-k1', fmtB(totMes[lastM]||0));
+  if(prevM)  setEl('fac-k2', fmtB(totMes[prevM]||0));
+  setEl('fac-k3', (parseFloat(varPct)>=0?'+':'')+varPct+'%');
+  setEl('fac-k4', n(rows.filter(r=>(r['Sucursal']||'')!=='TOTAL').length));
+  const elAcum = document.getElementById('fac-acum-total');
+  const elMesesN = document.getElementById('fac-acum-meses');
+  if(elAcum) elAcum.textContent = fmtB(totalAcum);
+  if(elMesesN) elMesesN.textContent = mesesDisp.map(m=>MESES_S[m]).join('+') + ' 2026';
+
+  renderFAC(rows);
+  document.getElementById('fc-fac').textContent = n(rows.filter(r=>(r['Sucursal']||'')!=='TOTAL').length)+' comercios';
+}
+
+function renderFAC(rows){
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const mesesDisp = Object.keys(cols).map(Number).sort((a,b)=>a-b);
+
+  // Gráfico evolución por sucursal × mes
+  const sucRows = rows.filter(r=>(r['Sucursal']||'')!=='TOTAL');
+  const gSuc = {};
+  sucRows.forEach(r=>{
+    const suc = (r['Sucursal']||'').replace(/^\d+-/,'').trim();
+    if(!suc) return;
+    if(!gSuc[suc]) gSuc[suc] = {nm:suc, total:0};
+    mesesDisp.forEach(m => { gSuc[suc].total += parseMontoFAC(r[cols[m]]); });
+  });
+  const sa = Object.values(gSuc).sort((a,b)=>b.total-a.total).slice(0,15);
+  const mx = sa[0]?.total || 1;
+
+  // Gráfico de barras por sucursal (últimos 2 meses si hay, o 1)
+  const m1 = mesesDisp[mesesDisp.length-2], m2 = mesesDisp[mesesDisp.length-1];
+  const ds = [];
+  if(m1 && m1!==m2) ds.push({
+    label: MESES_S[m1]+' 2026',
+    data: sa.map(s => {
+      const sRows = sucRows.filter(r=>(r['Sucursal']||'').includes(s.nm));
+      return +(sRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m1]]),0)/1e6).toFixed(1);
+    }),
+    backgroundColor: '#0D6E8A', borderRadius:3
+  });
+  ds.push({
+    label: MESES_S[m2]+' 2026',
+    data: sa.map(s => {
+      const sRows = sucRows.filter(r=>(r['Sucursal']||'').includes(s.nm));
+      return +(sRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m2]]),0)/1e6).toFixed(1);
+    }),
+    backgroundColor: '#E8A052', borderRadius:3
+  });
+
+  mk('c-fac',{type:'bar',
+    data:{labels:sa.map(s=>s.nm), datasets:ds},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}},
+      scales:{x:{ticks:{font:{size:9},callback:v=>'$'+v+'M'}},y:{ticks:{font:{size:9},color:'#0A4A5E'}}},
+      onClick:(e,el)=>{if(el.length) ddFacSuc(sa[el[0].index].nm);}}});
+
+  // Tabla
+  document.getElementById('t-fac').innerHTML = sa.map((s,i)=>{
+    const v2 = mesesDisp.length>=2 ? ((): number => {
+      const sRows = sucRows.filter(r=>(r['Sucursal']||'').includes(s.nm));
+      const v1t = sRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m1]]),0);
+      const v2t = sRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m2]]),0);
+      return v1t>0 ? (v2t-v1t)/v1t*100 : 0;
+    })() : 0;
+    const alerta = v2<=-10?'<span class="pill p-chu">⚠ Caída</span>':v2>10?'<span class="pill p-act">↑ Sube</span>':'<span class="pill p-gr">Estable</span>';
+    return `<tr class="crow" onclick="ddFacSuc('${s.nm}')">
+      <td class="rk">${i+1}</td><td>${s.nm}</td>
+      <td>${fmtB(s.total)}</td>
+      <td style="font-weight:700;color:${v2>=0?'var(--vrd)':'var(--roj)'}">${v2>=0?'+':''}${v2.toFixed(1)}%</td>
+      <td>${alerta}</td>
+      <td><span class="bm" style="width:${Math.round(s.total/mx*60)}px"></span></td>
+    </tr>`;
   }).join('');
 
+  renderFacEvo(rows);
   rankFAC(rows);
+  if(typeof renderMetas==='function') setTimeout(()=>{try{renderMetas();}catch(e){console.error('[METAS rFAC]',e);}},400);
+}
 
-  if(typeof renderMetas==='function') setTimeout(()=>{ try{renderMetas();}catch(e){console.error('[METAS rFAC]',e);} },300);
-}
 function applyFilterFAC(){
-  const suc=document.getElementById('f-fac-suc').value;
-  const rows=suc?(DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc):(DD.fac||[]);
+  const suc = document.getElementById('f-fac-suc').value;
+  const rows = suc ? (DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc) : (DD.fac||[]);
   renderFAC(rows);
-  document.getElementById('fc-fac').textContent=suc?n(rows.length)+' en '+suc:n(rows.length)+' comercios';
+  document.getElementById('fc-fac').textContent = suc ? n(rows.length)+' en '+suc : n(rows.filter(r=>(r['Sucursal']||'')!=='TOTAL').length)+' comercios';
 }
+
 function exportFAC(){
-  const suc=document.getElementById('f-fac-suc').value;
-  const rows=suc?(DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc):(DD.fac||[]);
-  const keys=['Sucursal','CUIT','Razon Social / Apellido','Total  ENERO 26','Total  FEBRERO 26','Detalle','CBU'];
-  const csv=[keys.join(','),...rows.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const meses = Object.keys(cols).map(Number).sort((a,b)=>a-b);
+  const suc = document.getElementById('f-fac-suc').value;
+  const rows = suc ? (DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc) : (DD.fac||[]);
+  const colNames = ['Sucursal','CUIT','Razon Social / Apellido',...meses.map(m=>MESES_S[m]+' 2026')];
+  const csv = [colNames.join(','),...rows.map(r=>[
+    r['Sucursal']||'',r['CUIT']||'',r['Razon Social / Apellido']||'',
+    ...meses.map(m=>(parseMontoFAC(r[cols[m]])).toFixed(2))
+  ].map(v=>`"${v}"`).join(','))].join('\n');
   dlCSV(csv,'facturacion'+(suc?'_'+suc:'')+'.csv');
 }
+
 function ddFacSuc(suc){
-  const rows=(DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc);
-  const p$=v=>parseFloat((v||'0').replace(/[\$\.]/g,'').replace(',','.'))||0;
-  rows.sort((a,b)=>p$(b['Total  FEBRERO 26'])-p$(a['Total  FEBRERO 26']));
-  const hdrs=['Razón Social','CUIT','Enero 2026','Febrero 2026','Detalle','CBU'];
-  const data=rows.map(r=>[r['Razon Social / Apellido'],r['CUIT'],r['Total  ENERO 26']||'$0',r['Total  FEBRERO 26']||'$0',r['Detalle']||'—',r['CBU']||'—']);
-  openDD('Facturación: '+suc,rows.length+' comercios con facturación',hdrs,data,rows);
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const meses = Object.keys(cols).map(Number).sort((a,b)=>a-b);
+  const rows = (DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc);
+  rows.sort((a,b)=>{
+    const lastM = meses[meses.length-1];
+    return parseMontoFAC(b[cols[lastM]])-parseMontoFAC(a[cols[lastM]]);
+  });
+  const hdrs = ['Razón Social','CUIT',...meses.map(m=>MESES_S[m]),'Total','Detalle'];
+  const data = rows.map(r=>[
+    r['Razon Social / Apellido'], r['CUIT'],
+    ...meses.map(m=>{const v=parseMontoFAC(r[cols[m]]);return v>0?'$'+v.toLocaleString('es-AR',{minimumFractionDigits:2}):'—';}),
+    r['TOTAL']||'—', r['Detalle']||'—'
+  ]);
+  openDD('Facturación: '+suc, rows.length+' comercios · acumulado 2026', hdrs, data, rows);
 }
+
+function renderFacEvo(rows){
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const mesesDisp = Object.keys(cols).map(Number).sort((a,b)=>a-b);
+  if(!mesesDisp.length) return;
+
+  const sucRows = rows.filter(r=>(r['Sucursal']||'')!=='TOTAL');
+  const totPorMes = mesesDisp.map(m => sucRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m]]),0));
+  const totalAcum = totPorMes.reduce((a,v)=>a+v, 0);
+  const mejorIdx  = totPorMes.indexOf(Math.max(...totPorMes));
+  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+
+  const elT = document.getElementById('fac-acum-total');
+  const elM = document.getElementById('fac-acum-meses');
+  if(elT) elT.textContent = fmtB(totalAcum);
+  if(elM) elM.textContent = mesesDisp.map(m=>MESES_S[m]).join('+') + ' · ' + fmtB(totalAcum);
+
+  if(CH['c-fac-evo']) CH['c-fac-evo'].destroy();
+  const canEvo = document.getElementById('c-fac-evo');
+  if(canEvo){
+    CH['c-fac-evo'] = new Chart(canEvo, {
+      type:'bar',
+      data:{
+        labels: mesesDisp.map(m=>MESES_S[m]+' 2026'),
+        datasets:[{
+          label:'Facturación Procesadoras',
+          data: totPorMes.map(v=>+(v/1e6).toFixed(1)),
+          backgroundColor: mesesDisp.map((_,i)=>i===mejorIdx?'#E8581A':'#0D6E8A'),
+          borderRadius:5
+        }]
+      },
+      options:{responsive:true, maintainAspectRatio:false,
+        plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'M'}}},
+        scales:{
+          x:{ticks:{font:{size:11}, color:'#0A4A5E'}},
+          y:{ticks:{font:{size:9}, callback:v=>'$'+v+'M'}, title:{display:true,text:'Millones $',font:{size:9}}}
+        }
+      }
+    });
+  }
+}
+
+function rankFAC(rows){
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const mesesDisp = Object.keys(cols).map(Number).sort((a,b)=>a-b);
+  const fmtM = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const medal = ['🥇','🥈','🥉','4°','5°','6°','7°','8°'];
+  const fac = document.getElementById('f-fac-suc')?.value||'';
+  const sucRows = (fac ? rows.filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===fac) : rows)
+    .filter(r=>(r['Sucursal']||'')!=='TOTAL');
+
+  // Ranking por sucursal
+  const gSuc={};
+  sucRows.forEach(r=>{
+    const nm=(r['Sucursal']||'').replace(/^\d+-/,'').trim(); if(!nm)return;
+    if(!gSuc[nm])gSuc[nm]={suc:nm,total:0,porMes:{}};
+    mesesDisp.forEach(m=>{const v=parseMontoFAC(r[cols[m]]);gSuc[nm].total+=v;gSuc[nm].porMes[MESES_S[m]]=(gSuc[nm].porMes[MESES_S[m]]||0)+v;});
+  });
+  const topSuc=Object.values(gSuc).sort((a,b)=>b.total-a.total).slice(0,8);
+  const mx=topSuc[0]?.total||1;
+
+  const elSuc=document.getElementById('fac-ranking-suc');
+  if(elSuc) elSuc.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #2EAF8A;border-radius:12px;padding:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">
+        🏆 Ranking sucursales · ${mesesDisp.map(m=>MESES_S[m]).join('+')}
+      </div>
+      ${topSuc.map((x,i)=>`
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+            <span style="font-size:10px;font-weight:700;color:#0A4A5E">${medal[i]||i+1+'°'} ${x.suc}</span>
+            <span style="font-size:10px;font-weight:800;color:#2EAF8A">${fmtM(x.total)}</span>
+          </div>
+          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
+            <div style="width:${(x.total/mx*100).toFixed(0)}%;height:100%;background:#2EAF8A;border-radius:4px"></div>
+          </div>
+          <div style="font-size:8px;color:#888">${Object.entries(x.porMes).map(([m,v])=>m+': '+fmtM(v)).join(' · ')}</div>
+        </div>`).join('')}
+    </div>`;
+
+  // Top facturadores por CUIT
+  const gCUIT={};
+  sucRows.forEach(r=>{
+    const k=(r['CUIT']||'').toString(); if(!k||k==='nan') return;
+    const nom=(r['Razon Social / Apellido']||k).toString().trim().slice(0,30);
+    const suc=(r['Sucursal']||'').replace(/^\d+-/,'').trim();
+    if(!gCUIT[k])gCUIT[k]={nom,suc,total:0};
+    mesesDisp.forEach(m=>{gCUIT[k].total+=parseMontoFAC(r[cols[m]]);});
+  });
+  const topFac=Object.values(gCUIT).filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8);
+  const mxF=topFac[0]?.total||1;
+
+  const elTop=document.getElementById('fac-ranking-top');
+  if(elTop) elTop.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #0D6E8A;border-radius:12px;padding:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#0D6E8A;margin-bottom:10px">
+        💼 Top facturadores
+      </div>
+      ${topFac.map((x,i)=>`
+        <div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
+            <span style="font-size:9px;font-weight:700;color:#0A4A5E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px" title="${x.nom}">${medal[i]||i+1+'°'} ${x.nom}</span>
+            <span style="font-size:10px;font-weight:800;color:#0D6E8A">${fmtM(x.total)}</span>
+          </div>
+          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
+            <div style="width:${(x.total/mxF*100).toFixed(0)}%;height:100%;background:#0D6E8A;border-radius:4px"></div>
+          </div>
+          <div style="font-size:8px;color:#888">${x.suc}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// FACTURACION MAS PAGOS — Hoja horizontal
+// Estructura: cada bloque de 5 cols = [RAZONSOCIAL, CUIT, Tipo, NETO_DATE, Sucursal]
+// Los meses están en columnas: índice 3,8,13,18,23,28,33,38,[43=SEP26],48,53,58
+// Apps Script envía datetime como "26/MM/YYYY"
+// ══════════════════════════════════════════════════════════════
+
+// Descripción de cada bloque mensual (columnas dentro de la hoja FACTURACION MAS PAGOS)
+// Mes 01: RS=col0, CU=col1, TI=col2, NE="26/01/2026", SU=col4
+// Mes 02: RS=col5, CU=col6, TI=col7, NE="26/02/2026", SU=col9
+// Mes 03: RS=col10, CU=col11, TI=col12, NE="26/03/2026", SU=col14
+// Mes 04: RS=col15, CU=col16, TI=col17, NE="26/04/2026", SU=col19
+// ... etc. Patrón: cada bloque tiene 5 cols, NETO en posición 3 del bloque
+// Septiembre usa "SEP26" en lugar de datetime
+
+let FMP_DATA = [];   // Array de objetos: [{RAZONSOCIAL, CUIT, Tipo, NETO, Sucursal, _mesNum, _mesLabel}]
+let FMP_MESES_DISP = [];  // meses disponibles como números [1,2,3,...]
+
+function rFACMP(rawRows){
+  // rawRows: filas de la hoja FACTURACION MAS PAGOS
+  // Necesitamos "aplanar" la estructura horizontal en filas normalizadas
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  // Detectar los bloques de meses disponibles
+  // Patrón: columna de NETO tiene formato "26/MM/YYYY" o "SEP26"
+  const flatRows = [];
+  const mesesEncontrados = new Set();
+
+  rawRows.forEach(rawRow => {
+    const keys = Object.keys(rawRow);
+
+    // Procesar cada clave buscando patrones de NETO
+    keys.forEach((key, idx) => {
+      let mesNum = null;
+      let mesLabel = null;
+
+      // Formato "26/MM/YYYY"
+      const m = key.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+      if(m){ mesNum = parseInt(m[2]); mesLabel = MESES_S[mesNum]; }
+      // Formato "SEP26"
+      else if(key.toUpperCase()==='SEP26'){ mesNum=9; mesLabel='Sep'; }
+
+      if(!mesNum) return;
+
+      const neto = parseFloat((rawRow[key]||'').toString().replace(',','.')) || 0;
+      if(!neto || isNaN(neto)) return; // fila vacía para este mes
+
+      // Las columnas RS, CU, TI, SU están en posiciones relativas al bloque
+      // Detectar el índice del NETO y buscar las columnas de su bloque
+      const rsKey = keys[idx-3] || '';
+      const cuKey = keys[idx-2] || '';
+      const tiKey = keys[idx-1] || '';
+      const suKey = keys[idx+1] || '';
+
+      const rs = (rawRow[rsKey]||'').toString().trim();
+      const cu = (rawRow[cuKey]||'').toString().trim();
+      const ti = (rawRow[tiKey]||'').toString().trim();
+      const su = (rawRow[suKey]||'').toString().trim();
+
+      if(!rs || rs==='nan' || !cu || cu==='nan') return;
+
+      flatRows.push({
+        RAZONSOCIAL: rs,
+        CUIT: cu.replace('.0',''),
+        Tipo: ti,
+        NETO: neto,
+        Sucursal: su,
+        _mesNum: mesNum,
+        _mesLabel: mesLabel,
+        _mesKey: key
+      });
+      mesesEncontrados.add(mesNum);
+    });
+  });
+
+  FMP_DATA = flatRows;
+  FMP_MESES_DISP = [...mesesEncontrados].sort((a,b)=>a-b);
+  console.log('[FMP] Filas aplanadas:', FMP_DATA.length, '| Meses:', FMP_MESES_DISP);
+
+  // Poblar selector de meses
+  const selMes = document.getElementById('f-facmp-mes');
+  if(selMes){
+    while(selMes.options.length > 1) selMes.remove(1);
+    FMP_MESES_DISP.forEach(m=>{
+      const o=document.createElement('option');
+      o.value=String(m);
+      o.textContent=MESES_S[m]+' 2026';
+      selMes.appendChild(o);
+    });
+  }
+
+  renderFACMP(FMP_DATA);
+}
+
+function getFACMPRows(){
+  const suc  = document.getElementById('f-facmp-suc')?.value  || '';
+  const mes  = document.getElementById('f-facmp-mes')?.value  || '';
+  const tipo = document.getElementById('f-facmp-tipo')?.value || '';
+  let rows = FMP_DATA;
+  if(suc)  rows = rows.filter(r => r['Sucursal']===suc || r['Sucursal'].includes(suc));
+  if(mes)  rows = rows.filter(r => r['_mesNum']===parseInt(mes));
+  if(tipo) rows = rows.filter(r => r['Tipo']===tipo);
+  // Búsqueda CUIT/RS
+  const q1=(document.getElementById('facmp-cuit-input')?.value||'').trim().toLowerCase().replace(/[-\s]/g,'');
+  const q2=(document.getElementById('facmp-rs-input')?.value||'').trim().toLowerCase();
+  if(q1||q2) rows=rows.filter(r=>{
+    const c=(r['CUIT']||'').toString().replace(/[-\s]/g,'').toLowerCase();
+    const s=(r['RAZONSOCIAL']||'').toLowerCase();
+    return (!q1||(c.includes(q1)||s.includes(q1)))&&(!q2||s.includes(q2)||c.includes(q2));
+  });
+  return rows;
+}
+
+function applyFilterFACMP(){ renderFACMP(getFACMPRows()); }
+
+function renderFACMP(rows){
+  if(!rows) rows = getFACMPRows();
+  const MESES_S=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const fmtM=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const medal=['🥇','🥈','🥉','4°','5°','6°','7°','8°','9°','10°'];
+  const nf=v=>Number(v||0).toLocaleString('es-AR');
+
+  const totalNeto = rows.reduce((a,r)=>a+(r['NETO']||0), 0);
+  const setEl=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+  setEl('facmp-total', nf(rows.length));
+  document.getElementById('fc-facmp').textContent = nf(rows.length)+' registros · '+fmtM(totalNeto);
+
+  // Evolución mensual
+  const totPorMes={};
+  FMP_MESES_DISP.forEach(m => {
+    totPorMes[m] = FMP_DATA.filter(r=>r['_mesNum']===m).reduce((a,r)=>a+(r['NETO']||0),0);
+  });
+  const mesesLabels = FMP_MESES_DISP.map(m=>MESES_S[m]);
+  const totalesArr  = FMP_MESES_DISP.map(m=>totPorMes[m]||0);
+  const totalAcum   = totalesArr.reduce((a,v)=>a+v,0);
+  const mejorIdx    = totalesArr.indexOf(Math.max(...totalesArr));
+
+  setEl('facmp-evo-total', fmtM(totalAcum));
+  setEl('facmp-evo-mejor', totalesArr.length>0 ? fmtM(totalesArr[mejorIdx])+'  ('+mesesLabels[mejorIdx]+')' : '—');
+  const elTit=document.getElementById('facmp-evo-tit');
+  if(elTit) elTit.textContent='📈 Evolución +Pagos · '+mesesLabels.join(' → ')+' · Total: '+fmtM(totalAcum);
+
+  const canEvo=document.getElementById('c-facmp-evo');
+  if(canEvo && FMP_MESES_DISP.length){
+    if(CH['c-facmp-evo']) CH['c-facmp-evo'].destroy();
+    CH['c-facmp-evo']=new Chart(canEvo,{
+      type:'bar',
+      data:{labels:mesesLabels,datasets:[{
+        label:'Acreditaciones +Pagos',
+        data:totalesArr.map(v=>+(v/1e6).toFixed(1)),
+        backgroundColor:totalesArr.map((_,i)=>i===mejorIdx?'#E8581A':'#0D6E8A'),
+        borderRadius:5
+      }]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'M'}}},
+        scales:{x:{ticks:{font:{size:11},color:'#0A4A5E'}},y:{ticks:{font:{size:9},callback:v=>'$'+v+'M'},title:{display:true,text:'Millones $',font:{size:9}}}}
+      }
+    });
+  }
+
+  // Poblar selectores
+  const sucs=[...new Set(FMP_DATA.map(r=>r['Sucursal']).filter(Boolean))].sort();
+  const sel=document.getElementById('f-facmp-suc');
+  if(sel){const cur=sel.value;while(sel.options.length>1)sel.remove(1);sucs.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});if(cur)sel.value=cur;}
+
+  const tipos=[...new Set(FMP_DATA.map(r=>r['Tipo']).filter(Boolean))].sort();
+  const selT=document.getElementById('f-facmp-tipo');
+  if(selT){const cur=selT.value;while(selT.options.length>1)selT.remove(1);tipos.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;selT.appendChild(o);});if(cur)selT.value=cur;}
+
+  // Ranking sucursales
+  const gSuc={};
+  rows.forEach(r=>{const s=r['Sucursal']||'—';if(!gSuc[s])gSuc[s]={suc:s,total:0};gSuc[s].total+=r['NETO']||0;});
+  const topSuc=Object.values(gSuc).sort((a,b)=>b.total-a.total).slice(0,8);
+  const mx=topSuc[0]?.total||1;
+
+  const elSuc=document.getElementById('facmp-ranking-suc');
+  if(elSuc) elSuc.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #2EAF8A;border-radius:12px;padding:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">🏆 Sucursales +Pagos</div>
+      ${topSuc.map((x,i)=>`<div style="margin-bottom:7px"><div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:10px;font-weight:700;color:#0A4A5E">${medal[i]||''} ${x.suc}</span><span style="font-size:10px;font-weight:800;color:#2EAF8A">${fmtM(x.total)}</span></div><div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden"><div style="width:${(x.total/mx*100).toFixed(0)}%;height:100%;background:#2EAF8A;border-radius:4px"></div></div></div>`).join('')}
+    </div>`;
+
+  // Ranking por CUIT/Razón Social
+  const gRS={};
+  rows.forEach(r=>{const k=r['CUIT']||'';if(!k||k==='nan')return;if(!gRS[k])gRS[k]={rs:r['RAZONSOCIAL']||k,cuit:k,suc:r['Sucursal']||'',total:0,tipo:r['Tipo']||''};gRS[k].total+=r['NETO']||0;});
+  const topRS=Object.values(gRS).sort((a,b)=>b.total-a.total).slice(0,8);
+  const mxRS=topRS[0]?.total||1;
+
+  const elTop=document.getElementById('facmp-ranking-top');
+  if(elTop) elTop.innerHTML=`
+    <div style="background:#fff;border:1.5px solid #0D6E8A;border-radius:12px;padding:14px">
+      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#0D6E8A;margin-bottom:10px">💼 Top acreditaciones</div>
+      ${topRS.map((x,i)=>`<div style="margin-bottom:7px"><div style="display:flex;justify-content:space-between;margin-bottom:2px"><span style="font-size:9px;font-weight:700;color:#0A4A5E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px" title="${x.rs}">${medal[i]||''} ${x.rs.slice(0,28)}</span><span style="font-size:10px;font-weight:800;color:#0D6E8A">${fmtM(x.total)}</span></div><div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden"><div style="width:${(x.total/mxRS*100).toFixed(0)}%;height:100%;background:#0D6E8A;border-radius:4px"></div></div><div style="font-size:8px;color:#888">${x.suc} · ${x.tipo}</div></div>`).join('')}
+    </div>`;
+
+  // Tabla detalle
+  const tBody=document.getElementById('t-facmp');
+  if(tBody) tBody.innerHTML=rows.slice(0,200).map((r,i)=>`
+    <tr class="crow">
+      <td class="rk">${i+1}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis">${r['RAZONSOCIAL']||'—'}</td>
+      <td>${r['CUIT']||'—'}</td>
+      <td><span class="pill p-az" style="font-size:9px">${r['Tipo']||'—'}</span></td>
+      <td style="font-weight:700">$${(r['NETO']||0).toLocaleString('es-AR',{minimumFractionDigits:2})}</td>
+      <td>${r['Sucursal']||'—'}</td>
+      <td><span class="pill p-gr" style="font-size:9px">${r['_mesLabel']||'—'} 2026</span></td>
+    </tr>`).join('');
+
+  const statusEl=document.getElementById('facmp-status');
+  if(statusEl) statusEl.style.display=rows.length?'none':'block';
+}
+
+// ══════════════════════════════════════════════════════════════
+// METAS 2026
+// META 1 — Cuentas con Resumen: STOCK del período de TC Individuos
+// META 2 — Acreditaciones: SUMA de columnas de FAC PROCESADORAS
+//          (SOLO FACTURACION, NO Facturación +Pagos)
+// ══════════════════════════════════════════════════════════════
+
+// normSucTC: TC usa "FRAY MAMERTO ESQUIU" → META_RES también
+// normSucFAC: FAC usa "F.MAMERTO ESQUIU" → META_ACRED también
+// → normSuc quita el código numérico → "F.MAMERTO ESQUIU" matchea META_ACRED
 
 // ── RENDER PROMOCIONES (MARCATÓN + SN/AE) ──
 
@@ -2932,7 +3619,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbx5rpnTlCMyAuV7IWpGy3mR
 const API_URL_FAC = 'https://script.google.com/macros/s/AKfycbzvOEsIxKbn__9hcn8iwIyAEwQWcONA1eCT8t-uhsrNO7WtRFZHnocYAkjjo3j4CGb4cg/exec';
 let TC_DATA={records:[],meses:[],sucs:[]};
 
-const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "marc": "MARCATON", "sn": "SN AE", "viaja": "VIAJA+", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
+const HOJAS = {"tc": "TC INDIVIDUOS", "com": "COMERCIOS MAS PAGOS", "ceg": "COMERCIOS EN GENERAL", "fac": "FACTURACION", "facmp": "FACTURACION MAS PAGOS", "marc": "MARCATON", "sn": "SN AE", "viaja": "VIAJA+", "pyme": "PYMENACION", "agro": "AGRONACION", "corp": "CORPORATIVA CREDITO", "bna": "BNA CONECTA"};
 const CACHE = {};
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutos
 
@@ -2981,16 +3668,17 @@ async function loadAll(force=false) {
 
   // Tareas en orden de prioridad
   const TASKS = [
-    ['com',  rCOM],
-    ['tc',   rTC],
-    ['fac',  rFAC],
-    ['marc', rMARC],
-    ['sn',   rSN],
+    ['com',   rCOM],
+    ['tc',    rTC],
+    ['fac',   rFAC],
+    ['facmp', rFACMP],
+    ['marc',  rMARC],
+    ['sn',    rSN],
     ['viaja', rVIAJA],
-    ['pyme', rPYME],
-    ['agro', rAGRO],
-    ['corp', rCORP],
-    ['bna',  rBNA],
+    ['pyme',  rPYME],
+    ['agro',  rAGRO],
+    ['corp',  rCORP],
+    ['bna',   rBNA],
   ];
 
   // Cargar primera pestaña visible primero
@@ -3348,85 +4036,8 @@ function renderTCResumen(){
 // MEJORA 3: FACTURACIÓN — evolución mensual global
 // ══════════════════════════════════════════════════════
 
-function renderFacEvo(rows){
-  const elCanvas=document.getElementById('c-fac-evo');
-  if(!elCanvas) return;
+// [renderFacEvo antiguo eliminado]
 
-  const p$=v=>parseFloat((v||'0').toString().replace(/[\$\.]/g,'').replace(',','.'))||0;
-
-  // Detectar columnas de meses por fecha "26/MM/2026" (Apps Script)
-  const MESES_EVO=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const colsEvoMap={};
-  for(let me=1;me<=12;me++){
-    const col=getFacColByMonth(rows,me);
-    if(col&&rows.some(r=>parseMontoFAC(r[col])>0)) colsEvoMap[me]=col;
-  }
-  const colsMes=Object.values(colsEvoMap);
-  if(colsMes.length===0) return;
-
-  // Calcular total por columna-mes
-  const totalesPorMes=colsMes.map(col=>rows.reduce((a,r)=>a+parseMontoFAC(r[col]),0));
-  const labels=colsMes.map(col=>{
-    const e=Object.entries(colsEvoMap).find(([,c])=>c===col);
-    return e?MESES_EVO[parseInt(e[0])]:col.slice(0,3);
-  });
-
-  const acum=totalesPorMes.reduce((a,v)=>a+v,0);
-  const mejor=Math.max(...totalesPorMes);
-  const mejorLabel=labels[totalesPorMes.indexOf(mejor)];
-  const tend=totalesPorMes.length>=2?
-    totalesPorMes[totalesPorMes.length-1]-totalesPorMes[totalesPorMes.length-2]:0;
-
-  const nB=v=>'$'+(v/1e9).toFixed(2)+'B';
-  const nM=v=>'$'+(v/1e6).toFixed(0)+'M';
-
-  const setEl=(id,v,color)=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.textContent=v;
-    if(color) el.style.color=color;
-  };
-  setEl('fac-evo-acum',  nB(acum));
-  setEl('fac-evo-mejor', nM(mejor)+' ('+mejorLabel+')');
-  setEl('fac-evo-tend',
-    tend>=0?'↑ '+nM(Math.abs(tend)):'↓ '+nM(Math.abs(tend)),
-    tend>=0?'var(--bna-verde)':'#c0241c'
-  );
-
-  const tit=document.getElementById('fac-evo-tit');
-  if(tit) tit.textContent='Evolución mensual · '+labels.join(' → ')+' · Acum: '+nB(acum);
-
-  if(CH['c-fac-evo']) CH['c-fac-evo'].destroy();
-  CH['c-fac-evo']=new Chart(elCanvas,{
-    type:'bar',
-    data:{
-      labels,
-      datasets:[{
-        label:'Facturación',
-        data:totalesPorMes.map(v=>+(v/1e6).toFixed(1)),
-        backgroundColor:totalesPorMes.map((v,i)=>{
-          if(i===totalesPorMes.length-1) return '#007094'; // último mes más oscuro
-          return 'rgba(0,112,148,0.55)';
-        }),
-        borderRadius:5,
-        borderColor:'#002056',
-        borderWidth:1
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'M'}}
-      },
-      scales:{
-        x:{ticks:{font:{size:11},color:'#002056'}},
-        y:{ticks:{font:{size:9},callback:v=>'$'+v+'M'},
-           title:{display:true,text:'MM$',font:{size:9}}}
-      }
-    }
-  });
-}
 
 
 
@@ -3640,88 +4251,8 @@ function rankBNA(rows){
 
 
 // ── Ranking FAC por sucursal y top facturadores ──
-function rankFAC(rows){
-  const p$=v=>{let s=(v||'0').toString().replace(/[$\s]/g,'').trim();if(!s||s==='-'||s==='—')return 0;const hD=s.includes('.'),hC=s.includes(',');if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}else if(!hD&&hC){s=s.replace(',','.');}return parseFloat(s)||0;};
-  const fac=document.getElementById('f-fac-suc')?.value||'';
-  const filtered=fac?rows.filter(r=>r['Sucursal']&&r['Sucursal'].includes(fac)):rows;
-  // Detectar columnas por fecha "26/MM/2026" (formato Apps Script)
-  const MESES_SHORT_R=['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const colsDetR={}; // mesNum → colKey
-  for(let mi=1;mi<=12;mi++){
-    const col=getFacColByMonth(filtered.length?filtered:rows, mi);
-    if(col){
-      const hd=(filtered.length?filtered:rows).some(r=>parseMontoFAC(r[col])>0);
-      if(hd) colsDetR[mi]=col;
-    }
-  }
-  const colsMes=Object.values(colsDetR);
-  const getMesLabel=col=>{const e=Object.entries(colsDetR).find(([,c])=>c===col);return e?MESES_SHORT_R[parseInt(e[0])]:col.slice(0,3);};
-  console.log('[FAC rankFAC] Cols:', colsDetR);
-  // Por sucursal — sumar todos los meses
-  const gSuc={};
-  filtered.forEach(r=>{
-    const s=r['Sucursal']||'—';
-    const cod=s.replace(/^\d+-/,'').trim();
-    if(!gSuc[cod]){gSuc[cod]={suc:cod,total:0,porMes:{}};}
-    Object.entries(colsDetR).forEach(([m,col])=>{const v=parseMontoFAC(r[col]);gSuc[cod].total+=v;const lbl=MESES_SHORT_R[parseInt(m)];gSuc[cod].porMes[lbl]=(gSuc[cod].porMes[lbl]||0)+v;});
-  });
-  const sucArr=Object.values(gSuc).sort((a,b)=>b.total-a.total);
-  const topSuc=sucArr.slice(0,8);
-  const mx=topSuc[0]?.total||1;
-  const medal=['🥇','🥈','🥉','4°','5°','6°','7°','8°'];
-  const fmtM=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Number(v).toLocaleString('es-AR');
+// [dup removed]
 
-  const elSuc=document.getElementById('fac-ranking-suc');
-  if(elSuc) elSuc.innerHTML=`
-    <div style="background:#fff;border:1.5px solid #4EBFA4;border-radius:10px;padding:14px">
-      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">
-        🏆 Ranking sucursales · Ene+Feb
-      </div>
-      ${topSuc.map((x,i)=>`
-        <div style="margin-bottom:7px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
-            <span style="font-size:10px;font-weight:700;color:#002056">${medal[i]} ${x.suc}</span>
-            <span style="font-size:10px;font-weight:800;color:#4EBFA4">${fmtM(x.total)}</span>
-          </div>
-          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
-            <div style="width:${(x.total/mx*100).toFixed(0)}%;height:100%;background:#4EBFA4;border-radius:4px"></div>
-          </div>
-          <div style="font-size:8px;color:#888">${Object.entries(x.porMes||{}).map(([m,v])=>m+': '+fmtM(v)).join(' · ')||''}</div>
-        </div>`).join('')}
-    </div>`;
-
-  // Top facturadores individuales
-  const gCUIT={};
-  filtered.forEach(r=>{
-    const k=r['CUIT']||'';
-    if(!k) return;
-    const nom=(r['Razon Social / Apellido']||r['RAZONSOCIAL']||k).toString().trim().slice(0,28);
-    const suc=(r['Sucursal']||'').replace(/^\d+-/,'').trim();
-    if(!gCUIT[k])gCUIT[k]={nom,suc,total:0};
-    Object.entries(colsDetR).forEach(([m,col])=>{ gCUIT[k].total+=parseMontoFAC(r[col]); });
-  });
-  const topFac=Object.values(gCUIT).filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,8);
-  const mxF=topFac[0]?.total||1;
-
-  const elTop=document.getElementById('fac-ranking-top');
-  if(elTop) elTop.innerHTML=`
-    <div style="background:#fff;border:1.5px solid #007094;border-radius:10px;padding:14px">
-      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#007094;margin-bottom:10px">
-        💼 Top facturadores
-      </div>
-      ${topFac.map((x,i)=>`
-        <div style="margin-bottom:7px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:2px">
-            <span style="font-size:9px;font-weight:700;color:#002056;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px" title="${x.nom}">${medal[i]} ${x.nom}</span>
-            <span style="font-size:10px;font-weight:800;color:#007094">${fmtM(x.total)}</span>
-          </div>
-          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
-            <div style="width:${(x.total/mxF*100).toFixed(0)}%;height:100%;background:#007094;border-radius:4px"></div>
-          </div>
-          <div style="font-size:8px;color:#888">${x.suc}</div>
-        </div>`).join('')}
-    </div>`;
-}
 
 // ══ FACTURACION MAS PAGOS — versión dinámica ══
 // Detecta automáticamente todos los meses del Sheet.
@@ -3807,158 +4338,12 @@ function getFACMPRows(){
   return FACMP_MESES.flatMap(h => FACMP_DATA[h] || []);
 }
 
-function applyFilterFACMP(){
-  const suc  = document.getElementById('f-facmp-suc')?.value  || '';
-  const mes  = document.getElementById('f-facmp-mes')?.value  || '';
-  const tipo = document.getElementById('f-facmp-tipo')?.value || '';
-  let rows = getFACMPRows();
-  if(suc)  rows = rows.filter(r => r['SUCURSAL'] === suc);
-  if(mes)  rows = rows.filter(r => (r['_mes']||'').toUpperCase().includes(mes.toUpperCase()));
-  if(tipo) rows = rows.filter(r => r['Tipo']     === tipo);
-  // También aplicar búsqueda CUIT/RS si está activa
-  const q1=(document.getElementById('facmp-cuit-input')?.value||'').trim().toLowerCase().replace(/[-\s]/g,'');
-  const q2=(document.getElementById('facmp-rs-input')?.value||'').trim().toLowerCase();
-  if(q1||q2){
-    rows=rows.filter(r=>{
-      const cuit=(r['CUIT']||'').toString().replace(/[-\s]/g,'').toLowerCase();
-      const rs=(r['RAZONSOCIAL']||r['Razon Social']||'').toLowerCase();
-      return (!q1||(cuit.includes(q1)||rs.includes(q1)))&&(!q2||rs.includes(q2)||cuit.includes(q2));
-    });
-  }
-  renderFACMP(rows);
-}
+// [applyFilterFACMP duplicado eliminado]
+// [dup removed]
 
-function renderFACMP(rows){
-  if(!rows) rows = getFACMPRows();
-  const pN  = v => parseFloat((v||'0').toString().replace(/[$\s]/g,'').replace(/\./g,'').replace(',','.'))||0;
-  const nf  = v => Number(v||0).toLocaleString('es-AR');
-  const fmtM= v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-  const medal = ['🥇','🥈','🥉','4°','5°','6°','7°','8°','9°','10°'];
 
-  // Total y contador
-  const totalNeto = rows.reduce((a,r) => a+pN(r['NETO']),0);
-  document.getElementById('facmp-total').textContent = nf(rows.length);
-  // ─ Evolución mensual ─
-  if(FACMP_MESES.length>0){
-    const mesesLabels = FACMP_MESES.map(mesShortLabel);
-    const totalesPorMes = FACMP_MESES.map(h=>(FACMP_DATA[h]||[]).reduce((a,r)=>a+pN(r['NETO']),0));
-    const totalAcum = totalesPorMes.reduce((a,v)=>a+v,0);
-    const mejorIdx = totalesPorMes.indexOf(Math.max(...totalesPorMes));
-    const elT=document.getElementById('facmp-evo-total');
-    const elM=document.getElementById('facmp-evo-mejor');
-    const elTit=document.getElementById('facmp-evo-tit');
-    if(elT) elT.textContent = fmtM(totalAcum);
-    if(elM) elM.textContent = totalesPorMes.length>0 ? fmtM(totalesPorMes[mejorIdx])+' ('+mesesLabels[mejorIdx]+')' : '—';
-    if(elTit) elTit.textContent = '📈 Evolución mensual · '+mesesLabels.join(' → ')+' · Total: '+fmtM(totalAcum);
-    const canEvo = document.getElementById('c-facmp-evo');
-    if(canEvo){
-      if(CH['c-facmp-evo']) CH['c-facmp-evo'].destroy();
-      CH['c-facmp-evo'] = new Chart(canEvo,{
-        type:'bar',
-        data:{
-          labels:mesesLabels,
-          datasets:[{
-            label:'Acreditaciones $',
-            data:totalesPorMes.map(v=>+(v/1e6).toFixed(1)),
-            backgroundColor:totalesPorMes.map((_,i)=>i===mejorIdx?'#007094':'rgba(0,112,148,.55)'),
-            borderRadius:5,borderColor:'#002056',borderWidth:1,
-          }]
-        },
-        options:{responsive:true,maintainAspectRatio:false,
-          plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>'$'+ctx.raw+'M'}}},
-          scales:{
-            x:{ticks:{font:{size:11},color:'#002056'}},
-            y:{ticks:{font:{size:9},callback:v=>'$'+v+'M'},title:{display:true,text:'Millones $',font:{size:9}}}
-          }
-        }
-      });
-    }
-  }
+// [renderFACMP duplicado eliminado]
 
-  document.getElementById('fc-facmp').textContent = nf(rows.length)+' registros · '+fmtM(totalNeto)+' total';
-  const statusEl = document.getElementById('facmp-status');
-  if(statusEl) statusEl.style.display = (rows.length||FACMP_MESES.length) ? 'none' : 'block';
-
-  // Poblar sucursales
-  const sucs = [...new Set(rows.map(r=>r['SUCURSAL']).filter(Boolean))].sort();
-  const sel  = document.getElementById('f-facmp-suc');
-  if(sel){
-    const cur = sel.value;
-    while(sel.options.length>1) sel.remove(1);
-    sucs.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);});
-    if(cur) sel.value=cur;
-  }
-
-  // ─ Ranking sucursales ─
-  const gSuc={};
-  rows.forEach(r=>{
-    const s=r['SUCURSAL']||'—';
-    if(!gSuc[s])gSuc[s]={suc:s,total:0,cnt:0};
-    gSuc[s].total+=pN(r['NETO']); gSuc[s].cnt++;
-  });
-  const topSuc=Object.values(gSuc).sort((a,b)=>b.total-a.total).slice(0,10);
-  const mxS=topSuc[0]?.total||1;
-  const elSuc=document.getElementById('facmp-ranking-suc');
-  if(elSuc) elSuc.innerHTML=`
-    <div style="background:#fff;border:1.5px solid #4EBFA4;border-radius:10px;padding:14px;height:100%">
-      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1a7a4a;margin-bottom:10px">
-        🏆 Ranking sucursales <span style="font-size:9px;font-weight:400;color:#888">(${FACMP_MESES.map(mesShortLabel).join(' + ')||'todos los meses'})</span>
-      </div>
-      ${topSuc.map((x,i)=>`
-        <div style="margin-bottom:7px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
-            <span style="font-size:10px;font-weight:700;color:#002056">${medal[i]} ${x.suc}</span>
-            <span style="font-size:10px;font-weight:800;color:#4EBFA4">${fmtM(x.total)}</span>
-          </div>
-          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
-            <div style="width:${(x.total/mxS*100).toFixed(0)}%;height:100%;background:#4EBFA4;border-radius:4px"></div>
-          </div>
-          <div style="font-size:8px;color:#888">${nf(x.cnt)} operaciones</div>
-        </div>`).join('')}
-    </div>`;
-
-  // ─ Top facturadores ─
-  const gCUIT={};
-  rows.forEach(r=>{
-    const k=r['CUIT']||''; if(!k)return;
-    const nom=(r['RAZONSOCIAL']||k).toString().trim();
-    if(!gCUIT[k])gCUIT[k]={nom,suc:r['SUCURSAL']||'',total:0,cnt:0};
-    gCUIT[k].total+=pN(r['NETO']); gCUIT[k].cnt++;
-  });
-  const topF=Object.values(gCUIT).filter(x=>x.total>0).sort((a,b)=>b.total-a.total).slice(0,10);
-  const mxF=topF[0]?.total||1;
-  const elTop=document.getElementById('facmp-ranking-top');
-  if(elTop) elTop.innerHTML=`
-    <div style="background:#fff;border:1.5px solid #007094;border-radius:10px;padding:14px;height:100%">
-      <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#007094;margin-bottom:10px">
-        💼 Top facturadores
-      </div>
-      ${topF.map((x,i)=>`
-        <div style="margin-bottom:7px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
-            <span style="font-size:9px;font-weight:700;color:#002056;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px" title="${x.nom}">${medal[i]} ${x.nom}</span>
-            <span style="font-size:10px;font-weight:800;color:#007094">${fmtM(x.total)}</span>
-          </div>
-          <div style="background:#e8eef5;border-radius:4px;height:5px;overflow:hidden">
-            <div style="width:${(x.total/mxF*100).toFixed(0)}%;height:100%;background:#007094;border-radius:4px"></div>
-          </div>
-          <div style="font-size:8px;color:#888">${x.suc} · ${nf(x.cnt)} ops</div>
-        </div>`).join('')}
-    </div>`;
-
-  // ─ Tabla (top 300 por monto) ─
-  const sorted=[...rows].sort((a,b)=>pN(b['NETO'])-pN(a['NETO']));
-  document.getElementById('t-facmp').innerHTML=sorted.slice(0,300).map((r,i)=>`
-    <tr>
-      <td class="rk">${i+1}</td>
-      <td style="font-weight:600;font-size:11px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r['RAZONSOCIAL']||''}">${(r['RAZONSOCIAL']||'').slice(0,32)}</td>
-      <td style="font-size:10px;color:#888">${r['CUIT']||''}</td>
-      <td><span class="pill p-az" style="font-size:9px;white-space:nowrap">${r['Tipo']||''}</span></td>
-      <td style="font-weight:700;text-align:right">$${Math.round(pN(r['NETO'])).toLocaleString('es-AR')}</td>
-      <td style="font-size:10px">${(r['SUCURSAL']||'').replace(/^\d+-/,'').trim()}</td>
-      <td style="font-size:10px;color:#888">${r['_mes']||''}</td>
-    </tr>`).join('');
-}
 
 function resetFilterFACMP(){
   ['f-facmp-suc','f-facmp-mes','f-facmp-tipo'].forEach(id=>{
@@ -3986,23 +4371,7 @@ function exportFACMP(){
 // Acreditaciones: acumulado trimestral (FAC FISERV/Payway = hoja FACTURACION)
 
 // Normalizar nombre de sucursal para cruzar entre fuentes
-// normSuc: unifica nombres de sucursal de TODAS las hojas a las claves de META_RES
-// TC INDIVIDUOS: "FRAY MAMERTO ESQUIU", "SAN F. DEL V. DE CATAMARCA", "VILLA DOLORES (CAT)"
-// FACTURACION:   "1795-F.MAMERTO ESQUIU", "3155-S.F.V.CATAMARCA", "3755-VILLA DOLORES-CAT"
-// META_ACRED:    "F.MAMERTO ESQUIU", "S.F.V.CATAMARCA", "VILLA DOLORES-CAT"
-function normSuc(s){
-  if(!s) return '';
-  let r = s.toString().toUpperCase().trim();
-  r = r.replace(/^\d+-/, '');             // quitar código inicial "1795-"
-  if(r.includes('MAMERTO') || r.includes('ESQUIU') || r.includes('SQUIU'))
-    return 'FRAY MAMERTO ESQUIU';
-  if(r.includes('S.F.V.') || r.includes('SFV') || r === 'SAN FERNANDO DEL VALLE DE CATAMARCA'
-     || (r.includes('SAN F') && r.includes('CATAMARCA')))
-    return 'SAN F. DEL V. DE CATAMARCA';
-  if(r.includes('VILLA DOLORES'))
-    return 'VILLA DOLORES (CAT)';
-  return r;
-}
+// normSuc ya definida arriba (quita código numérico)
 
 // Metas Cuentas con Resumen TC (hitos trimestrales)
 const META_RES = {
@@ -4092,14 +4461,8 @@ function getMetaRes(suc, mesStr){
 
 // Obtener meta de acreditaciones según el mes (prorrateada al mes dentro del trimestre)
 function getMetaAcred(suc, mesStr){
-  // META_ACRED usa mismas claves que META_RES (ya normalizadas)
-  let m = META_ACRED[suc];
-  // Fallback: buscar clave que al normalizarla coincida
-  if(!m){
-    const alt = Object.keys(META_ACRED).find(k => normSuc(k) === suc);
-    if(alt) m = META_ACRED[alt];
-  }
-  if(!m) return null;
+  // Devuelve la META TRIMESTRAL COMPLETA (fija, no dividir por 3)
+  const m = META_ACRED[suc]; if(!m) return null;
   const [yy, mm] = mesStr.split('-').map(Number);
   if(mm>=1 &&mm<=3 ) return {meta:m.q1, q:'Q1', label:'Ene–Mar', mesesQ:[1,2,3]};
   if(mm>=4 &&mm<=6 ) return {meta:m.q2, q:'Q2', label:'Abr–Jun', mesesQ:[4,5,6]};
@@ -4108,253 +4471,228 @@ function getMetaAcred(suc, mesStr){
   return null;
 }
 
-// ── parseMontoFAC: parsea "$165.017,86" → 165017.86 ──
-function parseMontoFAC(v){
-  if(!v && v !== 0) return 0;
-  let s = v.toString().replace(/[$\s]/g,'').trim();
-  if(!s || s==='-' || s==='—') return 0;
-  const hD = s.includes('.'), hC = s.includes(',');
-  if(hD && hC){ s = s.replace(/\./g,'').replace(',','.'); }
-  else if(!hD && hC){ s = s.replace(',','.'); }
-  return parseFloat(s) || 0;
-}
-
-// ── getFacColByMonth: detecta la columna real del Sheet para un mes dado ──
-// Apps Script envía columnas datetime como "26/MM/YYYY" (dd/MM/yyyy)
-function getFacColByMonth(rows, mesNum){
-  if(!rows || !rows.length) return null;
-  const keys = Object.keys(rows[0]);
-  // 1. Formato "DD/MM/YYYY" → buscar donde mes coincida
-  const byDate = keys.find(k => {
-    const p = k.split('/');
-    return p.length === 3 && p[2].length === 4 && parseInt(p[1]) === mesNum;
-  });
-  if(byDate) return byDate;
-  // 2. Fallback: nombre de mes en texto ("Total ENERO 26" etc.)
-  const nombres = ['','ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO',
-    'JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
-  const byName = keys.find(k =>
-    k.toUpperCase().includes('TOTAL') && k.toUpperCase().includes(nombres[mesNum])
-  );
-  return byName || null;
-}
-
-// ── getAcredTrimestre: acumula FAC PROCESADORAS del trimestre ──
-// FUENTE: DD.fac (hoja FACTURACION) — NO incluye Facturación +Pagos
-// COLUMNAS: fechas "26/01/2026" enviadas por Apps Script
+// ─────────────────────────────────────────────────────────────
+// getAcredTrimestre: acumula FAC Procesadoras del trimestre
+// FUENTE EXCLUSIVA: DD.fac (hoja FACTURACION)
+// COLUMNAS: fechas "26/MM/2026" enviadas por Apps Script
+// NO usa Facturación +Pagos (FMP_DATA)
+// ─────────────────────────────────────────────────────────────
 function getAcredTrimestre(mesStr){
   const facRows = DD.fac || [];
-  if(!facRows.length) return {porSuc:{}, mesesConDatos:0, mesesLabel:'', mesesQ1:1, mesesQ2:1};
+  if(!facRows.length) return {porSuc:{}, mesesConDatos:0, mesesLabel:'', q1:1, q2:1};
 
   const [yy, mm] = mesStr.split('-').map(Number);
-  let mesQ1, mesQ2;
-  if(mm>=1  && mm<=3 ){ mesQ1=1;  mesQ2=mm; }
-  else if(mm>=4  && mm<=6 ){ mesQ1=4;  mesQ2=mm; }
-  else if(mm>=7  && mm<=9 ){ mesQ1=7;  mesQ2=mm; }
-  else                      { mesQ1=10; mesQ2=mm; }
+  let q1, q2;
+  if(mm<=3)       { q1=1;  q2=mm; }
+  else if(mm<=6)  { q1=4;  q2=mm; }
+  else if(mm<=9)  { q1=7;  q2=mm; }
+  else            { q1=10; q2=mm; }
 
-  // Detectar columnas reales para cada mes del trimestre
-  const colsMap = {};      // mesNum → colKey
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const colsMap = {};      // mesNum → colKey "26/MM/2026"
   const mesesConDatos = [];
-  const MESES_SHORT = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
-  for(let m2 = mesQ1; m2 <= mesQ2; m2++){
+  for(let m2=q1; m2<=q2; m2++){
     const col = getFacColByMonth(facRows, m2);
-    if(col){
-      const tieneDatos = facRows.some(r => parseMontoFAC(r[col]) > 0);
-      if(tieneDatos){ colsMap[m2] = col; mesesConDatos.push(m2); }
+    if(col && facRows.some(r=>parseMontoFAC(r[col])>0)){
+      colsMap[m2] = col;
+      mesesConDatos.push(m2);
     }
   }
 
-  console.log('[METAS FAC] Cols detectadas:', colsMap, '| Meses con datos:', mesesConDatos);
+  console.log('[METAS FAC] Cols:', colsMap, '| Meses:', mesesConDatos);
 
-  // Acumular por sucursal normalizada
   const porSuc = {};
-  facRows.forEach(r => {
-    const suc = normSuc(r['Sucursal'] || '');
-    if(!suc || suc === 'TOTAL ZONAL' || suc === 'NOA OESTE') return;
-    if(!porSuc[suc]) porSuc[suc] = 0;
+  facRows.forEach(r=>{
+    const suc = normSuc(r['Sucursal']||'');
+    if(!suc || suc==='TOTAL') return;
+    if(!porSuc[suc]) porSuc[suc]=0;
     mesesConDatos.forEach(m2 => { porSuc[suc] += parseMontoFAC(r[colsMap[m2]]); });
   });
 
   return {
     porSuc,
     mesesConDatos: mesesConDatos.length,
-    mesesLabel: mesesConDatos.map(m => MESES_SHORT[m]).join('+'),
-    mesesQ1, mesesQ2
+    mesesLabel: mesesConDatos.map(m=>MESES_S[m]).join('+'),
+    q1, q2
   };
 }
 
-// ── Render principal de Metas ──
+// ─────────────────────────────────────────────────────────────
+// renderMetas: cruza TC Individuos + FAC Procesadoras vs metas
+// META 1: Cuentas con Resumen = stock del período (no acumula)
+//         Fuente: TC_DATA.records → col ctas_res
+//         Normalizacion: normSucTC (TC usa mismas claves que META_RES)
+// META 2: Acreditaciones = suma trimestral FAC procesadoras
+//         Fuente: DD.fac → cols "26/MM/2026"
+//         Normalizacion: normSuc (quita código → matchea META_ACRED)
+// ─────────────────────────────────────────────────────────────
 function renderMetas(){
-  const mesStr  = document.getElementById('f-metas-mes')?.value || '2026-01';
+  const mesStr  = document.getElementById('f-metas-mes')?.value || '2026-03';
   const tipoVer = document.getElementById('f-metas-tipo')?.value || 'ambas';
-  const nf  = v => Number(v||0).toLocaleString('es-AR');
-  const fmtB= v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
-  const pctColor= p => p>=100?'#1a7a4a':p>=80?'#e07b00':'#b22222';
-  const pctEmoji= p => p>=100?'✅':p>=80?'⚠️':'🚨';
-  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  const setC=(id,c)=>{const el=document.getElementById(id);if(el)el.style.color=c;};
-  const setH=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
+  const nf   = v => Number(v||0).toLocaleString('es-AR');
+  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const pctColor = p => p>=100?'#1a7a4a':p>=80?'#e07b00':'#b22222';
+  const pctEmoji = p => p>=100?'✅':p>=80?'⚠️':'🚨';
+  const setEl = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  const setHTML= (id,v) => { const e=document.getElementById(id); if(e) e.innerHTML=v; };
 
-  // Mes label
-  const MESES_LAB={'2025-12':'Dic 2025','2026-01':'Ene 2026','2026-02':'Feb 2026','2026-03':'Mar 2026',
+  const MESES_LAB = {
+    '2025-12':'Dic 2025','2026-01':'Ene 2026','2026-02':'Feb 2026','2026-03':'Mar 2026',
     '2026-04':'Abr 2026','2026-05':'May 2026','2026-06':'Jun 2026','2026-07':'Jul 2026',
-    '2026-08':'Ago 2026','2026-09':'Sep 2026','2026-10':'Oct 2026','2026-11':'Nov 2026','2026-12':'Dic 2026'};
-  const mesLabel = MESES_LAB[mesStr]||mesStr;
-  set('metas-mes-lbl', mesLabel);
+    '2026-08':'Ago 2026','2026-09':'Sep 2026','2026-10':'Oct 2026','2026-11':'Nov 2026','2026-12':'Dic 2026'
+  };
+  const mesLabel = MESES_LAB[mesStr] || mesStr;
+  setEl('metas-mes-lbl', mesLabel);
 
-  // ─── META 1: Cuentas con Resumen TC ───
-  // STOCK: usar el MES SELECCIONADO de TC_DATA (no acumular)
-  // Si no hay datos para ese mes, usar el último disponible
-  const todosLosMeses = TC_DATA.meses||[];
+  // ── META 1: Cuentas con Resumen TC ──────────────────────────
+  // STOCK del período seleccionado — no acumula, no suma
+  const todosLosMeses = TC_DATA.meses || [];
+
+  // Usar el mes seleccionado; si no hay datos, usar el último disponible
   let mesParaRes = mesStr;
   if(!todosLosMeses.includes(mesStr)){
-    // Usar último mes disponible
     mesParaRes = todosLosMeses.length ? todosLosMeses[todosLosMeses.length-1] : null;
   }
   const tcRows = mesParaRes ? (TC_DATA.records||[]).filter(r=>r.mes===mesParaRes) : [];
-  const resReal={};
-  tcRows.forEach(r=>{ resReal[normSuc(r.suc)] = r.ctas_res||0; });
+  const resReal = {};
+  // TC usa nombres como "FRAY MAMERTO ESQUIU" = clave META_RES (normSucTC = identidad)
+  tcRows.forEach(r => { resReal[r.suc.trim()] = r.ctas_res || 0; });
   const mesResLabel = mesParaRes ? (MESES_LAB[mesParaRes]||mesParaRes) : 'Sin datos';
-  const hasTCData = tcRows.length > 0;
+  const hasTCData   = tcRows.length > 0;
+  console.log('[METAS TC] Mes:', mesParaRes, '| Sucursales:', Object.keys(resReal).length, '| Total C/R:', Object.values(resReal).reduce((a,v)=>a+v,0));
 
-  // ─── META 2: Acreditaciones (FAC Procesadoras) ───
-  // ACUMULAR las columnas de FAC según el trimestre del mes seleccionado
-  const facRows = DD.fac||[];
-  const p$=v=>{let s=(v||'0').toString().replace(/[$\s]/g,'').trim();
-    if(!s||s==='-'||s==='—')return 0;
-    const hD=s.includes('.'),hC=s.includes(',');
-    if(hD&&hC){s=s.replace(/\./g,'').replace(',','.');}else if(!hD&&hC){s=s.replace(',','.');}
-    return parseFloat(s)||0;};
-  // getColVal: usa getFacColByMonth para detectar columna por fecha "26/MM/2026"
-  const getColVal=(row,mm)=>{
-    const col=getFacColByMonth(facRows.length?facRows:[row], mm);
-    return col ? parseMontoFAC(row[col]) : 0;
-  };
-  const [yy,mm] = mesStr.split('-').map(Number);
-  let mesQ1,mesQ2,qLabel,qKey;
-  if(mm>=1&&mm<=3){mesQ1=1;mesQ2=mm;qLabel='Q1 (Ene–Mar)';qKey='q1';}
-  else if(mm>=4&&mm<=6){mesQ1=4;mesQ2=mm;qLabel='Q2 (Abr–Jun)';qKey='q2';}
-  else if(mm>=7&&mm<=9){mesQ1=7;mesQ2=mm;qLabel='Q3 (Jul–Sep)';qKey='q3';}
-  else{mesQ1=10;mesQ2=mm;qLabel='Q4 (Oct–Dic)';qKey='q4';}
+  // ── META 2: Acreditaciones FAC Procesadoras ──────────────────
+  // Acumula trimestre de la hoja FACTURACION — EXCLUYE +Pagos
+  const acredData = getAcredTrimestre(mesStr);
+  const acredReal = acredData.porSuc;   // {normSuc → total $}
+  const hasFACData= acredData.mesesConDatos > 0;
+  const mesesLabel= acredData.mesesLabel;
+  const [yyy,mmm] = mesStr.split('-').map(Number);
+  const qKey = mmm<=3?'q1':mmm<=6?'q2':mmm<=9?'q3':'q4';
+  const qLabel= mmm<=3?'Q1 (Ene–Mar)':mmm<=6?'Q2 (Abr–Jun)':mmm<=9?'Q3 (Jul–Sep)':'Q4 (Oct–Dic)';
+  console.log('[METAS FAC] Meses:', mesesLabel, '| Sucursales:', Object.keys(acredReal).length, '| Total:', Object.values(acredReal).reduce((a,v)=>a+v,0));
 
-  // Find which columns actually have data
-  const mesesConDatos=[];
-  for(let m2=mesQ1;m2<=mesQ2;m2++){
-    const hayDatos=facRows.some(r=>getColVal(r,m2)>0);
-    if(hayDatos) mesesConDatos.push(m2);
-  }
-  const acredPorSuc={};
-  facRows.forEach(r=>{
-    const suc=normSuc(r['Sucursal']||'');if(!suc)return;
-    if(!acredPorSuc[suc])acredPorSuc[suc]=0;
-    mesesConDatos.forEach(m2=>{acredPorSuc[suc]+=getColVal(r,m2);});
-  });
-  const hasFACData = mesesConDatos.length>0;
-  const mesesLabel = mesesConDatos.map(m=>['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][m]).join('+');
+  // ── Construir rows por sucursal ──────────────────────────────
+  // META_RES y META_ACRED usan las mismas claves (sin código numérico)
+  // TC usa esas mismas claves (coincide con META_RES directamente)
+  // FAC usa normSuc → quita código → coincide con META_ACRED
+  const sucsMeta = Object.keys(META_RES);
+  const rows = sucsMeta.map(suc => {
+    // Meta C/Resumen: META_RES usa "FRAY MAMERTO ESQUIU"
+    const metaRes  = getMetaRes(suc, mesParaRes||mesStr);
+    const realRes  = resReal[suc] || 0;  // TC ya usa mismas claves
+    const pctRes   = (metaRes && hasTCData) ? Math.round(realRes/metaRes*100) : null;
 
-  // ─── BUILD ROWS ───
-  const sucs=Object.keys(META_RES);
-  const rows=sucs.map(suc=>{
-    const metaRes   = getMetaRes(suc, mesParaRes||mesStr);
-    const realRes   = resReal[suc]||0;
-    const pctRes    = (metaRes&&hasTCData) ? Math.round(realRes/metaRes*100) : null;
-    const acredObj  = META_ACRED[suc];
-    const metaAcred = acredObj ? acredObj[qKey] : null;
-    const realAcred = acredPorSuc[suc]||0;
-    const pctAcred  = (metaAcred&&hasFACData) ? Math.round(realAcred/metaAcred*100) : null;
-    return{suc,metaRes,realRes,pctRes,metaAcred,realAcred,pctAcred};
+    // Meta Acred: META_ACRED usa "F.MAMERTO ESQUIU" (misma clave que normSuc(FAC))
+    const metaAcredObj = META_ACRED[suc];
+    const metaAcred    = metaAcredObj ? metaAcredObj[qKey] : null;
+    const realAcred    = acredReal[suc] || 0;
+    const pctAcred     = (metaAcred && hasFACData) ? Math.round(realAcred/metaAcred*100) : null;
+
+    return { suc, metaRes, realRes, pctRes, metaAcred, realAcred, pctAcred };
   });
 
-  // ─── KPIs GLOBALES ───
-  const totRealRes   = rows.reduce((a,r)=>a+r.realRes,0);
-  const totMetaRes   = rows.reduce((a,r)=>a+(r.metaRes||0),0);
-  const totRealAcred = rows.reduce((a,r)=>a+r.realAcred,0);
-  const totMetaAcred = rows.reduce((a,r)=>a+(r.metaAcred||0),0);
-  const pctGlbRes    = totMetaRes&&hasTCData ? Math.round(totRealRes/totMetaRes*100) : 0;
-  const pctGlbAcred  = totMetaAcred&&hasFACData ? Math.round(totRealAcred/totMetaAcred*100) : 0;
-  const cumplen      = rows.filter(r=>(r.pctRes||0)>=100).length;
+  // ── KPIs globales ───────────────────────────────────────────
+  const totRealRes  = rows.reduce((a,r)=>a+r.realRes, 0);
+  const totMetaRes  = rows.reduce((a,r)=>a+(r.metaRes||0), 0);
+  const totRealAcrd = rows.reduce((a,r)=>a+r.realAcred, 0);
+  const totMetaAcrd = rows.reduce((a,r)=>a+(r.metaAcred||0), 0);
+  const pctGlbRes   = (totMetaRes && hasTCData)  ? Math.round(totRealRes/totMetaRes*100)   : 0;
+  const pctGlbAcrd  = (totMetaAcrd && hasFACData) ? Math.round(totRealAcrd/totMetaAcrd*100) : 0;
+  const cumplen     = rows.filter(r=>(r.pctRes||0)>=100).length;
 
-  // KPI cards
-  setH('metas-k1-val', hasTCData
-    ? `<div style="font-size:28px;font-weight:900;color:${pctColor(pctGlbRes)}">${pctGlbRes}%</div><div style="font-size:12px;color:#666;margin-top:2px">${nf(totRealRes)} / meta ${nf(totMetaRes)}</div><div style="font-size:11px;color:#999">Stock ${mesResLabel}${mesParaRes!==mesStr?' (último disponible)':''}</div>`
-    : '<div style="font-size:13px;color:#999">Sin datos TC Individuos</div>');
-  setH('metas-k2-val', hasFACData
-    ? `<div style="font-size:28px;font-weight:900;color:${pctColor(pctGlbAcred)}">${pctGlbAcred}%</div><div style="font-size:12px;color:#666;margin-top:2px">${fmtB(totRealAcred)} / meta ${fmtB(totMetaAcred)}</div><div style="font-size:11px;color:#999">${qLabel} · ${mesesLabel||'—'} acumulado</div>`
-    : '<div style="font-size:13px;color:#999">Sin datos de Facturación</div>');
-  setH('metas-cumple', `${cumplen}/${rows.length} <span style="font-size:11px;font-weight:400;color:#666">sucursales ≥100% C/Resumen</span>`);
+  setHTML('metas-k1-val', hasTCData
+    ? `<div style="font-size:28px;font-weight:900;color:${pctColor(pctGlbRes)}">${pctGlbRes}%</div>
+       <div style="font-size:12px;color:#666;margin-top:2px">${nf(totRealRes)} / meta ${nf(totMetaRes)}</div>
+       <div style="font-size:11px;color:#999">Stock ${mesResLabel}${mesParaRes!==mesStr?' · último disponible':''}</div>
+       <div style="font-size:10px;color:#bbb;margin-top:3px">📋 Fuente: TC Individuos · Cuentas con resumen</div>`
+    : '<div style="font-size:13px;color:#999">Sin datos de TC Individuos</div>');
 
-  set('fc-metas', `${cumplen}/${rows.length} cumplen · ${mesLabel}`);
+  setHTML('metas-k2-val', hasFACData
+    ? `<div style="font-size:28px;font-weight:900;color:${pctColor(pctGlbAcrd)}">${pctGlbAcrd}%</div>
+       <div style="font-size:12px;color:#666;margin-top:2px">${fmtB(totRealAcrd)} / meta ${fmtB(totMetaAcrd)}</div>
+       <div style="font-size:11px;color:#999">${qLabel} · ${mesesLabel} acumulado</div>
+       <div style="font-size:10px;color:#bbb;margin-top:3px">📄 Fuente: FAC Procesadoras — excluye +Pagos</div>`
+    : '<div style="font-size:13px;color:#999">Sin datos de Facturación Procesadoras</div>');
 
-  // ─── TABLA ───
-  const sorted=[...rows].sort((a,b)=>(b.pctRes||0)-(a.pctRes||0));
-  const showRes  = tipoVer!=='acred';
-  const showAcred= tipoVer!=='res';
+  setHTML('metas-cumple', `${cumplen}/${rows.length} <span style="font-size:11px;font-weight:400;color:#666">sucursales ≥100% C/Resumen</span>`);
+  setEl('fc-metas', `${cumplen}/${rows.length} cumplen · ${mesLabel}`);
 
-  const thead=document.getElementById('metas-thead');
-  if(thead) thead.innerHTML=`<tr>
+  // ── Tabla ────────────────────────────────────────────────────
+  const sorted    = [...rows].sort((a,b) => (b.pctRes||0) - (a.pctRes||0));
+  const showRes   = tipoVer !== 'acred';
+  const showAcred = tipoVer !== 'res';
+
+  const thead = document.getElementById('metas-thead');
+  if(thead) thead.innerHTML = `<tr>
     <th>#</th><th>Sucursal</th>
-    ${showRes?`<th>C/Resumen real</th><th>Meta ${mesResLabel}</th><th>% Cumpl.</th>`:''}
-    ${showAcred?`<th>Acred. real (${mesesLabel||qLabel})</th><th>Meta ${qLabel}</th><th>% Cumpl.</th>`:''}
+    ${showRes   ? `<th>C/Resumen real</th><th>Meta ${mesResLabel}</th><th>% Avance</th>` : ''}
+    ${showAcred ? `<th>Acred. real (${mesesLabel||'—'})</th><th>Meta ${qLabel}</th><th>% Avance</th>` : ''}
   </tr>`;
 
-  const tbody=document.getElementById('t-metas');
-  if(tbody) tbody.innerHTML=sorted.map((r,i)=>{
-    const crC=pctColor(r.pctRes||0), acC=pctColor(r.pctAcred||0);
-    const bar=(pct,c)=>pct!=null?`<div style="background:#e8eef5;border-radius:3px;height:4px;margin-top:2px;overflow:hidden"><div style="width:${Math.min(100,pct)}%;height:100%;background:${c};border-radius:3px"></div></div>`:'';
+  const bar = (pct,col) => pct!=null
+    ? `<div style="background:#e8eef5;border-radius:3px;height:5px;margin-top:3px;overflow:hidden">
+         <div style="width:${Math.min(100,pct)}%;height:100%;background:${col};border-radius:3px;transition:width .5s"></div>
+       </div>` : '';
+
+  const tbody = document.getElementById('t-metas');
+  if(tbody) tbody.innerHTML = sorted.map((r,i) => {
+    const crC = pctColor(r.pctRes||0), acC = pctColor(r.pctAcred||0);
     return `<tr class="crow">
       <td class="rk">${i+1}</td>
-      <td style="font-weight:700">${r.suc}</td>
-      ${showRes?`
-        <td style="font-weight:700">${r.realRes>0?nf(r.realRes):'—'}</td>
-        <td style="color:var(--txt2);font-size:11px">${r.metaRes?nf(r.metaRes):'—'}</td>
-        <td>${r.pctRes!=null?`<span style="font-weight:800;color:${crC}">${pctEmoji(r.pctRes)} ${r.pctRes}%</span>${bar(r.pctRes,crC)}`:(hasTCData?'Sin datos':'—')}</td>`:''}
-      ${showAcred?`
-        <td style="font-weight:700">${r.realAcred>0?fmtB(r.realAcred):'—'}</td>
-        <td style="color:var(--txt2);font-size:11px">${r.metaAcred?fmtB(r.metaAcred):'—'}</td>
-        <td>${r.pctAcred!=null?`<span style="font-weight:800;color:${acC}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${bar(r.pctAcred,acC)}`:(hasFACData?'Sin datos':'—')}</td>`:''}
+      <td style="font-weight:700;font-size:11px">${r.suc}</td>
+      ${showRes ? `
+        <td style="font-weight:700">${r.realRes>0 ? nf(r.realRes) : '—'}</td>
+        <td style="color:var(--txt2);font-size:11px">${r.metaRes ? nf(r.metaRes) : '—'}</td>
+        <td>${r.pctRes!=null
+          ? `<span style="font-weight:800;color:${crC}">${pctEmoji(r.pctRes)} ${r.pctRes}%</span>${bar(r.pctRes,crC)}`
+          : (hasTCData?'<span style="color:#aaa">Sin dato</span>':'—')}</td>` : ''}
+      ${showAcred ? `
+        <td style="font-weight:700">${r.realAcred>0 ? fmtB(r.realAcred) : '—'}</td>
+        <td style="color:var(--txt2);font-size:11px">${r.metaAcred ? fmtB(r.metaAcred) : '—'}</td>
+        <td>${r.pctAcred!=null
+          ? `<span style="font-weight:800;color:${acC}">${pctEmoji(r.pctAcred)} ${r.pctAcred}%</span>${bar(r.pctAcred,acC)}`
+          : (hasFACData?'<span style="color:#aaa">Sin dato</span>':'—')}</td>` : ''}
     </tr>`;
   }).join('');
 
-  // ─── GRÁFICO ───
+  // ── Gráfico ──────────────────────────────────────────────────
   const chartData = tipoVer==='acred' ? sorted.filter(r=>r.pctAcred!=null) : sorted;
-  const labels  = chartData.map(r=>r.suc.replace('SAN F. DEL V. DE CATAMARCA','SFV Catamarca'));
-  const dataRes  = chartData.map(r=>r.pctRes||0);
-  const dataAcred= chartData.map(r=>r.pctAcred||0);
-  const bgRes  = dataRes.map(v=>v>=100?'rgba(26,122,74,.85)':v>=80?'rgba(224,123,0,.85)':'rgba(178,34,34,.85)');
-  const bgAcred= dataAcred.map(v=>v>=100?'rgba(0,112,148,.85)':v>=80?'rgba(246,149,90,.7)':'rgba(178,34,34,.6)');
+  const labels    = chartData.map(r=>r.suc.replace('SAN F. DEL V. DE CATAMARCA','SFV Cat.').replace('FRAY MAMERTO ESQUIU','F.Mamerto'));
+  const dataRes   = chartData.map(r=>r.pctRes||0);
+  const dataAcrd  = chartData.map(r=>r.pctAcred||0);
 
-  const tit=document.getElementById('metas-chart-tit');
-  if(tit) tit.textContent=`Cumplimiento por sucursal · ${mesLabel}`;
+  if(CH['c-metas']) CH['c-metas'].destroy();
+  const datasets = [];
+  if(showRes   && hasTCData)  datasets.push({label:'C/Resumen TC %', data:dataRes,  backgroundColor:dataRes.map(v=>v>=100?'rgba(46,175,138,.85)':v>=80?'rgba(224,123,0,.85)':'rgba(178,34,34,.85)'), borderRadius:3});
+  if(showAcred && hasFACData) datasets.push({label:'Acreditaciones FAC %', data:dataAcrd, backgroundColor:dataAcrd.map(v=>v>=100?'rgba(13,110,138,.85)':v>=80?'rgba(232,88,26,.7)':'rgba(178,34,34,.6)'), borderRadius:3});
 
-  if(CH['c-metas'])CH['c-metas'].destroy();
-  const datasets=[];
-  if(showRes&&hasTCData) datasets.push({label:'C/Resumen TC %',data:dataRes,backgroundColor:bgRes,borderRadius:3});
-  if(showAcred&&hasFACData) datasets.push({label:'Acreditaciones %',data:dataAcred,backgroundColor:bgAcred,borderRadius:3});
-  // Add 100% reference line
-  if(datasets.length){
-    const maxVal=Math.max(120,...dataRes,...dataAcred);
-    CH['c-metas']=new Chart(document.getElementById('c-metas'),{
+  const canMetas = document.getElementById('c-metas');
+  const titEl    = document.getElementById('metas-chart-tit');
+  if(titEl) titEl.textContent = `Cumplimiento por sucursal · ${mesLabel}`;
+
+  if(datasets.length && canMetas){
+    CH['c-metas'] = new Chart(canMetas,{
       type:'bar',
-      data:{labels,datasets},
+      data:{labels, datasets},
       options:{
-        indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
         plugins:{
           legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}},
-          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}},
-          annotation:{annotations:{line100:{type:'line',xMin:100,xMax:100,borderColor:'rgba(0,32,86,.4)',borderWidth:1,borderDash:[4,4]}}}
+          tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${ctx.raw}%`}}
         },
         scales:{
-          x:{min:0,max:Math.min(150,maxVal+10),
-             ticks:{font:{size:9},callback:v=>v+'%'},
-             title:{display:true,text:'% cumplimiento',font:{size:9}}},
-          y:{ticks:{font:{size:9},color:'#002056'}}
+          x:{min:0, max:Math.min(150,Math.max(120,...dataRes,...dataAcrd)+10),
+             ticks:{font:{size:9}, callback:v=>v+'%'},
+             title:{display:true,text:'% avance',font:{size:9}}},
+          y:{ticks:{font:{size:9},color:'#0A4A5E'}}
         }
       }
     });
   }
 }
+
 // ══ TC INDIVIDUOS — parseo dinámico desde Sheet ══
 const MMAP_TC={ene:'01',feb:'02',mar:'03',abr:'04',may:'05',jun:'06',
                jul:'07',ago:'08',sep:'09',oct:'10',nov:'11',dic:'12'};
@@ -4560,8 +4898,7 @@ function renderVIAJA(rows){
 window.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.sbtn');
   if(btn) btn.onclick = () => loadAll(true);
-  if(typeof loadFACMP==='function' && typeof API_URL_FAC!=='undefined' && API_URL_FAC) loadFACMP();
-  loadAll();
+  loadAll(); // facmp se carga via TASKS en loadAll
 });
 </script>
 

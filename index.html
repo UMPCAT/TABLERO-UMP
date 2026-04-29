@@ -2441,14 +2441,63 @@ function normSucTC(s){
 
 // ── getFacColByMonth: encuentra la columna real del mes en rows de FAC ──
 // Apps Script formatea datetime como "26/MM/YYYY"
+
+function stripUniqueSuffix(k){
+  return String(k ?? '').replace(/__\d+$/,'').trim();
+}
+
+function excelSerialToUTCDate(n){
+  const serial = Number(n);
+  if(!isFinite(serial) || serial < 30000 || serial > 70000) return null;
+  return new Date(Date.UTC(1899, 11, 30) + Math.round(serial) * 86400000);
+}
+
+function headerToMonth(k){
+  const s0 = stripUniqueSuffix(k);
+  if(!s0) return null;
+  const s = s0.toUpperCase().trim();
+
+  const numTxt = s.replace(',', '.');
+  if(/^\d+(\.\d+)?$/.test(numTxt)){
+    const d = excelSerialToUTCDate(parseFloat(numTxt));
+    if(d) return d.getUTCMonth() + 1;
+  }
+
+  let m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);
+  if(m) return parseInt(m[2],10);
+
+  m = s.match(/^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
+  if(m) return parseInt(m[2],10);
+
+  const meses = {
+    ENE:1,ENERO:1,FEB:2,FEBRERO:2,MAR:3,MARZO:3,ABR:4,ABRIL:4,MAY:5,MAYO:5,
+    JUN:6,JUNIO:6,JUL:7,JULIO:7,AGO:8,AGOSTO:8,SEP:9,SEPT:9,SEPTIEMBRE:9,SET:9,SETIEMBRE:9,
+    OCT:10,OCTUBRE:10,NOV:11,NOVIEMBRE:11,DIC:12,DICIEMBRE:12
+  };
+  for(const [nom,val] of Object.entries(meses)){
+    if(new RegExp('^'+nom+'(\\s|\\d|$)').test(s) || new RegExp('(\\s|^)'+nom+'(\\s|\\d|$)').test(s)) return val;
+  }
+  return null;
+}
+
+function formatCUITValue(v){
+  if(v === null || v === undefined) return '';
+  let s = String(v).trim();
+  if(!s) return '';
+  if(/[eE]\+?/.test(s)){
+    const n = Number(s.replace(',', '.'));
+    if(isFinite(n)) s = Math.round(n).toString();
+  }
+  s = s.replace(/[^\d]/g,'');
+  return s || String(v).trim();
+}
+
+// ── getFacColByMonth: encuentra la columna real del mes en rows de FAC ──
+// Soporta encabezados como "26/01/2026" y seriales Excel como "46048.0".
 function getFacColByMonth(rows, mesNum){
   if(!rows || !rows.length) return null;
-  const keys = Object.keys(rows[0]);
-  // Buscar patrón DD/MM/YYYY donde mes coincida
-  return keys.find(k => {
-    const p = k.split('/');
-    return p.length===3 && p[2].length===4 && parseInt(p[1])===mesNum;
-  }) || null;
+  const keys = Object.keys(rows[0]).filter(k => !k.startsWith('_'));
+  return keys.find(k => headerToMonth(k) === Number(mesNum)) || null;
 }
 
 // ── FAC: datos por mes ── (cache calculado una vez)
@@ -2559,7 +2608,7 @@ function renderFAC(rows){
 
   // Tabla
   document.getElementById('t-fac').innerHTML = sa.map((s,i)=>{
-    const v2 = mesesDisp.length>=2 ? ((): number => {
+    const v2 = mesesDisp.length>=2 ? (() => {
       const sRows = sucRows.filter(r=>(r['Sucursal']||'').includes(s.nm));
       const v1t = sRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m1]]),0);
       const v2t = sRows.reduce((a,r)=>a+parseMontoFAC(r[cols[m2]]),0);
@@ -2750,68 +2799,53 @@ function rankFAC(rows){
 let FMP_DATA = [];   // Array de objetos: [{RAZONSOCIAL, CUIT, Tipo, NETO, Sucursal, _mesNum, _mesLabel}]
 let FMP_MESES_DISP = [];  // meses disponibles como números [1,2,3,...]
 
-function rFACMP(rawRows){
-  // rawRows: filas de la hoja FACTURACION MAS PAGOS
-  // Necesitamos "aplanar" la estructura horizontal en filas normalizadas
-  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 
-  // Detectar los bloques de meses disponibles
-  // Patrón: columna de NETO tiene formato "26/MM/YYYY" o "SEP26"
+function rFACMP(rawRows){
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const flatRows = [];
   const mesesEncontrados = new Set();
+  const sucs = new Set();
+  const tipos = new Set();
 
-  rawRows.forEach(rawRow => {
-    const keys = Object.keys(rawRow);
+  (rawRows || []).forEach(rawRow => {
+    const headers = rawRow._headers || Object.keys(rawRow).filter(k => !k.startsWith('_'));
+    const cells = rawRow._cells || headers.map(h => rawRow[h]);
 
-    // Procesar cada clave buscando patrones de NETO
-    keys.forEach((key, idx) => {
-      let mesNum = null;
-      let mesLabel = null;
+    for(let idx=0; idx<headers.length; idx++){
+      const mesNum = headerToMonth(headers[idx]);
+      if(!mesNum) continue;
 
-      // Formato "26/MM/YYYY"
-      const m = key.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-      if(m){ mesNum = parseInt(m[2]); mesLabel = MESES_S[mesNum]; }
-      // Formato "SEP26"
-      else if(key.toUpperCase()==='SEP26'){ mesNum=9; mesLabel='Sep'; }
+      const neto = parseMontoFAC(cells[idx]);
+      if(!neto || isNaN(neto)) continue;
 
-      if(!mesNum) return;
+      const rs   = (cells[idx-3] ?? '').toString().trim();
+      const cuit = formatCUITValue(cells[idx-2] ?? '');
+      const tipo = (cells[idx-1] ?? '').toString().trim();
+      const su   = nSuc((cells[idx+1] ?? '').toString().trim());
 
-      const neto = parseFloat((rawRow[key]||'').toString().replace(',','.')) || 0;
-      if(!neto || isNaN(neto)) return; // fila vacía para este mes
+      if(!rs && !cuit) continue;
 
-      // Las columnas RS, CU, TI, SU están en posiciones relativas al bloque
-      // Detectar el índice del NETO y buscar las columnas de su bloque
-      const rsKey = keys[idx-3] || '';
-      const cuKey = keys[idx-2] || '';
-      const tiKey = keys[idx-1] || '';
-      const suKey = keys[idx+1] || '';
-
-      const rs = (rawRow[rsKey]||'').toString().trim();
-      const cu = (rawRow[cuKey]||'').toString().trim();
-      const ti = (rawRow[tiKey]||'').toString().trim();
-      const su = (rawRow[suKey]||'').toString().trim();
-
-      if(!rs || rs==='nan' || !cu || cu==='nan') return;
-
-      flatRows.push({
+      const rec = {
         RAZONSOCIAL: rs,
-        CUIT: cu.replace('.0',''),
-        Tipo: ti,
+        CUIT: cuit,
+        Tipo: tipo,
         NETO: neto,
         Sucursal: su,
         _mesNum: mesNum,
-        _mesLabel: mesLabel,
-        _mesKey: key
-      });
+        _mesLabel: MESES_S[mesNum],
+        _mesKey: stripUniqueSuffix(headers[idx])
+      };
+      flatRows.push(rec);
       mesesEncontrados.add(mesNum);
-    });
+      if(su) sucs.add(su);
+      if(tipo) tipos.add(tipo);
+    }
   });
 
   FMP_DATA = flatRows;
   FMP_MESES_DISP = [...mesesEncontrados].sort((a,b)=>a-b);
   console.log('[FMP] Filas aplanadas:', FMP_DATA.length, '| Meses:', FMP_MESES_DISP);
 
-  // Poblar selector de meses
   const selMes = document.getElementById('f-facmp-mes');
   if(selMes){
     while(selMes.options.length > 1) selMes.remove(1);
@@ -2822,6 +2856,8 @@ function rFACMP(rawRows){
       selMes.appendChild(o);
     });
   }
+  poblarSel('f-facmp-suc', [...sucs].sort());
+  poblarSel('f-facmp-tipo', [...tipos].sort());
 
   renderFACMP(FMP_DATA);
 }
@@ -3838,9 +3874,21 @@ async function fetchHoja(key) {
     if(json.error) throw new Error('Apps Script error: ' + json.error);
     const { headers, rows } = json;
     if(!headers || !rows) throw new Error('Respuesta sin headers/rows: ' + JSON.stringify(json).slice(0,100));
+    const keyCount = {};
+    const safeHeaders = headers.map((h, i) => {
+      let base = (h === null || h === undefined) ? '' : String(h).trim();
+      if(!base) base = 'COL_' + (i + 1);
+      const n = keyCount[base] || 0;
+      keyCount[base] = n + 1;
+      return n === 0 ? base : base + '__' + i;
+    });
     const data = rows.map(row => {
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = row[i] || '');
+      const obj = {
+        _headers: headers.map(h => (h === null || h === undefined) ? '' : String(h).trim()),
+        _keys: safeHeaders,
+        _cells: row
+      };
+      safeHeaders.forEach((h, i) => obj[h] = row[i] ?? '');
       return obj;
     });
     CACHE[key] = { data, ts: ahora };

@@ -769,6 +769,8 @@ tr:last-child td{border-bottom:none}
 /* ════ SORT INDICATORS ════ */
 th.sort-asc::after{content:' ↑';opacity:.8;font-size:9px}
 th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
+th.sort-none::after{content:' ↕';opacity:.28;font-size:9px}
+.ddbody table th.sort-none::after{content:' ↕';opacity:.35;font-size:10px}
 .ddbody table th.sort-asc::after{content:' ↑';opacity:.9;font-size:10px}
 .ddbody table th.sort-desc::after{content:' ↓';opacity:.9;font-size:10px}
 </style>
@@ -878,7 +880,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <div><div class="ddtitle" id="dd-title">Detalle</div><div class="ddsub" id="dd-sub"></div></div>
     <div class="ddactions">
       <button class="navbtn" onclick="closeDD()" style="margin-right:4px">← Volver</button>
-      <button class="action-btn btn-exp" id="dd-export-btn" onclick="exportDD()" style="display:none">⬇ CSV</button>
+      <button class="action-btn btn-exp" id="dd-export-btn" onclick="exportDD()" style="display:none">⬇ Excel</button>
       <button class="ddclose" onclick="closeDD()">✕</button>
     </div>
   </div>
@@ -941,7 +943,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
         <select id="f-oport-suc" onchange="filtrarContactar()" style="font-size:11px;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);font-family:inherit">
           <option value="">Todas las sucursales</option>
         </select>
-        <button class="action-btn btn-exp" onclick="exportContactar()">⬇ Exportar lista</button>
+        <button class="action-btn btn-exp" onclick="exportContactar()">⬇ Excel</button>
         <span class="fbar-count" id="fc-contactar">—</span>
       </div>
     </div>
@@ -967,7 +969,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
       style="font-size:12px;font-family:inherit;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
     <button class="fbar-reset" onclick="resetFiltrosCOM()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-com">—</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCOM()">⬇ Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCOM()">⬇ Excel</button>
   </div>
   <div id="com-timeline-wrap" class="card full" style="margin-bottom:10px;display:none">
     <div class="ctit" id="com-timeline-tit">Altas por mes · línea temporal</div>
@@ -1024,7 +1026,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <input type="date" id="f-ceg-fecha-hasta" onchange="applyFilterCEG()" style="font-size:12px;font-family:inherit;padding:4px 8px;border:1px solid var(--brd);border-radius:var(--r);background:var(--gris);color:var(--txt)">
     <button class="fbar-reset" onclick="resetFilterCEG()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-ceg">—</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCEG()">⬇ Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportCEG()">⬇ Excel</button>
   </div>
 
   <div class="cuit-bar">
@@ -1088,7 +1090,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <select id="f-fac-suc" onchange="applyFilterFAC()"><option value="">Todas</option></select>
     <button class="fbar-reset" onclick="document.getElementById('f-fac-suc').value='';applyFilterFAC()">✕</button>
     <span class="fbar-count" id="fc-fac">—</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFAC()">⬇ Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFAC()">⬇ Excel</button>
   </div>
   <div class="metrics">
     <div class="metric az"><div class="mlbl" id="fac-k1-lbl">Último mes</div><div class="mval" id="fac-k1">—</div><div class="msub" id="fac-k1-sub">facturación mensual</div></div>
@@ -1151,7 +1153,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <select id="f-marc-rub" onchange="applyFilter_MARC()"><option value="">Todos</option></select>
     <button class="fbar-reset" onclick="resetFilters_MARC()">&#10005; Limpiar</button>
     <span class="fbar-count" id="fc-marc">&#8212;</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('marc')">&#8595; Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('marc')">&#8595; Excel</button>
   </div>
   <div class="cuit-bar" id="marc-cuit-bar">
     <span class="fbar-lbl">🔍 Buscar:</span>
@@ -1196,7 +1198,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <select id="f-sn-rub" onchange="applyFilter_SN()"><option value="">Todos</option></select>
     <button class="fbar-reset" onclick="resetFilters_SN()">&#10005; Limpiar</button>
     <span class="fbar-count" id="fc-sn">&#8212;</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('sn')">&#8595; Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('sn')">&#8595; Excel</button>
   </div>
   <div class="cuit-bar">
     <span class="fbar-lbl">🔍 Buscar:</span>
@@ -1241,7 +1243,7 @@ th.sort-desc::after{content:' ↓';opacity:.8;font-size:9px}
     <select id="f-viaja-rub" onchange="applyFilter_VIAJA()"><option value="">Todos</option></select>
     <button class="fbar-reset" onclick="resetFilters_VIAJA()">&#10005; Limpiar</button>
     <span class="fbar-count" id="fc-viaja">&#8212;</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('viaja')">&#8595; Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportPromo('viaja')">&#8595; Excel</button>
   </div>
   <div class="cuit-bar">
     <span class="fbar-lbl">🔍 Buscar:</span>
@@ -1624,7 +1626,7 @@ id="page-pyme">
     <select id="f-tc-suc" onchange="applyFilterTC()"><option value="">Todas</option></select>
     <button class="fbar-reset" onclick="document.getElementById('f-tc-mes').value='';document.getElementById('f-tc-suc').value='';applyFilterTC()">✕</button>
     <span class="fbar-count" id="fc-tc">—</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="expTC()">⬇ Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="expTC()">⬇ Excel</button>
   </div>
   <div class="metrics" style="grid-template-columns:repeat(4,minmax(0,1fr))">
     <div class="metric az"><div class="mlbl">Consumo Total</div><div class="mval" id="tc-k1">—</div><div class="msub">miles de millones $</div></div>
@@ -1871,7 +1873,7 @@ id="page-pyme">
     </select>
     <button class="fbar-reset" onclick="resetFilterFACMP()">✕ Limpiar</button>
     <span class="fbar-count" id="fc-facmp">—</span>
-    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFACMP()">⬇ Exportar</button>
+    <button class="action-btn btn-exp" style="margin-left:auto" onclick="exportFACMP()">⬇ Excel</button>
   </div>
 
   <!-- Buscador CUIT / Razón Social FACMP -->
@@ -1974,6 +1976,34 @@ function dlCSV(csv,fname){
 }
 
 
+function stripHTML(v){
+  const div=document.createElement('div');
+  div.innerHTML=(v??'').toString();
+  return (div.textContent||div.innerText||'').trim();
+}
+function escXLS(v){
+  return (v??'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function safeFileName(name){
+  return (name||'exportacion').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'_').replace(/^_+|_+$/g,'') || 'exportacion';
+}
+function dlExcelTable(headers, rows, fname){
+  const h=(headers||[]).map(x=>escXLS(stripHTML(x)));
+  const body=(rows||[]).map(r=>(Array.isArray(r)?r:h.map(k=>r[k])).map(v=>escXLS(stripHTML(v))));
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body><table border="1"><thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+body.map(r=>'<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</tbody></table></body></html>';
+  const blob=new Blob(['\uFEFF',html],{type:'application/vnd.ms-excel;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=safeFileName(fname).replace(/\.xls$/i,'')+'.xls';
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+}
+function exportObjectsExcel(rows, keys, headers, fname){
+  const body=(rows||[]).map(r=>(keys||Object.keys(r||{})).map(k=>r?.[k]??''));
+  dlExcelTable(headers||keys, body, fname);
+}
+
+
 const PIE={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'55%'};
 function BH(){return{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},color:'#4a5878'},grid:{color:'#f0f2f8'}},y:{ticks:{font:{size:9},color:'#0d1f4a'}}}};}
 function n(v){return Number(v||0).toLocaleString('es-AR');}
@@ -2018,6 +2048,7 @@ let ddSortCol = null;
 let ddSortDir = 'asc';
 let ddHeaders = [];
 let ddRawRows = []; // datos originales para re-ordenar
+let ddVisibleRows = []; // datos actualmente visibles/exportables
 
 function openDD(title, sub, headers, rows, rawData) {
   ddCurrentData = rawData || [];
@@ -2037,11 +2068,13 @@ function openDD(title, sub, headers, rows, rawData) {
 }
 
 function renderDDTable(headers, rows) {
+  ddVisibleRows = rows || [];
   // Header con flechas de ordenamiento
   document.getElementById('dd-thead').innerHTML = '<tr>' +
     headers.map((h, i) => {
       const cls = ddSortCol === i ? (ddSortDir === 'asc' ? 'sort-asc' : 'sort-desc') : 'sort-none';
-      return `<th class="${cls}" onclick="sortDD(${i})" title="Ordenar por ${h}">${h}</th>`;
+      const arrow = ddSortCol === i ? (ddSortDir === 'asc' ? ' ▲' : ' ▼') : ' ↕';
+      return `<th class="${cls}" onclick="sortDD(${i})" title="Ordenar por ${h}" aria-sort="${ddSortCol===i?(ddSortDir==='asc'?'ascending':'descending'):'none'}">${h}<span style="opacity:.65;font-size:10px">${arrow}</span></th>`;
     }).join('') + '</tr>';
 
   // Filas
@@ -2078,10 +2111,8 @@ function sortDD(colIdx) {
 
 function closeDD(){document.getElementById('ddoverlay').classList.remove('open');document.getElementById('ddpanel').classList.remove('open');}
 function exportDD(){
-  if(!ddCurrentData.length)return;
-  const keys=Object.keys(ddCurrentData[0]);
-  const csv=[keys.join(','),...ddCurrentData.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
-  dlCSV(csv,'detalle_exportado.csv');
+  if(!ddVisibleRows.length)return;
+  dlExcelTable(ddHeaders, ddVisibleRows, (document.getElementById('dd-title')?.textContent||'detalle_exportado'));
 }
 
 
@@ -2184,12 +2215,12 @@ function applyFilterCOM(){
   }
 }
 function exportCOM(){
-  const suc=document.getElementById('f-com-suc').value;
-  const src=(DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
-  const r=suc?src.filter(x=>x['Nombre Sucursal']===suc):src;
-  const keys=['Razón Social','Nombre Fantasia','CUIT','Estado de Comercio','Status de Actividad','Nombre Sucursal','Localidad','Teléfono','Mail Representante','Descripcion Actividad','Onboarding de comercio'];
-  const csv=[keys.join(','),...r.map(row=>keys.map(k=>`"${(row[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
-  dlCSV(csv,'comercios'+(suc?'_'+suc:'')+'.csv');
+  const rows=getFilteredCOM();
+  const suc=document.getElementById('f-com-suc')?.value||'';
+  const desde=document.getElementById('f-com-fecha-desde')?.value||'';
+  const hasta=document.getElementById('f-com-fecha-hasta')?.value||'';
+  const keys=['Razón Social','Nombre Fantasia','CUIT','Estado de Comercio','Status de Actividad','Nombre Sucursal','Localidad','Teléfono','Mail Representante','Descripcion Actividad','Onboarding de comercio','Fecha de Alta'];
+  exportObjectsExcel(rows,keys,keys,'comercios_mas_pagos'+(suc?'_'+suc:'')+(desde?'_desde_'+desde:'')+(hasta?'_hasta_'+hasta:''));
 }
 
 
@@ -2330,14 +2361,24 @@ function resetFilterCEG(){
 }
 
 function exportCEG(){
-  const suc=document.getElementById('f-ceg-suc').value;
-  const prod=document.getElementById('f-ceg-prod').value;
+  const suc=document.getElementById('f-ceg-suc')?.value||'';
+  const prod=document.getElementById('f-ceg-prod')?.value||'';
+  const act=document.getElementById('f-ceg-act')?.value||'';
+  const desde=document.getElementById('f-ceg-fecha-desde')?.value||'';
+  const hasta=document.getElementById('f-ceg-fecha-hasta')?.value||'';
   let rows=DD.ceg||[];
   if(suc) rows=rows.filter(r=>r['Sucursal']===suc);
   if(prod) rows=rows.filter(r=>r['Producto']===prod);
-  const keys=['CUIT','Razon Social','Sucursal','Producto','Rubro','Actividad','Tipo Cliente'];
-  const csv=[keys.join(','),...rows.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
-  dlCSV(csv,'comercios_general'+(suc?'_'+suc:'')+(prod?'_'+prod:'')+'.csv');
+  if(act) rows=rows.filter(r=>r['Actividad']===act);
+  if(desde||hasta) rows=rows.filter(x=>{
+    const fa=parseFechaAltaCEG(x['Fecha de Alta']);
+    if(!fa) return false;
+    if(desde&&fa<desde) return false;
+    if(hasta&&fa>hasta) return false;
+    return true;
+  });
+  const keys=['CUIT','Razon Social','Sucursal','Producto','Rubro','Actividad','Tipo Cliente','Fecha de Alta'];
+  exportObjectsExcel(rows,keys,keys,'comercios_general'+(suc?'_'+suc:'')+(prod?'_'+prod:'')+(act?'_'+act:'')+(desde?'_desde_'+desde:'')+(hasta?'_hasta_'+hasta:''));
 }
 
 // Drill-down CEG
@@ -2546,7 +2587,44 @@ function rFAC(rows){
   document.getElementById('fc-fac').textContent = n(rows.filter(r=>(r['Sucursal']||'')!=='TOTAL').length)+' comercios';
 }
 
+function updateFACSummary(rows){
+  const cols = getFacCols();
+  const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
+  const setEl = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  const base = (rows||[]).filter(r => ((r['Sucursal']||'').toString().trim().toUpperCase() !== 'TOTAL'));
+  const totMes = {};
+  Object.entries(cols).forEach(([m,col]) => { totMes[m] = base.reduce((a,r)=>a+parseMontoFAC(r[col]),0); });
+  const mesesDisp = Object.keys(totMes).map(Number).sort((a,b)=>a-b);
+  const totalAcum = mesesDisp.reduce((a,m)=>a+(totMes[m]||0),0);
+  const lastM = mesesDisp[mesesDisp.length-1];
+  const prevM = mesesDisp[mesesDisp.length-2];
+  const tLast = lastM ? (totMes[lastM]||0) : 0;
+  const tPrev = prevM ? (totMes[prevM]||0) : 0;
+  const varPct = tPrev>0 ? ((tLast-tPrev)/tPrev*100).toFixed(1) : '0';
+  const selSuc = document.getElementById('f-fac-suc')?.value || '';
+  const scope = selSuc ? ` · ${selSuc}` : '';
+  const mesesTxt = mesesDisp.map(m=>MESES_S[m]).join(' + ');
+  setEl('fac-banner-sub', `Procesadoras · ${mesesTxt || 'sin períodos detectados'} 2026${scope}`);
+  setEl('fac-banner-nl', selSuc ? 'selección filtrada' : 'facturación acumulada');
+  setEl('fac-total', fmtB(totalAcum));
+  setEl('fac-k1-lbl', lastM ? `Total ${MESES_S[lastM]}` : 'Último mes');
+  setEl('fac-k2-lbl', prevM ? `Total ${MESES_S[prevM]}` : 'Mes anterior');
+  setEl('fac-k1-sub', (lastM ? MESES_S[lastM]+' 2026' : 'Sin mes') + scope);
+  setEl('fac-k2-sub', (prevM ? MESES_S[prevM]+' 2026' : 'Sin mes anterior') + scope);
+  setEl('fac-k3-sub', prevM && lastM ? `${MESES_S[prevM]} → ${MESES_S[lastM]}${scope}` : 'comparativo mensual');
+  setEl('fac-k1', lastM ? fmtB(tLast) : '—');
+  setEl('fac-k2', prevM ? fmtB(tPrev) : '—');
+  setEl('fac-k3', (parseFloat(varPct)>=0?'+':'')+varPct+'%');
+  setEl('fac-k4', n(base.length));
+  const elAcum = document.getElementById('fac-acum-total');
+  const elMesesN = document.getElementById('fac-acum-meses');
+  if(elAcum) elAcum.textContent = fmtB(totalAcum);
+  if(elMesesN) elMesesN.textContent = (mesesDisp.map(m=>MESES_S[m]).join('+') || '—') + ' 2026' + scope;
+}
+
 function renderFAC(rows){
+  updateFACSummary(rows);
   const cols = getFacCols();
   const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const fmtB = v => v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(1)+'M':'$'+Math.round(v).toLocaleString('es-AR');
@@ -2625,14 +2703,11 @@ function exportFAC(){
   const cols = getFacCols();
   const MESES_S = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const meses = Object.keys(cols).map(Number).sort((a,b)=>a-b);
-  const suc = document.getElementById('f-fac-suc').value;
+  const suc = document.getElementById('f-fac-suc')?.value||'';
   const rows = suc ? (DD.fac||[]).filter(r=>(r['Sucursal']||'').replace(/^\d+-/,'').trim()===suc) : (DD.fac||[]);
-  const colNames = ['Sucursal','CUIT','Razon Social / Apellido',...meses.map(m=>MESES_S[m]+' 2026')];
-  const csv = [colNames.join(','),...rows.map(r=>[
-    r['Sucursal']||'',r['CUIT']||'',r['Razon Social / Apellido']||'',
-    ...meses.map(m=>(parseMontoFAC(r[cols[m]])).toFixed(2))
-  ].map(v=>`"${v}"`).join(','))].join('\n');
-  dlCSV(csv,'facturacion'+(suc?'_'+suc:'')+'.csv');
+  const headers = ['Sucursal','CUIT','Razon Social / Apellido',...meses.map(m=>MESES_S[m]+' 2026')];
+  const body = rows.map(r=>[r['Sucursal']||'',r['CUIT']||'',r['Razon Social / Apellido']||'',...meses.map(m=>(parseMontoFAC(r[cols[m]])).toFixed(2))]);
+  dlExcelTable(headers, body, 'facturacion_procesadoras'+(suc?'_'+suc:''));
 }
 
 function ddFacSuc(suc){
@@ -2880,23 +2955,26 @@ function renderFACMP(rows){
   setEl('facmp-total', nf(rows.length));
   document.getElementById('fc-facmp').textContent = nf(rows.length)+' registros · '+fmtM(totalNeto);
 
-  // Evolución mensual
+  // Evolución mensual — debe respetar la selección vigente (sucursal/tipo/mes/búsqueda)
+  const mesesEnSeleccion = [...new Set(rows.map(r=>r['_mesNum']).filter(Boolean))].sort((a,b)=>a-b);
+  const mesesParaGrafico = mesesEnSeleccion.length ? mesesEnSeleccion : FMP_MESES_DISP;
   const totPorMes={};
-  FMP_MESES_DISP.forEach(m => {
-    totPorMes[m] = FMP_DATA.filter(r=>r['_mesNum']===m).reduce((a,r)=>a+(r['NETO']||0),0);
+  mesesParaGrafico.forEach(m => {
+    totPorMes[m] = rows.filter(r=>r['_mesNum']===m).reduce((a,r)=>a+(r['NETO']||0),0);
   });
-  const mesesLabels = FMP_MESES_DISP.map(m=>MESES_S[m]);
-  const totalesArr  = FMP_MESES_DISP.map(m=>totPorMes[m]||0);
-  const totalAcum   = totalesArr.reduce((a,v)=>a+v,0);
-  const mejorIdx    = totalesArr.indexOf(Math.max(...totalesArr));
+  const mesesLabels = mesesParaGrafico.map(m=>MESES_S[m]);
+  const totalesArr  = mesesParaGrafico.map(m=>totPorMes[m]||0);
+  const totalAcum   = totalNeto;
+  const mejorIdx    = totalesArr.length ? totalesArr.indexOf(Math.max(...totalesArr)) : -1;
 
   setEl('facmp-evo-total', fmtM(totalAcum));
-  setEl('facmp-evo-mejor', totalesArr.length>0 ? fmtM(totalesArr[mejorIdx])+'  ('+mesesLabels[mejorIdx]+')' : '—');
+  setEl('facmp-evo-mejor', mejorIdx>=0 ? fmtM(totalesArr[mejorIdx])+'  ('+mesesLabels[mejorIdx]+')' : '—');
   const elTit=document.getElementById('facmp-evo-tit');
-  if(elTit) elTit.textContent='📈 Evolución +Pagos · '+mesesLabels.join(' → ')+' · Total: '+fmtM(totalAcum);
+  const filtrosTxt = [document.getElementById('f-facmp-suc')?.value, document.getElementById('f-facmp-tipo')?.value].filter(Boolean).join(' · ');
+  if(elTit) elTit.textContent='📈 Evolución +Pagos · '+(mesesLabels.join(' → ')||'sin período')+' · Total selección: '+fmtM(totalAcum)+(filtrosTxt?' · '+filtrosTxt:'');
 
   const canEvo=document.getElementById('c-facmp-evo');
-  if(canEvo && FMP_MESES_DISP.length){
+  if(canEvo && mesesParaGrafico.length){
     if(CH['c-facmp-evo']) CH['c-facmp-evo'].destroy();
     CH['c-facmp-evo']=new Chart(canEvo,{
       type:'bar',
@@ -3194,8 +3272,8 @@ function limpiarPromo(pid){
 function exportPromo(pid){
   const rows=getFilteredPromo(pid);
   const keys=['NOMBRE DEL COMERCIO','RAZON SOCIAL','CUIT','SUCURSAL','LOCALIDAD','PROVINCIA','NOMBRE DE LA PROMOCION','RUBRO','ADQUIRENTE - PRISMA / FISERV / MAS PAGOS','ACEPTA BNA+:','ALTA / BAJA','TELEFONO','MAIL'];
-  const csv=[keys.join(','),...rows.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
-  dlCSV(csv,(pid==='marc'?'marcaton':'sn_ae')+'_exportado.csv');
+  const fname = pid==='marc'?'marcaton':pid==='viaja'?'viaja_mas':'sn_ae';
+  exportObjectsExcel(rows,keys,keys,fname+'_filtrado');
 }
 
 // ── ALIAS PARA CARGA ──
@@ -3469,12 +3547,11 @@ function filtrarContactar(){
 }
 
 function exportContactar(){
-  const suc=document.getElementById('f-oport-suc').value;
+  const suc=document.getElementById('f-oport-suc')?.value||'';
   const com=(DD.com||[]).filter(r=>['CATAMARCA','LA RIOJA'].includes(r['Provincia']));
   const rows=(suc?com.filter(r=>r['Nombre Sucursal']===suc&&r['Status de Actividad']==='Comercio Churn'):com.filter(r=>r['Status de Actividad']==='Comercio Churn'));
   const keys=['Razón Social','Nombre Fantasia','CUIT','Nombre Sucursal','Localidad','Teléfono','Mail Representante','Descripcion Actividad'];
-  const csv=[keys.join(','),...rows.map(r=>keys.map(k=>`"${(r[k]||'').toString().replace(/"/g,"'")}"`).join(','))].join('\n');
-  dlCSV(csv,'churn_a_contactar'+(suc?'_'+suc:'')+'.csv');
+  exportObjectsExcel(rows,keys,keys,'churn_a_contactar'+(suc?'_'+suc:''));
 }
 
 
@@ -4495,11 +4572,11 @@ function exportFACMP(){
   if(!rows.length)return;
   const keys=['RAZONSOCIAL','CUIT','Tipo','NETO','Sucursal','_mesLabel'];
   const hdr=['Razón Social','CUIT','Tipo','Neto','Sucursal','Mes'];
-  const csv=[hdr.join(','),...rows.map(r=>keys.map(k=>(k==='NETO'?Math.round(r[k]||0):(r[k]||'')).toString().replace(/,/g,';')).join(','))].join('\n');
-  const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download='facturacion_maspagos.csv';
-  a.click();
+  const body=rows.map(r=>keys.map(k=>k==='NETO'?Math.round(r[k]||0):(r[k]||'')));
+  const suc=document.getElementById('f-facmp-suc')?.value||'';
+  const mes=document.getElementById('f-facmp-mes')?.value||'';
+  const tipo=document.getElementById('f-facmp-tipo')?.value||'';
+  dlExcelTable(hdr,body,'facturacion_maspagos'+(suc?'_'+suc:'')+(mes?'_mes_'+mes:'')+(tipo?'_'+tipo:''));
 }
 
 

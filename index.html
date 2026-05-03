@@ -1305,7 +1305,7 @@ id="page-pyme">
   </div>
   <div class="g2">
     <div class="card"><div class="ctit">Activos vs Inactivos</div><div class="cw" style="height:185px"><canvas id="c-pyme-pie"></canvas></div></div>
-    <div class="card"><div class="ctit">Activos por sucursal</div><div class="cw" style="height:185px"><canvas id="c-pyme-suc"></canvas></div></div>
+    <div class="card"><div class="ctit">Ranking de consumo por sucursal</div><div class="cw" style="height:185px"><canvas id="c-pyme-suc"></canvas></div></div>
   </div>
 <div class="cuit-bar" id="rsbar-pyme" style="margin-top:-4px">
   <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
@@ -1367,7 +1367,7 @@ id="page-pyme">
     <button onclick="limpiarBusquedaPyme()" style="font-size:10px;padding:5px 8px;background:none;border:1px solid var(--brd);border-radius:6px;cursor:pointer">✕</button>
     <span id="pyme-cuit-result" style="font-size:10px;color:var(--txt2)"></span>
   </div>
-</div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-pyme"></tbody></table></div></div>
+</div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Consumo 2026</th><th>Consumo 2025</th><th>Límite</th><th>% Uso LC</th></tr></thead><tbody id="t-pyme"></tbody></table></div></div>
 </div>
 
 <!-- ═══ AGRONACIÓN ═══ -->
@@ -1401,7 +1401,7 @@ id="page-pyme">
   </div>
   <div class="g2">
     <div class="card"><div class="ctit">Activos vs Inactivos</div><div class="cw" style="height:185px"><canvas id="c-agro-pie"></canvas></div></div>
-    <div class="card"><div class="ctit">Por sucursal</div><div class="cw" style="height:185px"><canvas id="c-agro-suc"></canvas></div></div>
+    <div class="card"><div class="ctit">Ranking de consumo por sucursal</div><div class="cw" style="height:185px"><canvas id="c-agro-suc"></canvas></div></div>
   </div>
 <div class="cuit-bar" id="rsbar-agro" style="margin-top:-4px">
   <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
@@ -1463,7 +1463,7 @@ id="page-pyme">
     <button onclick="limpiarBusquedaAgro()" style="font-size:10px;padding:5px 8px;background:none;border:1px solid var(--brd);border-radius:6px;cursor:pointer">✕</button>
     <span id="agro-cuit-result" style="font-size:10px;color:var(--txt2)"></span>
   </div>
-</div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Inactivos</th><th>% Activo</th></tr></thead><tbody id="t-agro"></tbody></table></div></div>
+</div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Activos</th><th>Consumo 2026</th><th>Consumo 2025</th><th>Límite</th><th>% Uso LC</th></tr></thead><tbody id="t-agro"></tbody></table></div></div>
 </div>
 
 <!-- ═══ CORPORATIVA ═══ -->
@@ -1483,7 +1483,7 @@ id="page-pyme">
     <div class="metric dr"><div class="mlbl">Sucursales</div><div class="mval" id="corp-k3">—</div></div>
     <div class="metric rj"><div class="mlbl">Prom./suc.</div><div class="mval" id="corp-k4">—</div></div>
   </div>
-  <div class="card full" style="margin-bottom:12px"><div class="ctit">Cuentas por sucursal</div><div class="cw" style="height:250px"><canvas id="c-corp"></canvas></div></div>
+  <div class="card full" style="margin-bottom:12px"><div class="ctit">Ranking de consumo / saldo por sucursal</div><div class="cw" style="height:250px"><canvas id="c-corp"></canvas></div></div>
 <div class="cuit-bar" id="rsbar-corp" style="margin-top:-4px">
   <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
   <input type="text" id="rs-corp" placeholder="Apellido o nombre..." oninput="buscarRS('corp',this.value)" style="flex:2">
@@ -1528,7 +1528,7 @@ id="page-pyme">
     <div class="cc-sub">Ratio de pago</div>
   </div>
 </div>
-<div class="tcard" id="tcard-corp"><div class="thead2"><span class="ttit">Por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Cuentas</th><th>Vol.</th></tr></thead><tbody id="t-corp"></tbody></table></div></div>
+<div class="tcard" id="tcard-corp"><div class="thead2"><span class="ttit">Consumo por sucursal · clic para ver cuentas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Cuentas</th><th>Límite</th><th>Remanente</th><th>Consumo / saldo</th><th>Pagos</th><th>% Uso LC</th></tr></thead><tbody id="t-corp"></tbody></table></div></div>
 </div>
 
 <!-- ═══ BNA CONECTA ═══ -->
@@ -1560,7 +1560,7 @@ id="page-pyme">
   </div>
   <div class="g2">
     <div class="card"><div class="ctit">Compradores vs Vendedores</div><div class="cw" style="height:185px"><canvas id="c-bna-pie"></canvas></div></div>
-    <div class="card"><div class="ctit">Top 10 sucursales</div><div class="cw" style="height:185px"><canvas id="c-bna-suc"></canvas></div></div>
+    <div class="card"><div class="ctit">Ranking de consumo por sucursal</div><div class="cw" style="height:185px"><canvas id="c-bna-suc"></canvas></div></div>
   </div>
 <div class="cuit-bar" id="rsbar-bna" style="margin-top:-4px">
   <span style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt2)">BUSCAR:</span>
@@ -1606,7 +1606,7 @@ id="page-pyme">
     <div class="cc-sub">Potencial de activación</div>
   </div>
 </div>
-<div class="tcard" id="tcard-bna"><div class="thead2"><span class="ttit">Por sucursal · clic para ver empresas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Compradores</th><th>Vendedores</th><th>Vol.</th></tr></thead><tbody id="t-bna"></tbody></table></div></div>
+<div class="tcard" id="tcard-bna"><div class="thead2"><span class="ttit">Consumo por sucursal · clic para ver empresas</span></div><div class="twrap"><table><thead><tr><th>#</th><th>Sucursal</th><th>Total</th><th>Compradores</th><th>Vendedores</th><th>Compras</th><th>Ventas</th><th>Total operado</th></tr></thead><tbody id="t-bna"></tbody></table></div></div>
 </div>
 
 
@@ -3295,30 +3295,32 @@ function rPYME(rows){
 }
 function renderPYME(rows){
   const T=rows.length,act=rows.filter(x=>x['Activo']==='SI').length,ina=T-act;
+  const c26=rows.reduce((a,r)=>a+parseMonto(r['Compras 2026']),0);
+  const c25=rows.reduce((a,r)=>a+parseMonto(r['Compras 2025']),0);
+  const c24=rows.reduce((a,r)=>a+parseMonto(r['Compras 2024']),0);
+  const lim=rows.reduce((a,r)=>a+parseMonto(r['Límite de Compra']),0);
   document.getElementById('pyme-total').textContent=n(T);
   document.getElementById('pyme-k1').textContent=n(T);
   document.getElementById('pyme-k2').textContent=n(act);document.getElementById('pyme-k2s').textContent=pct(act,T);
   document.getElementById('pyme-k3').textContent=n(ina);document.getElementById('pyme-k3s').textContent=pct(ina,T);
   document.getElementById('pyme-k4').textContent=T>0?(act/T*100).toFixed(1)+'%':'—';
-  mk('c-pyme-pie',{type:'doughnut',data:{labels:['Activos','Inactivos'],datasets:[{data:[act,ina],backgroundColor:['#4EBFA4','#c0241c'],borderWidth:0}]},options:PIE});
-  const sm={};rows.forEach(x=>{const s=x['Sucursal']||'';if(!s)return;if(!sm[s])sm[s]={t:0,a:0};sm[s].t++;if(x['Activo']==='SI')sm[s].a++;});
-  const sa=Object.entries(sm).sort((a,b)=>b[1].a-a[1].a).slice(0,10);
-  mk('c-pyme-suc',{type:'bar',data:{labels:sa.map(x=>x[0]),datasets:[{data:sa.map(x=>x[1].a),backgroundColor:'#4EBFA4',borderRadius:3}]},options:BH()});
-  const all=Object.entries(sm).map(([nm,v])=>({nm,...v,p:v.t>0?(v.a/v.t*100).toFixed(1):'0'})).sort((a,b)=>b.t-a.t);
-  // Acumulado PYME
-  const pymC26=rows.reduce((a,r)=>a+parseMonto(r['Compras 2026']),0);
-  const pymC25=rows.reduce((a,r)=>a+parseMonto(r['Compras 2025']),0);
-  const pymC24=rows.reduce((a,r)=>a+parseMonto(r['Compras 2024']),0);
-  const pymLim=rows.reduce((a,r)=>a+parseMonto(r['Límite de Compra']),0);
-  const fmtP=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(0)+'M':'—';
   const setP=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  setP('pyme-acum-2026', fmtP(pymC26));
-  setP('pyme-acum-2025', fmtP(pymC25));
-  setP('pyme-acum-2024', fmtP(pymC24));
-  setP('pyme-acum-lim',  fmtP(pymLim));
-
-  document.getElementById('t-pyme').innerHTML=all.map((s,i)=>`<tr class="crow" data-nm="${s.nm}" onclick="ddPymeSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>${s.t}</td><td><span class="pill p-act">${s.a}</span></td><td><span class="pill p-chu">${s.t-s.a}</span></td><td style="font-weight:700;color:${+s.p>=25?'var(--bna-verde)':+s.p>=10?'var(--bna-naranja)':'var(--roj)'}">${s.p}%</td></tr>`).join('');
-
+  setP('pyme-acum-2026', fmtMonto(c26));
+  setP('pyme-acum-2025', fmtMonto(c25));
+  setP('pyme-acum-2024', fmtMonto(c24));
+  setP('pyme-acum-lim',  fmtMonto(lim));
+  setP('pyme-consumo-2026', fmtMonto(c26));
+  setP('pyme-consumo-2025', fmtMonto(c25));
+  setP('pyme-consumo-crec', c25>0?((c26/c25-1)*100).toFixed(1)+'%':'—');
+  setP('pyme-consumo-lim', fmtMonto(lim));
+  setP('pyme-consumo-uso', pctUso(c26,lim));
+  setP('pyme-consumo-act', n(rows.filter(r=>parseMonto(r['Compras 2026'])>0).length));
+  mk('c-pyme-pie',{type:'doughnut',data:{labels:['Activos','Inactivos'],datasets:[{data:[act,ina],backgroundColor:['#4EBFA4','#c0241c'],borderWidth:0}]},options:PIE});
+  const sm={};rows.forEach(x=>{const s=x['Sucursal']||'';if(!s)return;if(!sm[s])sm[s]={t:0,a:0,c26:0,c25:0,lim:0};sm[s].t++;if(x['Activo']==='SI')sm[s].a++;sm[s].c26+=parseMonto(x['Compras 2026']);sm[s].c25+=parseMonto(x['Compras 2025']);sm[s].lim+=parseMonto(x['Límite de Compra']);});
+  const all=Object.entries(sm).map(([nm,v])=>({nm,...v,uso:v.lim>0?(v.c26/v.lim*100):0})).sort((a,b)=>b.c26-a.c26);
+  const top=all.slice(0,10);
+  mk('c-pyme-suc',{type:'bar',data:{labels:top.map(x=>x.nm),datasets:[{label:'Consumo 2026',data:top.map(x=>x.c26),backgroundColor:'#4EBFA4',borderRadius:3}]},options:BH()});
+  document.getElementById('t-pyme').innerHTML=all.map((s,i)=>`<tr class="crow" data-nm="${s.nm}" onclick="ddPymeSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>${s.t}</td><td><span class="pill p-act">${s.a}</span></td><td style="font-weight:800;color:var(--bna-verde)">${fmtMonto(s.c26)}</td><td>${fmtMonto(s.c25)}</td><td>${fmtMonto(s.lim)}</td><td style="font-weight:700;color:${s.uso>=25?'var(--bna-verde)':s.uso>=10?'var(--bna-naranja)':'var(--roj)'}">${s.lim>0?s.uso.toFixed(1)+'%':'—'}</td></tr>`).join('');
   rankPYME(rows);
 }
 function applyFilterPYME(){
@@ -3328,10 +3330,14 @@ function applyFilterPYME(){
   document.getElementById('fc-pyme').textContent=suc?n(rows.length)+' en '+suc:n(rows.length)+' cuentas';
 }
 function ddPymeSuc(suc){
-  const rows=(DD.pyme||[]).filter(r=>r['Sucursal']===suc);
-  const hdrs=['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Actividad','Observaciones'];
-  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',`<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,r['Actividad de la Pyme']||'—',r['Observaciones']||'—']);
-  openDD('PyMENación: '+suc,rows.length+' cuentas',hdrs,data,rows);
+  const rows=(DD.pyme||[]).filter(r=>r['Sucursal']===suc).sort((a,b)=>parseMonto(b['Compras 2026'])-parseMonto(a['Compras 2026']));
+  const total=rows.reduce((a,r)=>a+parseMonto(r['Compras 2026']),0);
+  const hdrs=['Apellido','Nombre','CUIT','Lím. Compra','Disponible','Compras 2026','Compras 2025','% Uso LC','Activo','Actividad','Observaciones'];
+  const data=rows.map(r=>{
+    const lim=parseMonto(r['Límite de Compra']), c26=parseMonto(r['Compras 2026']);
+    return [r['Apellido'],r['Nombre'],r['CUIT'],fmtMonto(lim),r['Límite Disponible']||'—',fmtMonto(c26),fmtMonto(parseMonto(r['Compras 2025'])),pctUso(c26,lim),`<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,r['Actividad de la Pyme']||'—',r['Observaciones']||'—'];
+  });
+  openDD('PyMENación · consumo por sucursal: '+suc,rows.length+' cuentas · '+fmtMonto(total)+' consumo 2026',hdrs,data,rows);
 }
 
 // ── RENDER AGRO ──
@@ -3344,29 +3350,32 @@ function rAGRO(rows){
 }
 function renderAGRO(rows){
   const T=rows.length,act=rows.filter(x=>x['Activo']==='SI').length,ina=T-act;
+  const c26=rows.reduce((a,r)=>a+parseMonto(r['Compras 2026']),0);
+  const c25=rows.reduce((a,r)=>a+parseMonto(r['Compras 2025']),0);
+  const c24=rows.reduce((a,r)=>a+parseMonto(r['Compras 2024']),0);
+  const lim=rows.reduce((a,r)=>a+parseMonto(r['Límite de Compra']),0);
   document.getElementById('agro-total').textContent=n(T);
   document.getElementById('agro-k1').textContent=n(T);
   document.getElementById('agro-k2').textContent=n(act);document.getElementById('agro-k2s').textContent=pct(act,T);
   document.getElementById('agro-k3').textContent=n(ina);document.getElementById('agro-k3s').textContent=pct(ina,T);
   document.getElementById('agro-k4').textContent=T>0?(act/T*100).toFixed(1)+'%':'—';
-  mk('c-agro-pie',{type:'doughnut',data:{labels:['Activos','Inactivos'],datasets:[{data:[act,ina],backgroundColor:['#4EBFA4','#c0241c'],borderWidth:0}]},options:PIE});
-  const sm={};rows.forEach(x=>{const s=x['Sucursal']||'';if(!s)return;if(!sm[s])sm[s]={t:0,a:0};sm[s].t++;if(x['Activo']==='SI')sm[s].a++;});
-  const sa=Object.entries(sm).sort((a,b)=>b[1].t-a[1].t).slice(0,12);
-  mk('c-agro-suc',{type:'bar',data:{labels:sa.map(x=>x[0]),datasets:[{label:'Total',data:sa.map(x=>x[1].t),backgroundColor:'#00ADDB',borderRadius:3},{label:'Activos',data:sa.map(x=>x[1].a),backgroundColor:'#4EBFA4',borderRadius:3}]},options:{...BH(),plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}});
-  // Acumulado AGRO
-  const agrC26=rows.reduce((a,r)=>a+parseMonto(r['Compras 2026']),0);
-  const agrC25=rows.reduce((a,r)=>a+parseMonto(r['Compras 2025']),0);
-  const agrC24=rows.reduce((a,r)=>a+parseMonto(r['Compras 2024']),0);
-  const agrLim=rows.reduce((a,r)=>a+parseMonto(r['Límite de Compra']),0);
-  const fmtAg=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(0)+'M':'—';
   const setAg=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  setAg('agro-acum-2026', fmtAg(agrC26));
-  setAg('agro-acum-2025', fmtAg(agrC25));
-  setAg('agro-acum-2024', fmtAg(agrC24));
-  setAg('agro-acum-lim',  fmtAg(agrLim));
-
-  document.getElementById('t-agro').innerHTML=sa.map(([nm,v],i)=>`<tr class="crow" data-nm="${nm}" onclick="ddAgroSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${nm}</td><td>${v.t}</td><td><span class="pill p-act">${v.a}</span></td><td><span class="pill p-chu">${v.t-v.a}</span></td><td style="font-weight:700;color:${v.a>0?'var(--bna-verde)':'var(--roj)'}">${(v.a/v.t*100).toFixed(1)}%</td></tr>`).join('');
-
+  setAg('agro-acum-2026', fmtMonto(c26));
+  setAg('agro-acum-2025', fmtMonto(c25));
+  setAg('agro-acum-2024', fmtMonto(c24));
+  setAg('agro-acum-lim',  fmtMonto(lim));
+  setAg('agro-consumo-2026', fmtMonto(c26));
+  setAg('agro-consumo-2025', fmtMonto(c25));
+  setAg('agro-consumo-crec', c25>0?((c26/c25-1)*100).toFixed(1)+'%':'—');
+  setAg('agro-consumo-lim', fmtMonto(lim));
+  setAg('agro-consumo-uso', pctUso(c26,lim));
+  setAg('agro-consumo-act', n(rows.filter(r=>parseMonto(r['Compras 2026'])>0).length));
+  mk('c-agro-pie',{type:'doughnut',data:{labels:['Activos','Inactivos'],datasets:[{data:[act,ina],backgroundColor:['#4EBFA4','#c0241c'],borderWidth:0}]},options:PIE});
+  const sm={};rows.forEach(x=>{const s=x['Sucursal']||'';if(!s)return;if(!sm[s])sm[s]={t:0,a:0,c26:0,c25:0,lim:0};sm[s].t++;if(x['Activo']==='SI')sm[s].a++;sm[s].c26+=parseMonto(x['Compras 2026']);sm[s].c25+=parseMonto(x['Compras 2025']);sm[s].lim+=parseMonto(x['Límite de Compra']);});
+  const all=Object.entries(sm).map(([nm,v])=>({nm,...v,uso:v.lim>0?(v.c26/v.lim*100):0})).sort((a,b)=>b.c26-a.c26);
+  const top=all.slice(0,12);
+  mk('c-agro-suc',{type:'bar',data:{labels:top.map(x=>x.nm),datasets:[{label:'Consumo 2026',data:top.map(x=>x.c26),backgroundColor:'#00ADDB',borderRadius:3},{label:'Límite',data:top.map(x=>x.lim),backgroundColor:'#D4AC87',borderRadius:3}]},options:{...BH(),plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}});
+  document.getElementById('t-agro').innerHTML=all.map((s,i)=>`<tr class="crow" data-nm="${s.nm}" onclick="ddAgroSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>${s.t}</td><td><span class="pill p-act">${s.a}</span></td><td style="font-weight:800;color:var(--bna-verde)">${fmtMonto(s.c26)}</td><td>${fmtMonto(s.c25)}</td><td>${fmtMonto(s.lim)}</td><td style="font-weight:700;color:${s.uso>=25?'var(--bna-verde)':s.uso>=10?'var(--bna-naranja)':'var(--roj)'}">${s.lim>0?s.uso.toFixed(1)+'%':'—'}</td></tr>`).join('');
   rankAGRO(rows);
 }
 function applyFilterAGRO(){
@@ -3376,10 +3385,14 @@ function applyFilterAGRO(){
   document.getElementById('fc-agro').textContent=suc?n(rows.length)+' en '+suc:n(rows.length)+' cuentas';
 }
 function ddAgroSuc(suc){
-  const rows=(DD.agro||[]).filter(r=>r['Sucursal']===suc);
-  const hdrs=['Apellido','Nombre','CUIT','Lím. Compra','Compras 2026','Compras 2025','Activo','Observaciones'];
-  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['CUIT'],r['Límite de Compra']||'—',r['Compras 2026']||'$0',r['Compras 2025']||'$0',`<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,r['Observaciones']||'—']);
-  openDD('AgroNación: '+suc,rows.length+' cuentas',hdrs,data,rows);
+  const rows=(DD.agro||[]).filter(r=>r['Sucursal']===suc).sort((a,b)=>parseMonto(b['Compras 2026'])-parseMonto(a['Compras 2026']));
+  const total=rows.reduce((a,r)=>a+parseMonto(r['Compras 2026']),0);
+  const hdrs=['Apellido','Nombre','CUIT','Lím. Compra','Disponible','Compras 2026','Compras 2025','% Uso LC','Activo','Observaciones'];
+  const data=rows.map(r=>{
+    const lim=parseMonto(r['Límite de Compra']), c26=parseMonto(r['Compras 2026']);
+    return [r['Apellido'],r['Nombre'],r['CUIT'],fmtMonto(lim),r['Límite Disponible']||'—',fmtMonto(c26),fmtMonto(parseMonto(r['Compras 2025'])),pctUso(c26,lim),`<span class="pill ${r['Activo']==='SI'?'p-act':'p-chu'}">${r['Activo']}</span>`,r['Observaciones']||'—'];
+  });
+  openDD('AgroNación · consumo por sucursal: '+suc,rows.length+' cuentas · '+fmtMonto(total)+' consumo 2026',hdrs,data,rows);
 }
 
 // ── RENDER CORP ──
@@ -3393,18 +3406,26 @@ function rCORP(rows){
   rankCORP(rows);
 }
 function renderCORP(rows){
-  const sm={};rows.forEach(x=>{const s=x['Columna1']||'';if(!s)return;sm[s]=(sm[s]||0)+1;});
-  const sa=Object.entries(sm).sort((a,b)=>b[1]-a[1]);
+  const sm={};rows.forEach(x=>{const s=x['Columna1']||'';if(!s)return;if(!sm[s])sm[s]={c:0,lim:0,rem:0,cons:0,sal:0,pag:0};sm[s].c++;sm[s].lim+=parseMonto(x['Lim.Compra']);sm[s].rem+=parseMonto(x['Reman Compra']);sm[s].sal+=parseMonto(x['Imp Sal Ant']);sm[s].pag+=parseMonto(x['PAGOS']);sm[s].cons+=consumoCorp(x);});
+  const sa=Object.entries(sm).map(([nm,v])=>({nm,...v,uso:v.lim>0?((v.lim-v.rem)/v.lim*100):0})).sort((a,b)=>b.cons-a.cons);
   const T=rows.length,top=sa[0];
   document.getElementById('corp-total').textContent=n(T);
   document.getElementById('corp-k1').textContent=n(T);
-  document.getElementById('corp-k2').textContent=top?top[0]:'—';document.getElementById('corp-k2s').textContent=top?top[1]+' ctas':'—';
+  document.getElementById('corp-k2').textContent=top?top.nm:'—';document.getElementById('corp-k2s').textContent=top?fmtMonto(top.cons):'—';
   document.getElementById('corp-k3').textContent=n(sa.length);
-  document.getElementById('corp-k4').textContent=sa.length>0?Math.round(T/sa.length):'—';
+  document.getElementById('corp-k4').textContent=sa.length>0?fmtMonto(sa.reduce((a,x)=>a+x.cons,0)/sa.length):'—';
+  const totalLim=rows.reduce((a,r)=>a+parseMonto(r['Lim.Compra']),0), totalRem=rows.reduce((a,r)=>a+parseMonto(r['Reman Compra']),0), totalSal=rows.reduce((a,r)=>a+parseMonto(r['Imp Sal Ant']),0), totalPag=rows.reduce((a,r)=>a+parseMonto(r['PAGOS']),0), totalCons=rows.reduce((a,r)=>a+consumoCorp(r),0);
+  const setC=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  setC('corp-consumo-lim', fmtMonto(totalLim));
+  setC('corp-consumo-rem', fmtMonto(totalRem));
+  setC('corp-consumo-uso', totalLim>0?((totalLim-totalRem)/totalLim*100).toFixed(1)+'%':'—');
+  setC('corp-consumo-sal', fmtMonto(totalSal || totalCons));
+  setC('corp-consumo-pag', fmtMonto(totalPag));
+  setC('corp-consumo-pct', totalSal>0?(totalPag/totalSal*100).toFixed(1)+'%':'—');
   const t12=sa.slice(0,12);
-  mk('c-corp',{type:'bar',data:{labels:t12.map(x=>x[0]),datasets:[{data:t12.map(x=>x[1]),backgroundColor:'#007094',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#0d1f4a'}}}}});
-  const mx=t12[0]?t12[0][1]:1;
-  document.getElementById('t-corp').innerHTML=sa.map(([nm,c],i)=>`<tr class="crow" data-nm="${nm}" onclick="ddCorpSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${nm}</td><td><span class="pill p-az">${c}</span></td><td><span class="bm" style="width:${Math.round(c/mx*60)}px"></span></td></tr>`).join('');
+  mk('c-corp',{type:'bar',data:{labels:t12.map(x=>x.nm),datasets:[{label:'Consumo / saldo',data:t12.map(x=>x.cons),backgroundColor:'#007094',borderRadius:4},{label:'Pagos',data:t12.map(x=>x.pag),backgroundColor:'#4EBFA4',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9},color:'#0d1f4a'}}}}});
+  document.getElementById('t-corp').innerHTML=sa.map((s,i)=>`<tr class="crow" data-nm="${s.nm}" onclick="ddCorpSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td><span class="pill p-az">${s.c}</span></td><td>${fmtMonto(s.lim)}</td><td>${fmtMonto(s.rem)}</td><td style="font-weight:800;color:var(--bna-verde)">${fmtMonto(s.cons)}</td><td>${fmtMonto(s.pag)}</td><td>${s.lim>0?s.uso.toFixed(1)+'%':'—'}</td></tr>`).join('');
+  rankCORP(rows);
 }
 function applyFilterCORP(){
   const suc=document.getElementById('f-corp-suc').value;
@@ -3413,10 +3434,11 @@ function applyFilterCORP(){
   document.getElementById('fc-corp').textContent=suc?n(rows.length)+' en '+suc:n(rows.length)+' cuentas';
 }
 function ddCorpSuc(suc){
-  const rows=(DD.corp||[]).filter(r=>r['Columna1']===suc);
-  const hdrs=['Apellido','Nombre','Cuenta','Lím. Compra','Rem. Compra','% Uso LC','Saldo Ant.','Pagos'];
-  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['Cuenta'],r['Lim.Compra']||'—',r['Reman Compra']||'—',(r['%Uso LC']!=null?r['%Uso LC']+'%':'—'),r['Imp Sal Ant']||'$0',r['PAGOS']||'$0']);
-  openDD('Corporativa: '+suc,rows.length+' cuentas',hdrs,data,rows);
+  const rows=(DD.corp||[]).filter(r=>r['Columna1']===suc).sort((a,b)=>consumoCorp(b)-consumoCorp(a));
+  const total=rows.reduce((a,r)=>a+consumoCorp(r),0);
+  const hdrs=['Apellido','Nombre','Cuenta','Lím. Compra','Rem. Compra','Consumo / saldo','% Uso LC','Saldo Ant.','Pagos'];
+  const data=rows.map(r=>[r['Apellido'],r['Nombre'],r['Cuenta'],fmtMonto(parseMonto(r['Lim.Compra'])),fmtMonto(parseMonto(r['Reman Compra'])),fmtMonto(consumoCorp(r)),(r['%Uso LC']!=null?r['%Uso LC']+'%':pctUso(consumoCorp(r),parseMonto(r['Lim.Compra']))),fmtMonto(parseMonto(r['Imp Sal Ant'])),fmtMonto(parseMonto(r['PAGOS']))]);
+  openDD('Corporativa · consumo por sucursal: '+suc,rows.length+' cuentas · '+fmtMonto(total)+' consumo/saldo',hdrs,data,rows);
 }
 
 // Parsear montos argentinos "$ 1.234.567,50" o "$ 1.234.567"
@@ -3426,6 +3448,23 @@ function parseMonto(v){
   if(!s||s==='-'||s==='0') return 0;
   const r=parseFloat(s);
   return isNaN(r)?0:r;
+}
+
+function fmtMonto(v){
+  v = Number(v)||0;
+  if(Math.abs(v)>=1e9) return '$'+(v/1e9).toFixed(2)+'B';
+  if(Math.abs(v)>=1e6) return '$'+(v/1e6).toFixed(1)+'M';
+  if(Math.abs(v)>=1e3) return '$'+(v/1e3).toFixed(0)+'K';
+  return '$'+n(Math.round(v));
+}
+function pctUso(cons,lim){ return lim>0 ? (cons/lim*100).toFixed(1)+'%' : '—'; }
+function consumoCorp(r){
+  const lim=parseMonto(r['Lim.Compra']);
+  const rem=parseMonto(r['Reman Compra']);
+  const usado = lim>0 ? Math.max(lim-rem,0) : 0;
+  const saldo=parseMonto(r['Imp Sal Ant']);
+  const pagos=parseMonto(r['PAGOS']);
+  return saldo || usado || pagos || 0;
 }
 
 // ── RENDER BNA ──
@@ -3440,8 +3479,8 @@ function rBNA(rows){
 }
 function renderBNA(rows){
   const T=rows.length,co=rows.filter(x=>x['TIPO CLIENTE']==='Comprador').length,ve=T-co;
-  const sm={};rows.forEach(x=>{const s=x['SUCURSAL']||'';if(!s)return;if(!sm[s])sm[s]={t:0,c:0,v:0};sm[s].t++;if(x['TIPO CLIENTE']==='Comprador')sm[s].c++;else sm[s].v++;});
-  const sa=Object.entries(sm).sort((a,b)=>b[1].t-a[1].t);
+  const sm={};rows.forEach(x=>{const s=x['SUCURSAL']||'';if(!s)return;if(!sm[s])sm[s]={t:0,c:0,v:0,comp:0,vent:0};sm[s].t++;if(x['TIPO CLIENTE']==='Comprador')sm[s].c++;else sm[s].v++;sm[s].comp+=parseMonto(x['COMPRAS 2026']);sm[s].vent+=parseMonto(x['VENTAS 2026']);});
+  const sa=Object.entries(sm).map(([nm,v])=>({nm,...v,total:v.comp+v.vent})).sort((a,b)=>b.total-a.total);
   document.getElementById('bna-total').textContent=n(T);
   document.getElementById('bna-k1').textContent=n(T);
   document.getElementById('bna-k2').textContent=n(co);document.getElementById('bna-k2s').textContent=pct(co,T);
@@ -3449,19 +3488,22 @@ function renderBNA(rows){
   document.getElementById('bna-k4').textContent=n(sa.length);
   mk('c-bna-pie',{type:'doughnut',data:{labels:['Compradores','Vendedores'],datasets:[{data:[co,ve],backgroundColor:['#00ADDB','#c8a84b'],borderWidth:0}]},options:PIE});
   const t10=sa.slice(0,10);
-  mk('c-bna-suc',{type:'bar',data:{labels:t10.map(x=>x[0]),datasets:[{label:'Compradores',data:t10.map(x=>x[1].c),backgroundColor:'#007094',borderRadius:3},{label:'Vendedores',data:t10.map(x=>x[1].v),backgroundColor:'#D4AC87',borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9}}}}}});
-  const mx=sa[0]?sa[0][1].t:1;
-  // Acumulado BNA
+  mk('c-bna-suc',{type:'bar',data:{labels:t10.map(x=>x.nm),datasets:[{label:'Compras 2026',data:t10.map(x=>x.comp),backgroundColor:'#007094',borderRadius:3},{label:'Ventas 2026',data:t10.map(x=>x.vent),backgroundColor:'#D4AC87',borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}},scales:{x:{ticks:{font:{size:9}}},y:{ticks:{font:{size:9}}}}}});
   const bnaComp=rows.reduce((a,r)=>a+parseMonto(r['COMPRAS 2026']),0);
   const bnaVent=rows.reduce((a,r)=>a+parseMonto(r['VENTAS 2026']),0);
   const bnaN=rows.filter(r=>parseMonto(r['COMPRAS 2026'])>0||parseMonto(r['VENTAS 2026'])>0).length;
-  const fmtB=v=>v>=1e9?'$'+(v/1e9).toFixed(2)+'B':v>=1e6?'$'+(v/1e6).toFixed(0)+'M':'$'+n(v);
   const setA=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
-  setA('bna-acum-comp', bnaComp>0?fmtB(bnaComp):'Sin datos');
-  setA('bna-acum-vent', bnaVent>0?fmtB(bnaVent):'Sin datos');
+  setA('bna-acum-comp', bnaComp>0?fmtMonto(bnaComp):'Sin datos');
+  setA('bna-acum-vent', bnaVent>0?fmtMonto(bnaVent):'Sin datos');
   setA('bna-acum-n', bnaN+' de '+T);
-
-  document.getElementById('t-bna').innerHTML=sa.map(([nm,v],i)=>`<tr class="crow" data-nm="${nm}" onclick="ddBnaSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${nm}</td><td>${v.t}</td><td><span class="pill p-az">${v.c}</span></td><td><span class="pill p-gr">${v.v}</span></td><td><span class="bm" style="width:${Math.round(v.t/mx*60)}px"></span></td></tr>`).join('');
+  setA('bna-consumo-comp', bnaComp>0?fmtMonto(bnaComp):'Sin datos');
+  setA('bna-consumo-vent', bnaVent>0?fmtMonto(bnaVent):'Sin datos');
+  setA('bna-consumo-total', fmtMonto(bnaComp+bnaVent));
+  setA('bna-consumo-act', n(bnaN));
+  setA('bna-consumo-pct', T>0?(bnaN/T*100).toFixed(1)+'%':'—');
+  setA('bna-consumo-inact', n(T-bnaN));
+  document.getElementById('t-bna').innerHTML=sa.map((s,i)=>`<tr class="crow" data-nm="${s.nm}" onclick="ddBnaSuc(this.dataset.nm)"><td class="rk">${i+1}</td><td>${s.nm}</td><td>${s.t}</td><td><span class="pill p-az">${s.c}</span></td><td><span class="pill p-gr">${s.v}</span></td><td>${fmtMonto(s.comp)}</td><td>${fmtMonto(s.vent)}</td><td style="font-weight:800;color:var(--bna-verde)">${fmtMonto(s.total)}</td></tr>`).join('');
+  rankBNA(rows);
 }
 function applyFilterBNA(){
   const suc=document.getElementById('f-bna-suc').value;
@@ -3470,10 +3512,11 @@ function applyFilterBNA(){
   document.getElementById('fc-bna').textContent=suc?n(rows.length)+' en '+suc:n(rows.length)+' empresas';
 }
 function ddBnaSuc(suc){
-  const rows=(DD.bna||[]).filter(r=>r['SUCURSAL']===suc);
-  const hdrs=['Razón Social','CUIT','Tipo Cliente','Compras 2026','Ventas 2026','Estado'];
-  const data=rows.map(r=>[r['RAZON SOCIAL'],r['CUIT'],`<span class="pill ${r['TIPO CLIENTE']==='Comprador'?'p-az':'p-gr'}">${r['TIPO CLIENTE']}</span>`,r['COMPRAS 2026']||'—',r['VENTAS 2026']||'—',r['ESTADO']||'—']);
-  openDD('BNA Conecta: '+suc,rows.length+' empresas',hdrs,data,rows);
+  const rows=(DD.bna||[]).filter(r=>r['SUCURSAL']===suc).sort((a,b)=>(parseMonto(b['COMPRAS 2026'])+parseMonto(b['VENTAS 2026']))-(parseMonto(a['COMPRAS 2026'])+parseMonto(a['VENTAS 2026'])));
+  const total=rows.reduce((a,r)=>a+parseMonto(r['COMPRAS 2026'])+parseMonto(r['VENTAS 2026']),0);
+  const hdrs=['Razón Social','CUIT','Tipo Cliente','Compras 2026','Ventas 2026','Total operado','Estado'];
+  const data=rows.map(r=>{const comp=parseMonto(r['COMPRAS 2026']), vent=parseMonto(r['VENTAS 2026']); return [r['RAZON SOCIAL'],r['CUIT'],`<span class="pill ${r['TIPO CLIENTE']==='Comprador'?'p-az':'p-gr'}">${r['TIPO CLIENTE']}</span>`,fmtMonto(comp),fmtMonto(vent),fmtMonto(comp+vent),r['ESTADO']||'—'];});
+  openDD('BNA Conecta · consumo por sucursal: '+suc,rows.length+' empresas · '+fmtMonto(total)+' operado 2026',hdrs,data,rows);
 }
 
 // ── PANEL OPORTUNIDADES ──

@@ -52,16 +52,49 @@ const PERSONAS_CONFIG = {
       { name: "monto", label: "Monto ($)", type: "number", min: 0, step: 0.01 }
     ]
   },
-  seguros: {
-    label: "Seguros",
-    description: "Producto asesorado o contratado.",
-    campos: [
-      { name: "cliente", label: "Cliente", type: "text", maxLength: 80 },
-      { name: "dni", label: "DNI", type: "text", inputmode: "numeric", maxLength: 8, pattern: "dni" },
-      { name: "linea", label: "Línea / producto", type: "text", maxLength: 80 },
-      { name: "monto", label: "Monto / prima ($)", type: "number", min: 0, step: 0.01 }
-    ]
-  },
+   seguros: {
+  label: "Seguros",
+  description: "Producto asesorado o contratado.",
+  campos: [
+    {
+      name: "cliente",
+      label: "Cliente",
+      type: "text",
+      maxLength: 80
+    },
+    {
+      name: "dni",
+      label: "DNI",
+      type: "text",
+      inputmode: "numeric",
+      maxLength: 8,
+      pattern: "dni"
+    },
+    {
+      name: "linea",
+      label: "Línea / producto",
+      type: "select",
+      options: [
+        "Vida",
+        "Accidentes Personales",
+        "Automotor",
+        "Motos",
+        "Sepelios",
+        "Robo ATM",
+        "Hogar",
+        "Integral Comercio",
+        "Otros"
+      ]
+    },
+    {
+      name: "monto",
+      label: "Monto / prima ($)",
+      type: "number",
+      min: 0,
+      step: 0.01
+    }
+  ]
+},
   "app-bna": {
     label: "App BNA+",
     description: "Alta, migración o asesoramiento.",
